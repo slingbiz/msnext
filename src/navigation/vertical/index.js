@@ -47,6 +47,11 @@ const navigation = () => {
       sectionTitle: 'User Interface'
     },
     {
+      title: 'My ads',
+      icon: FormatLetterCase,
+      path: '/myads'
+    },
+    {
       title: 'Typography',
       icon: FormatLetterCase,
       path: '/typography'
