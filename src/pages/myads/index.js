@@ -22,8 +22,10 @@ import AdsItem from '../../views/myads/AdsItem.js'
 import axios from "axios";
 
 const MyAdsPage = ({pageComponentProps}) => {
-  const theme = useTheme()
-  console.log(pageComponentProps, 'pageComponentProps')
+
+  const theme = useTheme();
+  console.log(pageComponentProps, 'pageComponentProps');
+
   return (
     <Card sx={{width: '100%'}}>
       <CardHeader
