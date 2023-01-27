@@ -21,10 +21,10 @@ import Account from 'mdi-material-ui/Account'
 import AdsItem from '../../views/myads/AdsItem.js'
 import axios from "axios";
 
-const MyAdsPage = ({pageComponentProps}) => {
+const MyAdsPage = (props) => {
 
   const theme = useTheme();
-  console.log(pageComponentProps, 'pageComponentProps');
+  console.log(props, 'props');
 
   return (
     <Card sx={{width: '100%'}}>
