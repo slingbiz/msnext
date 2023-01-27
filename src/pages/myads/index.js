@@ -24,7 +24,7 @@ import axios from "axios";
 const MyAdsPage = (props) => {
 
   const theme = useTheme();
-  console.log(props, 'props');
+  const {user} = props;
 
   return (
     <Card sx={{width: '100%'}}>
@@ -39,7 +39,7 @@ const MyAdsPage = (props) => {
         <Box sx={{display: 'flex', alignItems: 'center'}}>
           <Account fontSize='large'/>
           <Typography variant='h5' sx={{ml: 5}}>
-            Username
+            {user.username}
           </Typography>
         </Box>
         <Box
