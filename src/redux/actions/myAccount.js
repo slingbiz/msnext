@@ -9,6 +9,7 @@ export const getMyCarListingsAction = (params) => {
 
     try {
       const usedCarListings = await getMyCarListings(params);
+      console.log(usedCarListings,' -- -usedCarListings response')
       if (data.status === 200) {
         dispatch({type: FETCH_SUCCESS});
         dispatch({
@@ -22,6 +23,8 @@ export const getMyCarListingsAction = (params) => {
         });
       }
     } catch (e) {
+      console.log(e.message,' -- -usedCarListings error')
+
       dispatch({
         type: FETCH_ERROR,
         payload: [],
