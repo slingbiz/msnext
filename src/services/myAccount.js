@@ -7,7 +7,7 @@ const getMyCarListings = async (params) => {
     return;
   }
 
-  return Api.POST(`${SERVICE_URL}/getMyCarListings`, params);
+  return Api.POST(`${SERVICE_URL}/myAccount/getMyCarListings`, params);
 };
 
 export {getMyCarListings};
