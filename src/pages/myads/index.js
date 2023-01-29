@@ -18,13 +18,25 @@ import {
 } from '@mui/material'
 import {blue, red, yellow} from '@mui/material/colors'
 import Account from 'mdi-material-ui/Account'
+import {useDispatch, useSelector} from 'react-redux';
+
 import AdsItem from '../../views/myads/AdsItem.js'
 import axios from "axios";
+import {useEffect} from "react";
+import {getMyCarListingsAction} from "../../redux/actions/myAccount";
 
 const MyAdsPage = (props) => {
+  const dispatch = useDispatch();
 
   const theme = useTheme();
   const {user} = props;
+  const myCarListings = useSelector(({myAccount}) => myAccount.myCarListings);
+
+  console.log(myCarListings, 'myCarListings [Response]');
+
+  useEffect(() => {
+    dispatch(getMyCarListingsAction({}));
+  }, [dispatch]);
 
   return (
     <Card sx={{width: '100%'}}>
@@ -39,7 +51,7 @@ const MyAdsPage = (props) => {
         <Box sx={{display: 'flex', alignItems: 'center'}}>
           <Account fontSize='large'/>
           <Typography variant='h5' sx={{ml: 5}}>
-            {user.username}
+            {user?.username || 'No User found'}
           </Typography>
         </Box>
         <Box
@@ -226,11 +238,14 @@ export async function getServerSideProps(ctx) {
   });
 
   if (!response?.data?.user_id) {
+    // return {
+    //   redirect: {
+    //     destination: 'https://www.motorsingh.com', statusCode: 302
+    //   }
+    // };
     return {
-      redirect: {
-        destination: 'https://www.motorsingh.com', statusCode: 302
-      }
-    };
+      props: {}
+    }
   }
   const user = response?.data;
   req.user = user;

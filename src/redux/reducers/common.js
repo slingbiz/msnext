@@ -4,7 +4,7 @@ import {
   FETCH_SUCCESS,
   HIDE_MESSAGE,
   SHOW_MESSAGE,
-} from '../../constants/ActionTypes';
+} from '../../constants/actionTypes';
 
 const INIT_STATE = {
   error: '',
