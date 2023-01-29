@@ -2,9 +2,8 @@ import axios from 'axios';
 
 const axiosAuth = async () => {
 
-  //TODO Add cookie info.
   return axios.create({
-    withCredentials: true,
+    withCredentials: true, // To pass cookie information
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
