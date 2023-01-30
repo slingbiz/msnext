@@ -15,16 +15,7 @@ const themeOptions = settings => {
     palette: palette(mode, themeColor),
     typography: {
       fontFamily: [
-        'Inter',
-        'sans-serif',
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
+        'Open Sans',
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"'
       ].join(',')
