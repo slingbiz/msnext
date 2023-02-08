@@ -44,7 +44,6 @@ const VerticalNavSectionTitle = props => {
       }}
     >
       <Divider
-        textAlign='left'
         sx={{
           m: 0,
           width: '100%',

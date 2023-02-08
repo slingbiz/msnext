@@ -85,7 +85,6 @@ const VerticalLayout = props => {
             {children}
           </ContentWrapper>
 
-          <Footer {...props} />
 
           <DatePickerWrapper sx={{ zIndex: 11 }}>
             <Box id='react-datepicker-portal'></Box>
@@ -102,6 +101,8 @@ const VerticalLayout = props => {
           </Fab>
         </ScrollToTop>
       )}
+      <Footer {...props} />
+
     </>
   )
 }

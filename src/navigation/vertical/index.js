@@ -13,69 +13,42 @@ import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 const navigation = () => {
   return [
     {
+      sectionTitle: 'Profile'
+    },
+    {
       title: 'Dashboard',
       icon: HomeOutline,
       path: '/'
     },
     {
-      title: 'Account Settings',
+      title: 'My Cars',
+      icon: FormatLetterCase,
+      path: '/myads'
+    },
+    {
+      title: 'Edit Profile',
       icon: AccountCogOutline,
       path: '/account-settings'
     },
     {
-      sectionTitle: 'Pages'
-    },
-    {
-      title: 'Login',
+      title: 'Manage Leads ',
       icon: Login,
       path: '/pages/login',
       openInNewTab: true
     },
     {
-      title: 'Register',
+      title: 'Messages',
       icon: AccountPlusOutline,
       path: '/pages/register',
       openInNewTab: true
     },
     {
-      title: 'Error',
+      title: 'Sell Car',
       icon: AlertCircleOutline,
       path: '/pages/error',
       openInNewTab: true
     },
-    {
-      sectionTitle: 'User Interface'
-    },
-    {
-      title: 'My ads',
-      icon: FormatLetterCase,
-      path: '/myads'
-    },
-    {
-      title: 'Typography',
-      icon: FormatLetterCase,
-      path: '/typography'
-    },
-    {
-      title: 'Icons',
-      path: '/icons',
-      icon: GoogleCirclesExtended
-    },
-    {
-      title: 'Cards',
-      icon: CreditCardOutline,
-      path: '/cards'
-    },
-    {
-      title: 'Tables',
-      icon: Table,
-      path: '/tables'
-    },
-    {
-      icon: CubeOutline,
-      title: 'Form Layouts',
-      path: '/form-layouts'
-    }
+
   ]
 }
 

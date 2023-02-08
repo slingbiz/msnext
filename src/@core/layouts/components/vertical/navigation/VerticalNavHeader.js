@@ -57,8 +57,8 @@ const VerticalNavHeader = props => {
           <StyledLink>
             <img src='/images/pages/motorsinghLogo.png' alt={'Motorsingh.com Logo'} height={'100%'}/>
 
-            <HeaderTitleMS variant='h6' sx={{ml: 2}}>
-              Admin
+            <HeaderTitleMS style={{fontSize: 14}} sx={{ml: 2}}>
+              Admin Panel
             </HeaderTitleMS>
           </StyledLink>
         </Link>

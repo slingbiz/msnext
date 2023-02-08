@@ -1,15 +1,16 @@
 // ** Next Imports
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import {useRouter} from 'next/router'
 
 // ** MUI Imports
 import Chip from '@mui/material/Chip'
 import ListItem from '@mui/material/ListItem'
-import { styled } from '@mui/material/styles'
+import {styled} from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemButton from '@mui/material/ListItemButton'
+import Grid from '@mui/material/Grid';
 
 // ** Configs Import
 import themeConfig from 'src/configs/themeConfig'
@@ -18,10 +19,10 @@ import themeConfig from 'src/configs/themeConfig'
 import UserIcon from 'src/layouts/components/UserIcon'
 
 // ** Utils
-import { handleURLQueries } from 'src/@core/layouts/utils'
+import {handleURLQueries} from 'src/@core/layouts/utils'
 
 // ** Styled Components
-const MenuNavLink = styled(ListItemButton)(({ theme }) => ({
+const MenuNavLink = styled(ListItemButton)(({theme}) => ({
   width: '100%',
   borderTopRightRadius: 100,
   borderBottomRightRadius: 100,
@@ -43,10 +44,10 @@ const MenuItemTextMetaWrapper = styled(Box)({
   alignItems: 'center',
   justifyContent: 'space-between',
   transition: 'opacity .25s ease-in-out',
-  ...(themeConfig.menuTextTruncate && { overflow: 'hidden' })
+  ...(themeConfig.menuTextTruncate && {overflow: 'hidden'})
 })
 
-const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
+const VerticalNavLink = ({item, navVisible, toggleNavVisibility}) => {
   // ** Hooks
   const router = useRouter()
   const IconTag = item.icon
@@ -64,13 +65,13 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
       disablePadding
       className='nav-link'
       disabled={item.disabled || false}
-      sx={{ mt: 1.5, px: '0 !important' }}
+      sx={{mt: 1.5, px: '0 !important'}}
     >
       <Link passHref href={item.path === undefined ? '/' : `${item.path}`}>
         <MenuNavLink
           component={'a'}
           className={isNavLinkActive() ? 'active' : ''}
-          {...(item.openInNewTab ? { target: '_blank' } : null)}
+          {...(item.openInNewTab ? {target: '_blank'} : null)}
           onClick={e => {
             if (item.path === undefined) {
               e.preventDefault()
@@ -81,35 +82,44 @@ const VerticalNavLink = ({ item, navVisible, toggleNavVisibility }) => {
             }
           }}
           sx={{
-            pl: 5.5,
-            ...(item.disabled ? { pointerEvents: 'none' } : { cursor: 'pointer' })
+            ...(item.disabled ? {pointerEvents: 'none'} : {cursor: 'pointer'})
           }}
+          style={{display: 'flex', justifyContent: 'space-between'}}
         >
-          <ListItemIcon
-            sx={{
-              mr: 2.5,
-              color: 'text.primary',
-              transition: 'margin .25s ease-in-out'
-            }}
-          >
-            <UserIcon icon={IconTag} />
-          </ListItemIcon>
+          <Grid container spacing={2}>
+            <Grid item xs={5} style={{textAlign: 'right'}}>
 
-          <MenuItemTextMetaWrapper>
-            <Typography {...(themeConfig.menuTextTruncate && { noWrap: true })}>{item.title}</Typography>
-            {item.badgeContent ? (
-              <Chip
-                label={item.badgeContent}
-                color={item.badgeColor || 'primary'}
+              <ListItemIcon
                 sx={{
-                  height: 20,
-                  fontWeight: 500,
-                  marginLeft: 1.25,
-                  '& .MuiChip-label': { px: 1.5, textTransform: 'capitalize' }
+                  mr: 2.5,
+                  color: 'text.primary',
+                  transition: 'margin .25s ease-in-out'
                 }}
-              />
-            ) : null}
-          </MenuItemTextMetaWrapper>
+              >
+                <UserIcon icon={IconTag}/>
+              </ListItemIcon>
+            </Grid>
+            <Grid item xs={7} style={{textAlign: 'left'}}>
+
+              <MenuItemTextMetaWrapper>
+                <Typography {...(themeConfig.menuTextTruncate && {noWrap: true})}>{item.title} </Typography>
+                {item.badgeContent ? (
+                  <Chip
+                    label={item.badgeContent}
+                    color={item.badgeColor || 'primary'}
+                    sx={{
+                      height: 20,
+                      fontWeight: 500,
+                      marginLeft: 1.25,
+                      '& .MuiChip-label': {px: 1.5, textTransform: 'capitalize'}
+                    }}
+                  />
+                ) : null}
+              </MenuItemTextMetaWrapper>
+            </Grid>
+          </Grid>
+
+
         </MenuNavLink>
       </Link>
     </ListItem>
