@@ -9,6 +9,7 @@ import createEmotionServer from '@emotion/server/create-instance'
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
+import { Oval } from 'react-loader-spinner'
 
 class CustomDocument extends Document {
   render() {
@@ -32,6 +33,7 @@ class CustomDocument extends Document {
     )
   }
 }
+
 CustomDocument.getInitialProps = async ctx => {
   const originalRenderPage = ctx.renderPage
   const cache = createEmotionCache()
