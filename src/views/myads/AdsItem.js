@@ -28,10 +28,10 @@ function AdsItem({ listing }) {
           style={{ width: '100%', height: 200, borderRadius: 5, flexBasis: 1, maxWidth: 300 }}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, ml: [null, null, 3] }}>
-          <Typography component='h3' sx={{ fontSize: 25, fontWeight: 500, color: 'black' }}>
+          <Typography component='h3' sx={{ fontSize: 25, fontWeight: 500 }}>
             {listing?.title}
           </Typography>
-          <Typography component='h3' sx={{ fontSize: 20, fontWeight: 500, color: 'black', mt: 2 }}>
+          <Typography component='h3' sx={{ fontSize: 20, fontWeight: 500, mt: 2 }}>
             AED<span style={{ fontSize: 24 }}> {listing?.price}</span>
           </Typography>
           <Box sx={{ display: 'flex', mt: 2, flexDirection: { xs: 'column', lg: 'row' } }}>
@@ -39,7 +39,7 @@ function AdsItem({ listing }) {
               <Typography variant='subtitle2' sx={{ fontSize: 15 }}>
                 Location :
               </Typography>
-              <Typography variant='body1' sx={{ fontWeight: 700, color: 'black' }}>
+              <Typography variant='body1' sx={{ fontWeight: 700 }}>
                 {capFirst(listing?.city)}
               </Typography>
             </Box>
@@ -47,7 +47,7 @@ function AdsItem({ listing }) {
               <Typography variant='subtitle2' sx={{ fontSize: 15 }}>
                 Kilometers :
               </Typography>
-              <Typography variant='body1' sx={{ fontWeight: 700, color: 'black' }}>
+              <Typography variant='body1' sx={{ fontWeight: 700 }}>
                 {listing?.kms_run}
               </Typography>
             </Box>
@@ -55,7 +55,7 @@ function AdsItem({ listing }) {
               <Typography variant='subtitle2' sx={{ fontSize: 15 }}>
                 Year :
               </Typography>
-              <Typography variant='body1' sx={{ fontWeight: 700, color: 'black' }}>
+              <Typography variant='body1' sx={{ fontWeight: 700 }}>
                 {listing?.year}
               </Typography>
             </Box>
@@ -82,11 +82,11 @@ function AdsItem({ listing }) {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: { xs: 'column', lg: 'row' } }}>
         <Box sx={{ display: 'flex' }}>
           <Typography variant='subtitle2' sx={{ fontSize: 15 }}>
-            Posted on <span style={{ color: 'black', fontWeight: 600 }}>{moment(listing?.added_on).toString()}</span>
+            Posted on <span style={{ fontWeight: 600 }}>{moment(listing?.added_on).toString()}</span>
           </Typography>
           <Divider orientation='vertical' sx={{ mx: 2 }} flexItem />
           <Typography variant='subtitle2' sx={{ fontSize: 15 }}>
-            Updated on <span style={{ color: 'black', fontWeight: 600 }}>{moment(listing?.updated_on).toString()}</span>
+            Updated on <span style={{ fontWeight: 600 }}>{moment(listing?.updated_on).toString()}</span>
           </Typography>
         </Box>
         <Button variant='outlined' startIcon={<MoreHorizIcon />}>

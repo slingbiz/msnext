@@ -221,6 +221,7 @@ const MyAdsPage = props => {
               <Tab label={`Incomplete (0)`} />
               <Tab label={`Deactive (0)`} />
             </Tabs>
+            {console.log(myCarListings, 'myCarListings')}
             {myCarListings?.map((listing, k) => {
               return <AdsItem key={k} listing={listing} />
             })}
