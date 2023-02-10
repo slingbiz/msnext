@@ -221,8 +221,8 @@ const MyAdsPage = props => {
               <Tab label={`Incomplete (0)`} />
               <Tab label={`Deactive (0)`} />
             </Tabs>
-            {myCarListings?.map(listing => {
-              return <AdsItem listing={listing} />
+            {myCarListings?.map((listing, k) => {
+              return <AdsItem key={k} listing={listing} />
             })}
           </Box>
         </Paper>
