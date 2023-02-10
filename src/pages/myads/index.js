@@ -16,48 +16,49 @@ import {
   Typography,
   useTheme
 } from '@mui/material'
-import {blue, red, yellow} from '@mui/material/colors'
+import { Oval } from 'react-loader-spinner'
+
+import { blue, red, yellow } from '@mui/material/colors'
 import Account from 'mdi-material-ui/Account'
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux'
 
 import AdsItem from '../../views/myads/AdsItem.js'
-import axios from "axios";
-import {useEffect} from "react";
-import {getMyCarListingsAction} from "../../redux/actions/myAccount";
+import axios from 'axios'
+import { useEffect } from 'react'
+import { getMyCarListingsAction } from '../../redux/actions/myAccount'
+import DefaultLoader from '../../@core/components/loader/default'
 
-const MyAdsPage = (props) => {
-  const dispatch = useDispatch();
+const MyAdsPage = props => {
+  const dispatch = useDispatch()
 
-  const theme = useTheme();
-  const {user} = props;
-  const myCarListings = useSelector(({myAccount}) => myAccount.myCarListings);
-
-  console.log(myCarListings, 'myCarListings [Response]');
+  const theme = useTheme()
+  const { user } = props
+  const myCarListings = useSelector(({ myAccount }) => myAccount.myCarListings)
 
   useEffect(() => {
-    dispatch(getMyCarListingsAction({}));
-  }, [dispatch]);
+    dispatch(getMyCarListingsAction({}))
+  }, [dispatch])
 
   return (
-    <Card sx={{width: '100%'}}>
+    <Card sx={{ width: '100%' }}>
       <CardHeader
         title={
-          <Typography variant='h6' sx={{textTransform: 'uppercase'}}>
+          <Typography variant='h6' sx={{ textTransform: 'uppercase' }}>
             My account
           </Typography>
         }
       />
-      <CardContent sx={{width: '100%', display: 'flex', flexDirection: 'column'}}>
-        <Box sx={{display: 'flex', alignItems: 'center'}}>
-          <Account fontSize='large'/>
-          <Typography variant='h5' sx={{ml: 5}}>
+      <CardContent sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Account fontSize='large' />
+          <Typography variant='h5' sx={{ ml: 5 }}>
             {user?.username || 'No User found'}
           </Typography>
         </Box>
         <Box
           sx={{
             display: 'flex',
-            flexDirection: {xs: 'column', lg: 'row'},
+            flexDirection: { xs: 'column', lg: 'row' },
             justifyContent: 'space-between',
             width: '100%',
             mt: 2
@@ -73,11 +74,11 @@ const MyAdsPage = (props) => {
             <Button variant='outlined' size='small'>
               Edit Profile
             </Button>
-            <Button variant='outlined' size='small' sx={{ml: 3}}>
+            <Button variant='outlined' size='small' sx={{ ml: 3 }}>
               Change Password
             </Button>
           </Box>
-          <Box sx={{display: 'flex', mt: {xs: 3, lg: 0}, alignItems: 'center'}}>
+          <Box sx={{ display: 'flex', mt: { xs: 3, lg: 0 }, alignItems: 'center' }}>
             <Button
               variant='contained'
               sx={{
@@ -130,16 +131,16 @@ const MyAdsPage = (props) => {
             </Button>
           </Box>
         </Box>
-        <Divider sx={{my: 5}}/>
-        <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Typography sx={{textTransform: 'uppercase', fontWeight: 600}} variant='h6'>
+        <Divider sx={{ my: 5 }} />
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography sx={{ textTransform: 'uppercase', fontWeight: 600 }} variant='h6'>
             My car ads
           </Typography>
-          <Typography sx={{cursor: 'pointer'}} variant='body2'>
+          <Typography sx={{ cursor: 'pointer' }} variant='body2'>
             Clear filters
           </Typography>
         </Box>
-        <Grid container sx={{mt: 1}} spacing={5}>
+        <Grid container sx={{ mt: 1 }} spacing={5}>
           <Grid item lg={3} xs={12}>
             <FormControl fullWidth size='small'>
               <InputLabel id='form-layouts-separator-select-label'>Select Make</InputLabel>
@@ -208,34 +209,35 @@ const MyAdsPage = (props) => {
         </Grid>
         <Paper
           elevation={0}
-          sx={{background: theme.palette.grey[200], p: 5, mt: 5, display: 'flex', flexDirection: 'column'}}
+          sx={{ background: theme.palette.grey[200], p: 5, mt: 5, display: 'flex', flexDirection: 'column' }}
         >
-          <Typography sx={{color: theme.palette.common.black, fontWeight: 600, textAlign: 'right'}}>
-            Displaing 0 Ads listing
+          <Typography sx={{ color: theme.palette.common.black, fontWeight: 600, textAlign: 'right' }}>
+            Displaying {myCarListings.length} Ads listing
           </Typography>
-          <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs aria-label='basic tabs example' variant='scrollable'>
-              <Tab label={`Active (0)`}/>
-              <Tab label={`Awaiting Review (0)`}/>
-              <Tab label={`Incomplete (0)`}/>
-              <Tab label={`Deactive (0)`}/>
+              <Tab label={`Active (0)`} />
+              <Tab label={`Awaiting Review (0)`} />
+              <Tab label={`Incomplete (0)`} />
+              <Tab label={`Deactive (0)`} />
             </Tabs>
-            <AdsItem/>
-            <AdsItem/>
-            <AdsItem/>
+            {myCarListings?.map(listing => {
+              return <AdsItem listing={listing} />
+            })}
           </Box>
         </Paper>
       </CardContent>
+      <DefaultLoader />
     </Card>
   )
 }
 
 export async function getServerSideProps(ctx) {
-  const {req, res} = ctx;
+  const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
-    headers: {cookie: `PHPSESSID=${req.cookies.PHPSESSID};`}
-  });
+    headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
+  })
 
   if (!response?.data?.user_id) {
     // return {
@@ -247,13 +249,12 @@ export async function getServerSideProps(ctx) {
       props: {}
     }
   }
-  const user = response?.data;
-  req.user = user;
+  const user = response?.data
+  req.user = user
 
   return {
-    props: {user}
+    props: { user }
   }
 }
 
-export default MyAdsPage;
-
+export default MyAdsPage
