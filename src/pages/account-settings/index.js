@@ -22,6 +22,7 @@ import TabSecurity from 'src/views/account-settings/TabSecurity'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
+import axios from 'axios'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -41,13 +42,17 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const AccountSettings = () => {
+const AccountSettings = props => {
+  const { user } = props
+
   // ** State
   const [value, setValue] = useState('account')
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  console.log(user, 'user')
 
   return (
     <Card>
@@ -66,16 +71,7 @@ const AccountSettings = () => {
               </Box>
             }
           />
-          <Tab
-            value='security'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <LockOpenOutline />
-                <TabName>Security</TabName>
-              </Box>
-            }
-          />
-          <Tab
+          {/* <Tab
             value='info'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -83,21 +79,39 @@ const AccountSettings = () => {
                 <TabName>Info</TabName>
               </Box>
             }
-          />
+          /> */}
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
-          <TabAccount />
+          <TabAccount user={user} />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='security'>
-          <TabSecurity />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='info'>
+        {/* <TabPanel sx={{ p: 0 }} value='info'>
           <TabInfo />
-        </TabPanel>
+        </TabPanel> */}
       </TabContext>
     </Card>
   )
+}
+
+export async function getServerSideProps(ctx) {
+  const { req, res } = ctx
+
+  const response = await axios.get('https://www.motorsingh.com/user/validate', {
+    // headers: {cookie: `PHPSESSID=${req.cookies.PHPSESSID};`}
+    headers: { cookie: `PHPSESSID=0pt78bg40irspangui51l1nfc6` }
+  })
+
+  if (!response?.data?.user_id) {
+    return {
+      props: {}
+    }
+  }
+  const user = response?.data
+  req.user = user
+
+  return {
+    props: { user }
+  }
 }
 
 export default AccountSettings
