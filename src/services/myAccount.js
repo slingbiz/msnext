@@ -7,9 +7,17 @@ const getMyCarListings = async params => {
     return
   }
 
-  console.log(SERVICE_URL, ' SERVICE_URL')
-
   return Api.post(`${SERVICE_URL}/myAccount/getMyCarListings`, params)
 }
 
-export { getMyCarListings }
+const getMyLeadListings = async params => {
+  const Api = await apiAuth()
+  if (!Api) {
+    return
+  }
+
+  return Api.post(`${SERVICE_URL}/myAccount/getMyLeadListings`, params)
+}
+
+export { getMyCarListings, getMyLeadListings }
+

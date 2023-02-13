@@ -16,8 +16,8 @@ import {
   Typography,
   useTheme
 } from '@mui/material'
-import { Oval } from 'react-loader-spinner'
 
+import { Oval } from 'react-loader-spinner' 
 import { blue, red, yellow } from '@mui/material/colors'
 import Account from 'mdi-material-ui/Account'
 import { useDispatch, useSelector } from 'react-redux'
@@ -26,6 +26,7 @@ import AdsItem from '../../views/myads/AdsItem.js'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { getMyCarListingsAction } from '../../redux/actions/myAccount'
+
 import DefaultLoader from '../../@core/components/loader/default'
 
 const MyAdsPage = props => {
@@ -34,6 +35,7 @@ const MyAdsPage = props => {
   const theme = useTheme()
   const { user } = props
   const myCarListings = useSelector(({ myAccount }) => myAccount.myCarListings)
+
 
   useEffect(() => {
     dispatch(getMyCarListingsAction({}))

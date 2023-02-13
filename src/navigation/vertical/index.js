@@ -26,6 +26,11 @@ const navigation = () => {
       path: '/myads'
     },
     {
+      title: 'My Leads',
+      icon: FormatLetterCase,
+      path: '/leads'
+    },
+    {
       title: 'Edit Profile',
       icon: AccountCogOutline,
       path: '/account-settings'
@@ -47,8 +52,7 @@ const navigation = () => {
       icon: AlertCircleOutline,
       path: '/pages/error',
       openInNewTab: true
-    },
-
+    }
   ]
 }
 
