@@ -16,6 +16,8 @@ import {
   Typography,
   useTheme
 } from '@mui/material'
+import { Oval } from 'react-loader-spinner'
+
 import { blue, red, yellow } from '@mui/material/colors'
 import Account from 'mdi-material-ui/Account'
 import { useDispatch, useSelector } from 'react-redux'
@@ -24,6 +26,7 @@ import AdsItem from '../../views/myads/AdsItem.js'
 import axios from 'axios'
 import { useEffect } from 'react'
 import { getMyCarListingsAction } from '../../redux/actions/myAccount'
+import DefaultLoader from '../../@core/components/loader/default'
 
 const MyAdsPage = props => {
   const dispatch = useDispatch()
@@ -31,8 +34,6 @@ const MyAdsPage = props => {
   const theme = useTheme()
   const { user } = props
   const myCarListings = useSelector(({ myAccount }) => myAccount.myCarListings)
-
-  console.log(myCarListings, 'myCarListings [Response]')
 
   useEffect(() => {
     dispatch(getMyCarListingsAction({}))
@@ -213,7 +214,7 @@ const MyAdsPage = props => {
           sx={{ background: theme.palette.grey[200], p: 5, mt: 5, display: 'flex', flexDirection: 'column' }}
         >
           <Typography sx={{ color: theme.palette.common.black, fontWeight: 600, textAlign: 'right' }}>
-            Displaing 0 Ads listing
+            Displaying {myCarListings.length} Ads listing
           </Typography>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs aria-label='basic tabs example' variant='scrollable'>
@@ -222,12 +223,14 @@ const MyAdsPage = props => {
               <Tab label={`Incomplete (0)`} />
               <Tab label={`Deactive (0)`} />
             </Tabs>
-            <AdsItem />
-            <AdsItem />
-            <AdsItem />
+            {console.log(myCarListings, 'myCarListings')}
+            {myCarListings?.map((listing, k) => {
+              return <AdsItem key={k} listing={listing} />
+            })}
           </Box>
         </Paper>
       </CardContent>
+      <DefaultLoader />
     </Card>
   )
 }
