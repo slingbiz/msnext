@@ -3,13 +3,18 @@ import {
   FETCH_START,
   FETCH_SUCCESS,
   UPDATE_MYCAR_LISTINGS,
-  UPDATE_MYLEAD_LISTINGS
+  UPDATE_MYLEAD_LISTINGS,
+  UPDATE_DB_USERS,
+  UPDATE_USER,
+  GET_SINGLE_USER
 } from '../../constants/actionTypes'
 
 const INIT_STATE = {
   myCarListings: [],
   myLeadListings: [],
-  loading: undefined
+  loading: undefined,
+  dbUsers: [],
+  singleUser: []
 }
 
 const myAccount = (state = INIT_STATE, action) => {
@@ -46,6 +51,29 @@ const myAccount = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         myLeadListings: action.payload
+      }
+    }
+
+    case UPDATE_DB_USERS: {
+      return {
+        ...state,
+        loading: false,
+        dbUsers: action.payload
+      }
+    }
+
+    case UPDATE_USER: {
+      return {
+        ...state,
+        loading: false
+      }
+    }
+
+    case GET_SINGLE_USER: {
+      return {
+        ...state,
+        loading: false,
+        singleUser: action.payload
       }
     }
 

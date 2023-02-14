@@ -18,17 +18,11 @@ import CardContent from '@mui/material/CardContent'
 import FormControl from '@mui/material/FormControl'
 import Button from '@mui/material/Button'
 
-// ** Icons Imports
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import KeyOutline from 'mdi-material-ui/KeyOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
-
 // ** Packages Imports
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import axios from 'axios'
-import { InputAdornment, OutlinedInput } from '@mui/material'
+import { getSingleUserAction, updateUserAction } from 'src/redux/actions/myAccount'
+import { useDispatch, useSelector } from 'react-redux'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -57,58 +51,41 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
 const validationSchema = yup.object({
   name: yup.string('Enter your name').required('Name is required'),
   email: yup.string('Enter your email').email('Enter a valid email').required('Email is required'),
-  currentPassword: yup.string(),
-  newPassword: yup.string(),
-  confirmNewPassword: yup.string().oneOf([yup.ref('newPassword'), null], 'Passwords must match')
+  phone: yup.number('Enter your phone number').required('Phone number is required'),
+  country: yup.string('Enter your country name').required('Country is required')
 })
 
-const TabAccount = ({ user }) => {
-  const [values, setValues] = useState({
-    showNewPassword: false,
-    showCurrentPassword: false,
-    showConfirmNewPassword: false
-  })
-  const [dbUsers, setDbUsers] = useState([])
+const TabAccount = ({ loggedUser }) => {
+  const dispatch = useDispatch()
+  const refUser = useSelector(({ myAccount }) => myAccount.singleUser)
+
+  const userId = loggedUser?.user_id
+
   useEffect(() => {
-    // get all users
-    axios.get(`${process.env.Dev_URL}/users`).then(res => {
-      setDbUsers(res.data)
-    })
-  }, [])
-
-  const handleClickShowCurrentPassword = () => {
-    setValues({ ...values, showCurrentPassword: !values.showCurrentPassword })
-  }
-
-  const handleClickShowNewPassword = () => {
-    setValues({ ...values, showNewPassword: !values.showNewPassword })
-  }
-
-  const handleClickShowConfirmNewPassword = () => {
-    setValues({ ...values, showConfirmNewPassword: !values.showConfirmNewPassword })
-  }
+    dispatch(getSingleUserAction({ userId }))
+  }, [userId, dispatch])
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
-      newPassword: '',
-      currentPassword: '',
-      confirmNewPassword: ''
+      name: refUser[0]?.user_name || '',
+      email: refUser[0]?.user_email || '',
+      phone: refUser[0]?.user_mobile || '',
+      country: refUser[0]?.country || ''
     },
+    enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: values => {
-      console.log(values, 'values')
-
-      const loggedUser = dbUsers.filter(dbUser => dbUser.user_email == user.email)
-
-      axios
-        .patch(`${process.env.Dev_URL}/users/${loggedUser[0].user_id}`, values)
-        .then(res => {
-          console.log(res, 'response')
-          formik.resetForm()
+      dispatch(
+        updateUserAction({
+          id: userId,
+          values: {
+            ...values,
+            newPassword: '',
+            currentPassword: '',
+            confirmNewPassword: ''
+          }
         })
-        .catch(e => console.log(e.message, 'error'))
+      )
     }
   })
 
@@ -143,72 +120,33 @@ const TabAccount = ({ user }) => {
               helperText={formik.touched.email && formik.errors.email}
             />
           </Grid>
-
-          <Grid item xs={12} sx={{ marginTop: 4.75 }}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor='currentPassword'>Current Password</InputLabel>
-              <OutlinedInput
-                label='Current Password'
-                value={values.currentPassword}
-                id='currentPassword'
-                type={values.showCurrentPassword ? 'text' : 'password'}
-                onChange={formik.handleChange}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      edge='end'
-                      aria-label='toggle password visibility'
-                      onClick={handleClickShowCurrentPassword}
-                    >
-                      {values.showCurrentPassword ? <EyeOutline /> : <EyeOffOutline />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </Grid>
-          <Grid item xs={12} sx={{ marginTop: 6 }}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor='newPassword'>New Password</InputLabel>
-              <OutlinedInput
-                label='New Password'
-                value={values.newPassword}
-                id='newPassword'
-                onChange={formik.handleChange}
-                type={values.showNewPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton edge='end' onClick={handleClickShowNewPassword} aria-label='toggle password visibility'>
-                      {values.showNewPassword ? <EyeOutline /> : <EyeOffOutline />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </Grid>
-
           <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel htmlFor='confirmNewPassword'>Confirm New Password</InputLabel>
-              <OutlinedInput
-                label='Confirm New Password'
-                value={values.confirmNewPassword}
-                id='confirmNewPassword'
-                type={values.showConfirmNewPassword ? 'text' : 'password'}
-                onChange={formik.handleChange}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      edge='end'
-                      aria-label='toggle password visibility'
-                      onClick={handleClickShowConfirmNewPassword}
-                    >
-                      {values.showConfirmNewPassword ? <EyeOutline /> : <EyeOffOutline />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
+            <TextField
+              fullWidth
+              type='number'
+              placeholder='+1 (123) 456-789'
+              id='phone'
+              name='phone'
+              label='Phone'
+              value={formik.values.phone}
+              onChange={formik.handleChange}
+              error={formik.touched.phone && Boolean(formik.errors.phone)}
+              helperText={formik.touched.phone && formik.errors.phone}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              type='country'
+              placeholder='Country'
+              id='country'
+              name='country'
+              label='Country'
+              value={formik.values.country}
+              onChange={formik.handleChange}
+              error={formik.touched.country && Boolean(formik.errors.country)}
+              helperText={formik.touched.country && formik.errors.country}
+            />
           </Grid>
 
           <Grid item xs={12}>

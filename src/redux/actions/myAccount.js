@@ -1,14 +1,103 @@
- 
-import { getMyCarListings, getMyLeadListings } from '../../services/myAccount'
+import { getAllUsers, getMyCarListings, getMyLeadListings, updateUser, getSingleUser } from '../../services/myAccount'
 import {
   FETCH_START,
   FETCH_SUCCESS,
   FETCH_ERROR,
   UPDATE_MYCAR_LISTINGS,
-  UPDATE_MYLEAD_LISTINGS
+  UPDATE_MYLEAD_LISTINGS,
+  UPDATE_DB_USERS,
+  UPDATE_USER,
+  GET_SINGLE_USER
 } from '../../constants/actionTypes'
 
 import { SOMETHING_WENT_WRONG } from '../../constants/common'
+
+export const getSingleUserAction = params => {
+  return async dispatch => {
+    dispatch({ type: FETCH_START })
+
+    try {
+      const singleUser = await getSingleUser(params)
+      console.log(singleUser, ' --- singleUser response')
+      if (singleUser.status === 200) {
+        dispatch({ type: FETCH_SUCCESS })
+        dispatch({
+          type: GET_SINGLE_USER,
+          payload: singleUser.data
+        })
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: data?.message || SOMETHING_WENT_WRONG
+        })
+      }
+    } catch (e) {
+      console.log(e.message, ' --- singleUser error')
+      dispatch({
+        type: FETCH_ERROR,
+        payload: []
+      })
+    }
+  }
+}
+
+export const updateUserAction = params => {
+  return async dispatch => {
+    dispatch({ type: FETCH_START })
+
+    try {
+      const updatedUser = await updateUser(params)
+      console.log(updatedUser, ' --- updatedUser response')
+      if (updatedUser.status === 200) {
+        dispatch({ type: FETCH_SUCCESS })
+        dispatch({
+          type: UPDATE_USER,
+          payload: updatedUser.data
+        })
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: data?.message || SOMETHING_WENT_WRONG
+        })
+      }
+    } catch (e) {
+      console.log(e.message, ' --- updatedUser error')
+      dispatch({
+        type: FETCH_ERROR,
+        payload: []
+      })
+    }
+  }
+}
+
+export const getAllUsersAction = params => {
+  return async dispatch => {
+    dispatch({ type: FETCH_START })
+
+    try {
+      const allUsers = await getAllUsers(params)
+      console.log(allUsers, '--- allUsers response')
+      if (allUsers.status === 200) {
+        dispatch({ type: FETCH_SUCCESS })
+        dispatch({
+          type: UPDATE_DB_USERS,
+          payload: allUsers.data
+        })
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: data?.message || SOMETHING_WENT_WRONG
+        })
+      }
+    } catch (e) {
+      console.log(e.message, ' --- getUsers error')
+      dispatch({
+        type: FETCH_ERROR,
+        payload: []
+      })
+    }
+  }
+}
 
 export const getMyCarListingsAction = params => {
   return async dispatch => {

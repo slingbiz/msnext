@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -23,6 +23,8 @@ import TabSecurity from 'src/views/account-settings/TabSecurity'
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { getAllUsersAction } from 'src/redux/actions/myAccount'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -43,10 +45,22 @@ const TabName = styled('span')(({ theme }) => ({
 }))
 
 const AccountSettings = props => {
-  const { user } = props
-
   // ** State
   const [value, setValue] = useState('account')
+  const [loggedInUser, setLoggedInUser] = useState({})
+
+  const dispatch = useDispatch()
+  const { user } = props
+  const dbUsers = useSelector(({ myAccount }) => myAccount.dbUsers)
+
+  useEffect(() => {
+    dispatch(getAllUsersAction({}))
+  }, [dispatch])
+
+  useEffect(() => {
+    const loggedUser = dbUsers.filter(dbUser => dbUser.user_email == user?.email)
+    setLoggedInUser(loggedUser[0])
+  }, [dbUsers, user])
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -71,23 +85,23 @@ const AccountSettings = props => {
               </Box>
             }
           />
-          {/* <Tab
-            value='info'
+          <Tab
+            value='security'
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <InformationOutline />
-                <TabName>Info</TabName>
+                <LockOpenOutline />
+                <TabName>Security</TabName>
               </Box>
             }
-          /> */}
+          />
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
-          <TabAccount user={user} />
+          <TabAccount loggedUser={loggedInUser} />
         </TabPanel>
-        {/* <TabPanel sx={{ p: 0 }} value='info'>
-          <TabInfo />
-        </TabPanel> */}
+        <TabPanel sx={{ p: 0 }} value='security'>
+          <TabSecurity loggedUser={loggedInUser} />
+        </TabPanel>
       </TabContext>
     </Card>
   )
@@ -97,8 +111,9 @@ export async function getServerSideProps(ctx) {
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
-    // headers: {cookie: `PHPSESSID=${req.cookies.PHPSESSID};`}
-    headers: { cookie: `PHPSESSID=0pt78bg40irspangui51l1nfc6` }
+    headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
+
+    // headers: { cookie: `PHPSESSID=0pt78bg40irspangui51l1nfc6` }
   })
 
   if (!response?.data?.user_id) {
