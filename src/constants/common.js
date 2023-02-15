@@ -1,4 +1,3 @@
-// export const SERVICE_URL = 'https://www.motorsingh.com/next/v2';
-export const SERVICE_URL = 'http://localhost:4000/v2'
 
+export const SERVICE_URL = process.env.NEXT_PUBLIC_SERVICE_URL
 export const SOMETHING_WENT_WRONG = 'Something went wrong'

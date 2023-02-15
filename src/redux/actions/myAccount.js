@@ -1,3 +1,4 @@
+ 
 import { getMyCarListings, getMyLeadListings } from '../../services/myAccount'
 import {
   FETCH_START,
@@ -6,6 +7,7 @@ import {
   UPDATE_MYCAR_LISTINGS,
   UPDATE_MYLEAD_LISTINGS
 } from '../../constants/actionTypes'
+
 import { SOMETHING_WENT_WRONG } from '../../constants/common'
 
 export const getMyCarListingsAction = params => {
@@ -59,7 +61,6 @@ export const getMyLeadListingsAction = params => {
       }
     } catch (e) {
       console.log(e.message, ' -- -myLeadListings error')
-
       dispatch({
         type: FETCH_ERROR,
         payload: []
