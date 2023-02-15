@@ -76,7 +76,6 @@ export default function LeadsPage(pageComponentProps) {
       <Card>
         <CardHeader
           title='My Leads'
-          titleTypographyProps={{ variant: 'h6' }}
           subheader={
             <Box sx={{ display: 'flex', alignItems: 'cener', justifyContent: 'space-between' }}>
               <Typography variant='body2'>
