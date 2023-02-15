@@ -21,6 +21,7 @@ import {
   Typography
 } from '@mui/material'
 import { blue, red, yellow } from '@mui/material/colors'
+import { capFirst } from '../../helpers/common'
 
 const columns = [
   {
@@ -194,8 +195,8 @@ export default function LeadsPage(pageComponentProps) {
                         if (column.id === 'make_model') {
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              <Box>{row['make']}</Box>
-                              <Box>{row['model']}</Box>
+                              <Box>{capFirst(row['make'])}</Box>
+                              <Box>{capFirst(row['model'])}</Box>
                             </TableCell>
                           )
                         }
@@ -215,7 +216,7 @@ export default function LeadsPage(pageComponentProps) {
 
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === 'number' ? column.format(value) : value}
+                            {column.format && typeof value === 'number' ? column.format(value) : capFirst(value)}
                           </TableCell>
                         )
                       })}
