@@ -45,7 +45,7 @@ export const getMyLeadListingsAction = params => {
     dispatch({ type: FETCH_START })
 
     try {
-      const myLeadListings = await getMyLeadListings(params)
+      const myLeadListings = await getMyLeadListings({ filter_type: params.filterValue })
       console.log(myLeadListings, ' -- -myLeadListings response')
       if (myLeadListings.status === 200) {
         dispatch({ type: FETCH_SUCCESS })
