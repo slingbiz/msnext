@@ -13,13 +13,13 @@ export const getMyCarListingsAction = params => {
     dispatch({ type: FETCH_START })
 
     try {
-      const usedCarListings = await getMyCarListings(params)
-      console.log(usedCarListings, ' -- -usedCarListings response')
-      if (data.status === 200) {
+      const usedCarListingsRes = await getMyCarListings(params)
+      console.log(usedCarListingsRes, ' -- -usedCarListings response')
+      if (usedCarListingsRes.status === 200) {
         dispatch({ type: FETCH_SUCCESS })
         dispatch({
           type: UPDATE_MYCAR_LISTINGS,
-          payload: usedCarListings.data
+          payload: usedCarListingsRes.data
         })
       } else {
         dispatch({
@@ -43,7 +43,7 @@ export const getMyLeadListingsAction = params => {
     dispatch({ type: FETCH_START })
 
     try {
-      const myLeadListings = await getMyLeadListings(params)
+      const myLeadListings = await getMyLeadListings({ filter_type: params.filterValue })
       console.log(myLeadListings, ' -- -myLeadListings response')
       if (myLeadListings.status === 200) {
         dispatch({ type: FETCH_SUCCESS })
