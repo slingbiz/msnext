@@ -55,6 +55,7 @@
     "babel-eslint": "^10.1.0",
     "clsx": "^1.1.1",
     "eslint-plugin-react": "^7.29.4",
+    "formik": "^2.2.9",
     "mdi-material-ui": "^7.1.0",
     "moment": "^2.29.4",
     "next": "12.0.4",
@@ -70,7 +71,8 @@
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.4.2"
+    "redux-thunk": "^2.4.2",
+    "yup": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^7.32.0",

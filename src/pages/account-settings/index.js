@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -22,6 +22,9 @@ import TabSecurity from 'src/views/account-settings/TabSecurity'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
+import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { getSingleUserAction } from 'src/redux/actions/myAccount'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -41,13 +44,24 @@ const TabName = styled('span')(({ theme }) => ({
   }
 }))
 
-const AccountSettings = () => {
+const AccountSettings = props => {
   // ** State
   const [value, setValue] = useState('account')
+
+  const dispatch = useDispatch()
+  const { user } = props
+  const userId = user?.user_id
+  const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
+
+  useEffect(() => {
+    dispatch(getSingleUserAction({ userId }))
+  }, [dispatch, userId])
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
   }
+
+  console.log(user, 'user')
 
   return (
     <Card>
@@ -75,29 +89,39 @@ const AccountSettings = () => {
               </Box>
             }
           />
-          <Tab
-            value='info'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <InformationOutline />
-                <TabName>Info</TabName>
-              </Box>
-            }
-          />
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
-          <TabAccount />
+          <TabAccount loggedUser={loggedUser} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='security'>
-          <TabSecurity />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='info'>
-          <TabInfo />
+          <TabSecurity loggedUser={loggedUser} />
         </TabPanel>
       </TabContext>
     </Card>
   )
+}
+
+export async function getServerSideProps(ctx) {
+  const { req, res } = ctx
+
+  const response = await axios.get('https://www.motorsingh.com/user/validate', {
+    headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
+
+    // headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
+  })
+
+  if (!response?.data?.user_id) {
+    return {
+      props: {}
+    }
+  }
+  const user = response?.data
+  req.user = user
+
+  return {
+    props: { user }
+  }
 }
 
 export default AccountSettings

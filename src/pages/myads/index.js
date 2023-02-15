@@ -17,7 +17,7 @@ import {
   useTheme
 } from '@mui/material'
 
-import { Oval } from 'react-loader-spinner' 
+import { Oval } from 'react-loader-spinner'
 import { blue, red, yellow } from '@mui/material/colors'
 import Account from 'mdi-material-ui/Account'
 import { useDispatch, useSelector } from 'react-redux'
@@ -36,10 +36,11 @@ const MyAdsPage = props => {
   const { user } = props
   const myCarListings = useSelector(({ myAccount }) => myAccount.myCarListings)
 
-
   useEffect(() => {
     dispatch(getMyCarListingsAction({}))
   }, [dispatch])
+
+  console.log(user, 'user')
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -240,6 +241,8 @@ export async function getServerSideProps(ctx) {
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
     headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
+
+    // headers: { cookie: `PHPSESSID=0pt78bg40irspangui51l1nfc6` }
   })
 
   if (!response?.data?.user_id) {
