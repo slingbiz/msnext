@@ -26,20 +26,14 @@ const navigation = () => {
       path: '/myads'
     },
     {
-      title: 'My Leads',
-      icon: FormatLetterCase,
-      path: '/leads'
-    },
-    {
       title: 'Edit Profile',
       icon: AccountCogOutline,
       path: '/account-settings'
     },
     {
-      title: 'Manage Leads ',
+      title: 'Manage Leads',
       icon: Login,
-      path: '/pages/login',
-      openInNewTab: true
+      path: '/leads'
     },
     {
       title: 'Messages',
