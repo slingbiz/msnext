@@ -81,9 +81,8 @@ export default function LeadsPage(pageComponentProps) {
             <Box sx={{ display: 'flex', alignItems: 'cener', justifyContent: 'space-between' }}>
               <Typography variant='body2'>
                 <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-                  Total ({myLeadListings.length})
+                  Found total ({myLeadListings.length}) leads
                 </Box>{' '}
-                😎 this month
               </Typography>
               <Box sx={{ display: 'flex', mt: { xs: 3, lg: 0 }, alignItems: 'center' }}>
                 <Button
