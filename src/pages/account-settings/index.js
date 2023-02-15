@@ -24,7 +24,7 @@ import TabSecurity from 'src/views/account-settings/TabSecurity'
 import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllUsersAction } from 'src/redux/actions/myAccount'
+import { getSingleUserAction } from 'src/redux/actions/myAccount'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -47,20 +47,15 @@ const TabName = styled('span')(({ theme }) => ({
 const AccountSettings = props => {
   // ** State
   const [value, setValue] = useState('account')
-  const [loggedInUser, setLoggedInUser] = useState({})
 
   const dispatch = useDispatch()
   const { user } = props
-  const dbUsers = useSelector(({ myAccount }) => myAccount.dbUsers)
+  const userId = user?.user_id
+  const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
 
   useEffect(() => {
-    dispatch(getAllUsersAction({}))
-  }, [dispatch])
-
-  useEffect(() => {
-    const loggedUser = dbUsers.filter(dbUser => dbUser.user_email == user?.email)
-    setLoggedInUser(loggedUser[0])
-  }, [dbUsers, user])
+    dispatch(getSingleUserAction({ userId }))
+  }, [dispatch, userId])
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -97,10 +92,10 @@ const AccountSettings = props => {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
-          <TabAccount loggedUser={loggedInUser} />
+          <TabAccount loggedUser={loggedUser} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='security'>
-          <TabSecurity loggedUser={loggedInUser} />
+          <TabSecurity loggedUser={loggedUser} />
         </TabPanel>
       </TabContext>
     </Card>
@@ -111,9 +106,8 @@ export async function getServerSideProps(ctx) {
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
-    headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
-
-    // headers: { cookie: `PHPSESSID=0pt78bg40irspangui51l1nfc6` }
+    // headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
+    headers: { cookie: `PHPSESSID=0pt78bg40irspangui51l1nfc6` }
   })
 
   if (!response?.data?.user_id) {

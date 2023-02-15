@@ -1,11 +1,10 @@
-import { getAllUsers, getMyCarListings, getMyLeadListings, updateUser, getSingleUser } from '../../services/myAccount'
+import { getMyCarListings, getMyLeadListings, updateUser, getSingleUser } from '../../services/myAccount'
 import {
   FETCH_START,
   FETCH_SUCCESS,
   FETCH_ERROR,
   UPDATE_MYCAR_LISTINGS,
   UPDATE_MYLEAD_LISTINGS,
-  UPDATE_DB_USERS,
   UPDATE_USER,
   GET_SINGLE_USER
 } from '../../constants/actionTypes'
@@ -62,35 +61,6 @@ export const updateUserAction = params => {
       }
     } catch (e) {
       console.log(e.message, ' --- updatedUser error')
-      dispatch({
-        type: FETCH_ERROR,
-        payload: []
-      })
-    }
-  }
-}
-
-export const getAllUsersAction = params => {
-  return async dispatch => {
-    dispatch({ type: FETCH_START })
-
-    try {
-      const allUsers = await getAllUsers(params)
-      console.log(allUsers, '--- allUsers response')
-      if (allUsers.status === 200) {
-        dispatch({ type: FETCH_SUCCESS })
-        dispatch({
-          type: UPDATE_DB_USERS,
-          payload: allUsers.data
-        })
-      } else {
-        dispatch({
-          type: FETCH_ERROR,
-          payload: data?.message || SOMETHING_WENT_WRONG
-        })
-      }
-    } catch (e) {
-      console.log(e.message, ' --- getUsers error')
       dispatch({
         type: FETCH_ERROR,
         payload: []

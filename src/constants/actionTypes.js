@@ -17,8 +17,6 @@ export const TOGGLE_APP_DRAWER = 'toggle_app_drawer'
 
 export const UPDATING_CONTENT = 'updating_content'
 
-export const UPDATE_DB_USERS = 'update_db_users'
-
 export const UPDATE_USER = 'update_user'
 
 export const GET_SINGLE_USER = 'get_single_user'

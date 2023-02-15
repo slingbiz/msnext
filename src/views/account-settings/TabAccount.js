@@ -21,8 +21,10 @@ import Button from '@mui/material/Button'
 // ** Packages Imports
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import { getSingleUserAction, updateUserAction } from 'src/redux/actions/myAccount'
-import { useDispatch, useSelector } from 'react-redux'
+import { updateUserAction } from 'src/redux/actions/myAccount'
+import { useDispatch } from 'react-redux'
+import { OutlinedInput } from '@mui/material'
+import { countries } from 'src/constants/countries'
 
 const ImgStyled = styled('img')(({ theme }) => ({
   width: 120,
@@ -57,24 +59,20 @@ const validationSchema = yup.object({
 
 const TabAccount = ({ loggedUser }) => {
   const dispatch = useDispatch()
-  const refUser = useSelector(({ myAccount }) => myAccount.singleUser)
-
-  const userId = loggedUser?.user_id
-
-  useEffect(() => {
-    dispatch(getSingleUserAction({ userId }))
-  }, [userId, dispatch])
+  const userId = loggedUser[0]?.user_id
 
   const formik = useFormik({
     initialValues: {
-      name: refUser[0]?.user_name || '',
-      email: refUser[0]?.user_email || '',
-      phone: refUser[0]?.user_mobile || '',
-      country: refUser[0]?.country || ''
+      name: loggedUser[0]?.user_name || '',
+      email: loggedUser[0]?.user_email || '',
+      phone: loggedUser[0]?.user_mobile || '',
+      country: loggedUser[0]?.country || ''
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
     onSubmit: values => {
+      console.log(values, 'values')
+
       dispatch(
         updateUserAction({
           id: userId,
@@ -135,18 +133,28 @@ const TabAccount = ({ loggedUser }) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              type='country'
-              placeholder='Country'
-              id='country'
-              name='country'
-              label='Country'
-              value={formik.values.country}
-              onChange={formik.handleChange}
-              error={formik.touched.country && Boolean(formik.errors.country)}
-              helperText={formik.touched.country && formik.errors.country}
-            />
+            <FormControl fullWidth>
+              <InputLabel id='form-layouts-separator-multiple-select-label'>Country</InputLabel>
+              <Select
+                name='country'
+                defaultValue={'United States'}
+                value={formik.values.country}
+                id='account-settings-multiple-select'
+                labelId='account-settings-multiple-select-label'
+                input={<OutlinedInput label='Select Country' id='select-multiple-language' />}
+                onChange={formik.handleChange}
+                error={formik.touched.country && Boolean(formik.errors.country)}
+                helperText={formik.touched.country && formik.errors.country}
+              >
+                {countries.map(c => {
+                  return (
+                    <MenuItem key={c.countryShortCode} value={c.countryName}>
+                      {c.countryName}
+                    </MenuItem>
+                  )
+                })}
+              </Select>
+            </FormControl>
           </Grid>
 
           <Grid item xs={12}>
