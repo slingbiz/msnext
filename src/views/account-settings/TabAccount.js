@@ -59,14 +59,14 @@ const validationSchema = yup.object({
 
 const TabAccount = ({ loggedUser }) => {
   const dispatch = useDispatch()
-  const userId = loggedUser?.user_id
+  const userId = loggedUser[0]?.user_id
 
   const formik = useFormik({
     initialValues: {
-      name: loggedUser?.user_name || '',
-      email: loggedUser?.user_email || '',
-      phone: loggedUser?.user_mobile || '',
-      country: loggedUser?.country || ''
+      name: loggedUser[0]?.user_name || '',
+      email: loggedUser[0]?.user_email || '',
+      phone: loggedUser[0]?.user_mobile || '',
+      country: loggedUser[0]?.country || ''
     },
     enableReinitialize: true,
     validationSchema: validationSchema,
