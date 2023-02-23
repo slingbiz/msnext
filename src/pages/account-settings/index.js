@@ -61,8 +61,6 @@ const AccountSettings = props => {
     setValue(newValue)
   }
 
-  console.log(user, 'user')
-
   return (
     <Card>
       <TabContext value={value}>
@@ -92,10 +90,10 @@ const AccountSettings = props => {
         </TabList>
 
         <TabPanel sx={{ p: 0 }} value='account'>
-          <TabAccount loggedUser={loggedUser} />
+          <TabAccount loggedUser={loggedUser ? loggedUser[0] : {}} />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value='security'>
-          <TabSecurity loggedUser={loggedUser} />
+          <TabSecurity loggedUser={loggedUser ? loggedUser[0] : {}} />
         </TabPanel>
       </TabContext>
     </Card>
@@ -106,9 +104,9 @@ export async function getServerSideProps(ctx) {
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
-    headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
+    // headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
 
-    // headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
+    headers: { cookie: `PHPSESSID=12m1u7eng2inkrrk90or5bds46` }
   })
 
   if (!response?.data?.user_id) {
