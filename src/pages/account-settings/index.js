@@ -61,8 +61,6 @@ const AccountSettings = props => {
     setValue(newValue)
   }
 
-  console.log(user, 'user')
-
   return (
     <Card>
       <TabContext value={value}>
@@ -108,7 +106,7 @@ export async function getServerSideProps(ctx) {
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
     // headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
 
-    headers: { cookie: `PHPSESSID=0pt78bg40irspangui51l1nfc6` }
+    headers: { cookie: `PHPSESSID=12m1u7eng2inkrrk90or5bds46` }
   })
 
   if (!response?.data?.user_id) {

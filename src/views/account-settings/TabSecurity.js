@@ -156,7 +156,6 @@ const TabSecurity = ({ loggedUser }) => {
                     type={values.showConfirmNewPassword ? 'text' : 'password'}
                     onChange={formik.handleChange}
                     error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
-                    helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton
