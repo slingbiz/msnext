@@ -104,9 +104,9 @@ export async function getServerSideProps(ctx) {
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
-    // headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
+    headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
 
-    headers: { cookie: `PHPSESSID=12m1u7eng2inkrrk90or5bds46` }
+   // headers: { cookie: `PHPSESSID=12m1u7eng2inkrrk90or5bds46` }
   })
 
   if (!response?.data?.user_id) {
