@@ -57,7 +57,7 @@ const TabSecurity = ({ loggedUser }) => {
     setValues({ ...values, showConfirmNewPassword: !values.showConfirmNewPassword })
   }
 
-  const userId = loggedUser[0]?.user_id
+  const userId = loggedUser?.user_id
 
   const formik = useFormik({
     initialValues: {
@@ -156,7 +156,6 @@ const TabSecurity = ({ loggedUser }) => {
                     type={values.showConfirmNewPassword ? 'text' : 'password'}
                     onChange={formik.handleChange}
                     error={formik.touched.confirmNewPassword && Boolean(formik.errors.confirmNewPassword)}
-                    helperText={formik.touched.confirmNewPassword && formik.errors.confirmNewPassword}
                     endAdornment={
                       <InputAdornment position='end'>
                         <IconButton

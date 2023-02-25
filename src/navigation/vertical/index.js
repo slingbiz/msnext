@@ -16,11 +16,6 @@ const navigation = () => {
       sectionTitle: 'Profile'
     },
     {
-      title: 'Dashboard',
-      icon: HomeOutline,
-      path: '/'
-    },
-    {
       title: 'My Cars',
       icon: FormatLetterCase,
       path: '/myads'
