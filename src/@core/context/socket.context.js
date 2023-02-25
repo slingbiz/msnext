@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import io from 'socket.io-client'
 import EVENTS from 'src/constants/events'
 import { SOCKET_URL } from '../../constants/common'
@@ -12,10 +13,14 @@ function SocketsProvider(props) {
   const [messages, setMessages] = useState([])
   const [notif, setNotif] = useState([])
 
+  const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
+
   useEffect(() => {
-    const username = 'ADMIN'
-    socket.emit(EVENTS.CLIENT.REGISTER, username)
-  }, [])
+    if (loggedUser.length > 0) {
+      const userId = loggedUser[0].user_id
+      socket.emit(EVENTS.CLIENT.REGISTER, userId)
+    }
+  }, [loggedUser])
 
   socket.on(EVENTS.SERVER.NOTIFY, data => {
     const { message, receiver } = data
@@ -25,13 +30,13 @@ function SocketsProvider(props) {
   })
 
   socket.on(EVENTS.SERVER.USERS, users => {
-    setConUsers([...users])
+    setConUsers(users)
   })
 
   socket.on(EVENTS.CLIENT.PRIVATE_CHAT, data => {
-    const { sender, message, receiver } = data
+    const { sender, message, car, receiver } = data
 
-    setMessages([...messages, { sender, message, receiver }])
+    setMessages([...messages, { sender, message, car, receiver }])
   })
 
   socket.on(EVENTS.SERVER.ERROR, e => {

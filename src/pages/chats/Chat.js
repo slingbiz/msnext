@@ -13,18 +13,54 @@ import { useFormik } from 'formik'
 import { SERVICE_URL } from 'src/constants/common'
 import { useSockets } from 'src/@core/context/socket.context'
 import EVENTS from 'src/constants/events'
+import { getAllChatOfUserAction } from 'src/redux/actions/chat'
 
 const validationSchema = yup.object({
   message: yup.string().required()
 })
 
 const Chat = props => {
+  const { recepient, setOpenChat, userId } = props
+  const dispatch = useDispatch()
   const { socket, messages, conUsers, setMessages } = useSockets()
-  const { recepient, setOpenChat } = props
+  const [opened, setOpened] = useState(false)
 
-  const [dbMessages, setDbMessages] = useState([])
-
+  const { id: recepientID, name: recepientName, carID, carTitle, kms_run, price } = recepient
+  const loggedUser = Number(userId)
+  const dbMessages = useSelector(({ chat }) => chat.allChatOfUser)
   const messagesEndRef = useRef(null)
+
+  useEffect(() => {
+    const MessagesAfterCurrentRemoved = messages.filter(msg => {
+      const mCar = Number(msg.car)
+      const mSender = Number(msg.sender)
+      const mReceiver = Number(msg.receiver)
+      if (
+        mCar === carID &&
+        ((mSender === loggedUser && mReceiver === recepientID) || (mSender === recepientID && mReceiver === loggedUser))
+      ) {
+        return false
+      } else {
+        return true
+      }
+    })
+
+    // Remove the messages on mounting of chat to avoid duplication
+    setMessages(MessagesAfterCurrentRemoved)
+
+    return () => {
+      // Remove the message from socket messages on unmounting
+      setMessages(MessagesAfterCurrentRemoved)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (recepientID) {
+      // Get all messages of sender and receiver
+      const values = { sender: userId, receiver: recepientID, car: carID }
+      dispatch(getAllChatOfUserAction(values))
+    }
+  }, [recepientID])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
@@ -33,16 +69,6 @@ const Chat = props => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ block: 'nearest' })
   }, [setOpenChat, dbMessages])
-
-  useEffect(() => {
-    // Get all messages of sender and receiver
-    const values = { sender: 'ADMIN', receiver: recepient }
-    axios.post(`${SERVICE_URL}/chats`, values).then(res => {
-      setDbMessages(res.data)
-    })
-
-    return () => {}
-  }, [recepient])
 
   const formik = useFormik({
     initialValues: {
@@ -53,18 +79,20 @@ const Chat = props => {
     onSubmit: values => {
       if (values) {
         socket.emit(EVENTS.CLIENT.PRIVATE_CHAT, {
-          to: recepient,
+          to: Number(recepientID),
           message: values.message,
-          from: 'ADMIN'
+          car: Number(carID),
+          from: Number(userId)
         })
 
         // save current message in messages state
         setMessages([
           ...messages,
           {
-            sender: 'ADMIN',
+            sender: Number(userId),
             message: values.message,
-            receiver: recepient
+            car: Number(carID),
+            receiver: Number(recepientID)
           }
         ])
 
@@ -85,10 +113,10 @@ const Chat = props => {
           alignItems='center'
           borderBottom='1px solid rgba(58, 53, 65, 0.12)'
         >
-          <Box component='div' display='flex' justifyContent='center' alignItems='center'>
-            <Avatar alt='User name' src='https://material-ui.com/static/images/avatar/1.jpg' />
-            <Typography variant='h6' sx={{ textTransform: 'uppercase', paddingLeft: '10px' }}>
-              {recepient}
+          <Box component='div' display='flex' alignItems='center'>
+            <Avatar alt='image' src='https://mui.com/static/images/avatar/1.jpg' />
+            <Typography variant='h6' textTransform='uppercase' paddingLeft={3}>
+              {recepientName}
             </Typography>
           </Box>
           <Box component='div' p={2} display='flex'>
@@ -102,20 +130,22 @@ const Chat = props => {
         </Box>
         <Grid container p={3} spacing={1} alignItems='center'>
           <Grid item sm={10}>
-            <Grid container spacing={1}>
+            <Grid container spacing={1} alignItems='center'>
               <Grid item sm={6}>
-                <Typography variant='body1'>Hyundai good condition car</Typography>
+                <Typography variant='body1'>{carTitle}</Typography>
               </Grid>
               <Grid item sm={3}>
-                <Typography variant='body2'>₹ 2,40,000</Typography>
+                <Typography variant='body1'>{`₹ ${price}`}</Typography>
               </Grid>
               <Grid item sm={3}>
-                <Typography variant='body2'>23,999 km</Typography>
+                <Typography variant='body1'>{`${kms_run} km`}</Typography>
               </Grid>
             </Grid>
           </Grid>
           <Grid item sm={2} align='right'>
-            <Button variant='contained'>View</Button>
+            <Button href='#' variant='contained'>
+              View
+            </Button>
           </Grid>
         </Grid>
       </Box>
@@ -138,7 +168,7 @@ const Chat = props => {
               p={2}
               display='flex'
               alignItems='center'
-              flexDirection={from_user === 'ADMIN' ? 'row-reverse' : 'row'}
+              flexDirection={from_user === recepientID ? 'row' : 'row-reverse'}
             >
               <Typography variant='p' p={3} borderRadius={2} bgcolor='#e3e3e3'>
                 {message}
@@ -148,13 +178,21 @@ const Chat = props => {
         })}
 
         {messages
-          .filter(
-            msg =>
-              (msg.sender === 'ADMIN' && msg.receiver === recepient) ||
-              (msg.sender === recepient && msg.receiver === 'ADMIN')
-          )
+          .filter(msg => {
+            const mSender = Number(msg.sender)
+            const mReceiver = Number(msg.receiver)
+            const mCar = Number(msg.car)
+
+            if (
+              mCar === carID &&
+              ((mSender === loggedUser && mReceiver === recepientID) ||
+                (mSender === recepientID && mReceiver === loggedUser))
+            ) {
+              return msg
+            }
+          })
           .map((msg, i) => {
-            const { sender, message, receiver } = msg
+            const { sender, message, car, receiver } = msg
 
             return (
               <Box
@@ -163,7 +201,7 @@ const Chat = props => {
                 p={2}
                 display='flex'
                 alignItems='center'
-                flexDirection={sender === 'ADMIN' ? 'row-reverse' : 'row'}
+                flexDirection={sender === loggedUser ? 'row-reverse' : 'row'}
               >
                 <Typography variant='p' p={3} borderRadius={2} bgcolor='#e3e3e3'>
                   {message}

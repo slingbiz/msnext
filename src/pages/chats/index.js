@@ -29,27 +29,45 @@ import Chat from './Chat'
 import { useSockets } from 'src/@core/context/socket.context'
 import { SERVICE_URL } from 'src/constants/common'
 import EVENTS from 'src/constants/events'
+import ChatList from 'src/@core/components/chat/ChatList'
 
 const Chats = props => {
   const { socket, conUsers, messages, notif, setNotif } = useSockets()
+  const dispatch = useDispatch()
   const { width } = useWindowDimensions()
+  const { user } = props
 
   const [search, setSearch] = useState(false)
   const [openChat, setOpenChat] = useState(false)
   const [isMobile, setIsMobile] = useState(true)
   const [openMenu, setOpenMenu] = useState(false)
-  const [recepientID, setRecepientID] = useState('')
+  const [recepient, setRecepient] = useState({})
+  const [chats, setChats] = useState([])
 
-  const dispatch = useDispatch()
-  const { user } = props
   const userId = user?.user_id
   const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
+
+  const getChatForCars = async userId => {
+    const chats = axios.get(`${SERVICE_URL}/users/cars-crawled/${userId}`)
+
+    return chats
+  }
 
   useEffect(() => {
     if (userId) {
       dispatch(getSingleUserAction({ userId }))
+
+      getChatForCars(userId).then(res => {
+        setChats(res.data)
+      })
     }
   }, [dispatch, userId])
+
+  socket.on(EVENTS.CLIENT.PRIVATE_CHAT, () => {
+    getChatForCars(userId).then(res => {
+      setChats(res.data)
+    })
+  })
 
   useEffect(() => {
     if (width <= 599) {
@@ -64,20 +82,8 @@ const Chats = props => {
     }
   }, [width])
 
-  const handleCreateRoom = () => {
-    const username = 'ANKUR'
-    socket.emit(EVENTS.CLIENT.FAKE_USER, username)
-  }
-
   return (
     <>
-      {!conUsers.includes('ANKUR') ? (
-        <Button variant='outlined' onClick={handleCreateRoom} sx={{ marginBottom: '10px' }}>
-          Chat with Ankur
-        </Button>
-      ) : (
-        ''
-      )}
       <Card sx={{ height: '80vh', display: 'flex' }}>
         {isMobile && !openMenu ? (
           <Box component='div' p={1} borderRight='1px solid #e0e0e0'>
@@ -131,81 +137,22 @@ const Chats = props => {
                 </Stack>
               </Grid>
             </React.Fragment>
-            <List
-              sx={{
-                height: '70vh',
-                overflow: 'auto',
-                '& ul': { padding: 0 }
-              }}
-            >
-              {conUsers
-                .filter(conUser => conUser !== 'ADMIN')
-                .map((conUser, i) => {
-                  const uChat = messages.filter(
-                    msg =>
-                      (msg.sender === 'ADMIN' && msg.receiver === conUser) ||
-                      (msg.sender === conUser && msg.receiver === 'ADMIN')
-                  )
 
-                  return (
-                    <ListItemButton
-                      key={i}
-                      alignItems='flex-start'
-                      onClick={() => {
-                        setRecepientID(conUser)
-                        setOpenChat(true)
-                        isMobile ? setOpenMenu(false) : null
-                      }}
-                    >
-                      <ListItemAvatar>
-                        <Avatar alt='User name' src='https://material-ui.com/static/images/avatar/1.jpg' />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={conUser}
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              sx={{ display: 'inline' }}
-                              component='span'
-                              variant='body2'
-                              color='text.primary'
-                            >
-                              on Hyundai good condition car
-                            </Typography>
-
-                            <Box
-                              key={i}
-                              sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center'
-                              }}
-                            >
-                              <Typography
-                                style={{
-                                  whiteSpace: 'nowrap',
-                                  width: '100%',
-                                  overflow: 'hidden',
-                                  textOverflow: 'ellipsis'
-                                }}
-                              >
-                                {uChat.length > 0 ? `- ${uChat[uChat.length - 1]?.message}` : ''}
-                              </Typography>
-                              {/* <Badge badgeContent='' color='primary'></Badge> */}
-                            </Box>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItemButton>
-                  )
-                })}
-            </List>
+            <ChatList
+              chats={chats}
+              setChats={setChats}
+              userId={userId}
+              setRecepient={setRecepient}
+              setOpenChat={setOpenChat}
+              isMobile={isMobile}
+              setOpenMenu={setOpenMenu}
+            />
           </Box>
         )}
 
         <Box component='div' flexGrow={1} borderRight='1px solid #e0e0e0'>
           {openChat ? (
-            <Chat recepient={recepientID} setOpenChat={setOpenChat} />
+            <Chat recepient={recepient} userId={userId} setOpenChat={setOpenChat} />
           ) : (
             <Card
               sx={{
@@ -229,9 +176,9 @@ export async function getServerSideProps(ctx) {
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
-    headers: { cookie: `PHPSESSID=${req.headers.cookies.PHPSESSID}` }
+    // headers: { cookie: `PHPSESSID=${req.headers.cookies.PHPSESSID}` }
 
-    // headers: { cookie: `PHPSESSID=mfs3u489nlha7t4fb0cqe0b5g5` }
+    headers: { cookie: `PHPSESSID=jjqjufa90fdmmjiai99c9qa9u1` }
   })
 
   if (!response?.data?.user_id) {
