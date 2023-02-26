@@ -22,3 +22,10 @@ code:not([class*='language-']):after {
 code[class*='language-'] {
   padding: 0;
 }
+
+.bg_image {
+  background-image: url('/images/car.png');
+  background-repeat: no-repeat;
+  height: 200px;
+  background-position: center;
+}
