@@ -229,9 +229,16 @@ const MyAdsPage = props => {
             {myCarListings.length !== 0 ? (
               myCarListings?.map((listing, k) => <AdsItem key={k} listing={listing} />)
             ) : (
-              <Grid container direction='column' justify='center' alignItems='center'>
-                <Image src='/images/car_photo.jpg' alt='Picture of the author' width={300} height={200} />
-              </Grid>
+              <Box>
+                <Grid className='bg_image' container direction='column' justify='center' alignItems='center'>
+                  <Typography marginTop={35} fontWeight={'bold'} color={'#797979'} marginLeft={5}>
+                    No Record Found
+                  </Typography>
+                </Grid>
+              </Box>
+              // <Grid container direction='column' justify='center' alignItems='center'>
+              //   <Image src='/images/car_photo.jpg' alt='Picture of the author' width={300} height={200} />
+              // </Grid>
             )}
           </Box>
         </Paper>
