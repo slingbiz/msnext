@@ -1,15 +1,30 @@
+import { Style } from '@mui/icons-material'
 import React from 'react'
-import Banner1 from 'src/@core/components/Banner/Banner1'
-import { Box } from '@mui/material'
-import Banner2 from 'src/@core/components/Banner/Banner2'
-import Banner3 from 'src/@core/components/Banner/Banner3'
-import Banner4 from 'src/@core/components/Banner/Banner4'
+import Carousel from 'react-material-ui-carousel'
+import Item from './Item'
 
 const index = () => {
+  var items = [
+    {
+      name: 'banner1'
+    },
+    {
+      name: 'banner2'
+    },
+    {
+      name: 'banner3'
+    },
+    {
+      name: 'banner4'
+    }
+  ]
+
   return (
-    <Box>
-      <Banner4 />
-    </Box>
+    <Carousel>
+      {items.map((item, i) => (
+        <Item key={i} item={item} />
+      ))}
+    </Carousel>
   )
 }
 

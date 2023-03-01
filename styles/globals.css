@@ -54,6 +54,19 @@ code[class*='language-'] {
   background-repeat: no-repeat;
   background-position: center;
 }
+.bottom_ul {
+  display: flex;
+}
+.bottom_ul li {
+  list-style-type: none;
+  margin-top: -20px;
+  margin-right: 10px;
+  box-shadow: 0 4px rgba(97, 95, 95, 0.5);
+}
+.color {
+  color: black !important;
+}
+
 gsc-ta-active {
   background: #24272c;
   color: #fff;
