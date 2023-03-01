@@ -1,6 +1,7 @@
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import useMediaQuery from '@mui/material/useMediaQuery'
+import HomePage from '../pages/homepage'
 
 // ** Layout Imports
 // !Do not remove this Layout import
@@ -31,33 +32,32 @@ const UserLayout = ({ children }) => {
   const hidden = useMediaQuery(theme => theme.breakpoints.down('lg'))
 
   const UpgradeToProImg = () => {
-    return (
-      <Box sx={{ mx: 'auto' }}>
-
-      </Box>
-    )
+    return <Box sx={{ mx: 'auto' }}></Box>
   }
 
   return (
-    <VerticalLayout
-      hidden={hidden}
-      settings={settings}
-      saveSettings={saveSettings}
-      verticalNavItems={VerticalNavItems()} // Navigation Items
-      afterVerticalNavMenuContent={UpgradeToProImg}
-      verticalAppBarContent={(
-        props // AppBar Content
-      ) => (
-        <VerticalAppBarContent
-          hidden={hidden}
-          settings={settings}
-          saveSettings={saveSettings}
-          toggleNavVisibility={props.toggleNavVisibility}
-        />
-      )}
-    >
-      {children}
-    </VerticalLayout>
+    // <VerticalLayout
+    //   hidden={hidden}
+    //   settings={settings}
+    //   saveSettings={saveSettings}
+    //   verticalNavItems={VerticalNavItems()} // Navigation Items
+    //   afterVerticalNavMenuContent={UpgradeToProImg}
+    //   verticalAppBarContent={(
+    //     props // AppBar Content
+    //   ) => (
+    //     <VerticalAppBarContent
+    //       hidden={hidden}
+    //       settings={settings}
+    //       saveSettings={saveSettings}
+    //       toggleNavVisibility={props.toggleNavVisibility}
+    //     />
+    //   )}
+    // >
+    //   {/* {children} */}
+
+    // </VerticalLayout>
+
+    <HomePage />
   )
 }
 
