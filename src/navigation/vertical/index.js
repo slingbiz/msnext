@@ -46,6 +46,12 @@ const navigation = () => {
       icon: AlertCircleOutline,
       path: '/pages/error',
       openInNewTab: true
+    },
+    {
+      title: 'HomePage',
+      icon: AlertCircleOutline,
+      path: '/homepage',
+      openInNewTab: true
     }
   ]
 }

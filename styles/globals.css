@@ -29,3 +29,32 @@ code[class*='language-'] {
   height: 200px;
   background-position: center;
 }
+
+.banner1 {
+  background-image: url('https://stimg.cardekho.com/images/uploadimages/1675690534654/Home-Page-Banner-2.jpg');
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.banner2 {
+  background-image: url('/images/banner.jpg');
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.banner3 {
+  background-image: url('https://stimg.cardekho.com/images/uploadimages/1677157152732/New-Verna_CD-MasterHead-Desktop_1628x548px.jpg');
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.banner4 {
+  background-image: url('https://stimg.cardekho.com/images/uploadimages/1673507034864/CarDekho-Connected-Desktop-Banner-2.jpg');
+  height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+gsc-ta-active {
+  background: #24272c;
+  color: #fff;
+}
