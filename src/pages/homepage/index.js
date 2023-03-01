@@ -19,6 +19,8 @@ const index = () => {
     }
   ]
 
+  const anArrayOfNumbers = ['agsfg', 'hsadhgsa', 'sahgfdas', 'shdjhsg']
+
   return (
     <Carousel>
       {items.map((item, i) => (
