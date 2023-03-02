@@ -20,7 +20,7 @@ const validationSchema = yup.object({
 })
 
 const Chat = props => {
-  const { recepient, setOpenChat, userId } = props
+  const { recepient = {}, setOpenChat, userId } = props
   const dispatch = useDispatch()
   const { socket, messages, conUsers, setMessages } = useSockets()
   const [opened, setOpened] = useState(false)
