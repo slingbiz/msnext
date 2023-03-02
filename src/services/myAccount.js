@@ -19,6 +19,24 @@ const getMyLeadListings = async params => {
   return Api.post(`${SERVICE_URL}/myAccount/getMyLeadListings`, params)
 }
 
+const getMyRFQListings = async params => {
+  const Api = await apiAuth()
+  if (!Api) {
+    return
+  }
+
+  return Api.post(`${SERVICE_URL}/myAccount/getMyRFQListings`, params)
+}
+
+const updateStatus = async params => {
+  const Api = await apiAuth()
+  if (!Api) {
+    return
+  }
+
+  return Api.patch(`${SERVICE_URL}/myAccount/getMyLeadListings`, params)
+}
+
 const updateUser = async params => {
   const { id, values } = params
 
@@ -41,4 +59,31 @@ const getSingleUser = async params => {
   return Api.get(`${SERVICE_URL}/users/${userId}`)
 }
 
-export { getMyCarListings, getMyLeadListings, updateUser, getSingleUser }
+const getBrands = async params => {
+  const Api = await apiAuth()
+  if (!Api) {
+    return
+  }
+
+  return Api.post(`${SERVICE_URL}/h/getBrands`, params)
+}
+
+const getModels = async params => {
+  const Api = await apiAuth()
+  if (!Api) {
+    return
+  }
+
+  return Api.post(`${SERVICE_URL}/h/getModels`, params)
+}
+
+export {
+  getMyCarListings,
+  getMyLeadListings,
+  getMyRFQListings,
+  updateStatus,
+  updateUser,
+  getSingleUser,
+  getBrands,
+  getModels
+}
