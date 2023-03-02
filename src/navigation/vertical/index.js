@@ -33,8 +33,7 @@ const navigation = () => {
     {
       title: 'Messages',
       icon: AccountPlusOutline,
-      path: '/pages/register',
-      openInNewTab: true
+      path: '/chats'
     },
     {
       title: 'Sell Car',
