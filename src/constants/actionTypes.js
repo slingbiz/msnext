@@ -20,3 +20,5 @@ export const UPDATING_CONTENT = 'updating_content'
 export const UPDATE_USER = 'update_user'
 
 export const GET_SINGLE_USER = 'get_single_user'
+
+export const GET_CHAT_OF_USER = 'get_chat_of_user'
