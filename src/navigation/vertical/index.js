@@ -21,6 +21,11 @@ const navigation = () => {
       path: '/myads'
     },
     {
+      title: 'Sell Car',
+      icon: AlertCircleOutline,
+      path: '/sell-car',
+    },
+    {
       title: 'Edit Profile',
       icon: AccountCogOutline,
       path: '/account-settings'
