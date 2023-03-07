@@ -32,11 +32,11 @@ import StepperBar from 'src/layouts/components/stepper-bar';
 
 
 
-const label = { inputProps: { 'aria-label': 'Switch demo' } };
 const SellCar = props => {
 
   // ** State
   const [value, setValue] = useState('account')
+  const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   const dispatch = useDispatch()
   const { user } = props
