@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useTheme } from '@mui/system'
 import { useDispatch, useSelector } from 'react-redux'
-import { getModelsAction, getMyLeadListingsAction } from 'src/redux/actions/myAccount'
+import { getCitiesAction, getModelsAction, getMyLeadListingsAction } from 'src/redux/actions/myAccount'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 import {
@@ -22,10 +22,14 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  TextField,
+  Autocomplete
 } from '@mui/material'
 import { capFirst } from 'src/helpers/common.js'
 import InputDate from 'src/@core/layouts/components/InputDate'
+import ImportLeadModal from 'src/@core/components/lead/ImportLeadModal'
+import DefaultLoader from 'src/@core/components/loader/default'
 
 const columns = [
   {
@@ -41,6 +45,10 @@ const columns = [
     label: 'Mobile'
   },
   {
+    id: 'city',
+    label: 'City'
+  },
+  {
     id: 'make_model',
     label: 'Make & Model'
   },
@@ -48,15 +56,6 @@ const columns = [
     id: 'detail',
     label: 'Car Detail'
   }
-]
-
-const cities = [
-  { value: 'mumbai', title: 'Mumbai' },
-  { value: 'delhi', title: 'Delhi' },
-  { value: 'bangalore', title: 'Bangalore' },
-  { value: 'hyderabad', title: 'Hyderabad' },
-  { value: 'chennai', title: 'Chennai' },
-  { value: 'kolkata', title: 'Kolkata' }
 ]
 
 const validationSchema = yup.object({
@@ -76,6 +75,12 @@ const Lead = ({ brands, loggedUser }) => {
   const [selectedMaker, setSelectedMaker] = useState('')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [openModel, setOpenModel] = useState(false)
+
+  const citySuggestions = useSelector(({ myAccount }) => myAccount.cities)
+
+  const handleOpenModel = () => setOpenModel(true)
+  const handleCloseModel = () => setOpenModel(false)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -91,7 +96,7 @@ const Lead = ({ brands, loggedUser }) => {
 
   useEffect(() => {
     dispatch(getMyLeadListingsAction({ filterValue }))
-  }, [dispatch, filterValue])
+  }, [dispatch, filterValue, openModel])
 
   useEffect(() => {
     if (selectedMaker) {
@@ -129,23 +134,26 @@ const Lead = ({ brands, loggedUser }) => {
         title='My Leads'
         action={
           loggedUser[0]?.is_admin && (
-            <Button
-              variant='contained'
-              color='primary'
-              size='small'
-              sx={{
-                width: '100%',
-                height: '100%',
-                backgroundColor: theme.palette.primary.main,
-                color: theme.palette.primary.contrastText,
-                '&:hover': {
-                  backgroundColor: theme.palette.primary.dark
-                }
-              }}
-              onClick={() => {}}
-            >
-              Import Leads
-            </Button>
+            <>
+              <Button
+                variant='contained'
+                color='primary'
+                size='small'
+                sx={{
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: theme.palette.primary.main,
+                  color: theme.palette.primary.contrastText,
+                  '&:hover': {
+                    backgroundColor: theme.palette.primary.dark
+                  }
+                }}
+                onClick={handleOpenModel}
+              >
+                Import Leads
+              </Button>
+              <ImportLeadModal open={openModel} setOpen={setOpenModel} handleClose={handleCloseModel} />
+            </>
           )
         }
         titleTypographyProps={{
@@ -161,25 +169,30 @@ const Lead = ({ brands, loggedUser }) => {
           <form onSubmit={formik.handleSubmit}>
             <Grid container mt={1} mb={5} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
               <Grid item lg={2} md={4} xs={12}>
-                <FormControl fullWidth size='small'>
-                  <InputLabel id='city-select-label'>City</InputLabel>
-                  <Select
-                    label='City'
-                    name='city'
-                    value={formik.values.city}
-                    id='city-select'
-                    labelId='city-select-label'
-                    onChange={formik.handleChange}
-                  >
-                    {cities.map(city => {
-                      return (
-                        <MenuItem key={city.value} value={city.value}>
-                          {city.title}
-                        </MenuItem>
-                      )
-                    })}
-                  </Select>
-                </FormControl>
+                <Autocomplete
+                  size='small'
+                  id='city'
+                  noOptionsText='No city found'
+                  options={citySuggestions}
+                  getOptionLabel={option => option.name}
+                  onChange={(e, value) => {
+                    formik.setFieldValue('city', value ? value.name : '')
+                  }}
+                  renderInput={params => (
+                    <TextField
+                      fullWidth
+                      {...params}
+                      label='City'
+                      variant='outlined'
+                      value={formik.values.city}
+                      onChange={e => {
+                        formik.handleChange(e)
+                        dispatch(getCitiesAction(e.target.value))
+                      }}
+                    />
+                  )}
+                  limitTags={7}
+                />
               </Grid>
               <Grid item lg={2} md={4} xs={12}>
                 <FormControl fullWidth size='small'>
@@ -281,59 +294,77 @@ const Lead = ({ brands, loggedUser }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {myLeadListings.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-                return (
-                  <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
-                    {columns.map(column => {
-                      const value = row[column.id]
-                      if (column.id === 'detail') {
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            <Avatar
-                              alt={row['make']}
-                              onClick={() => handleClickAvatar(row.urlSrc)}
-                              sx={{ width: 40, height: 40, cursor: 'pointer' }}
-                              src={row['img_src']}
-                            />
-                          </TableCell>
-                        )
-                      }
-                      if (column.id === 'make_model') {
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            <Box>{capFirst(row['make'])}</Box>
-                            <Box>{capFirst(row['model'])}</Box>
-                          </TableCell>
-                        )
-                      }
-                      if (column.id === 'contact_no') {
-                        return (
-                          <TableCell
-                            key={column.id}
-                            align={column.align}
-                            sx={{ '.MuiButton-root': { color: 'white' } }}
-                          >
-                            <Box>{row['mobile1']}</Box>
-                          </TableCell>
-                        )
-                      }
+              {myLeadListings.length > 0 ? (
+                <>
+                  {myLeadListings.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+                    return (
+                      <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
+                        {columns.map(column => {
+                          const value = row[column.id]
+                          if (column.id === 'detail') {
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                <Avatar
+                                  alt={row['make']}
+                                  onClick={() => handleClickAvatar(row.urlSrc)}
+                                  sx={{ width: 40, height: 40, cursor: 'pointer' }}
+                                  src={row['img_src']}
+                                />
+                              </TableCell>
+                            )
+                          }
+                          if (column.id === 'make_model') {
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                <Box>{capFirst(row['make'])}</Box>
+                                <Box>{capFirst(row['model'])}</Box>
+                              </TableCell>
+                            )
+                          }
+                          if (column.id === 'city') {
+                            return (
+                              <TableCell key={column.id} align={column.align}>
+                                <Box>{capFirst(row['city'])}</Box>
+                              </TableCell>
+                            )
+                          }
+                          if (column.id === 'contact_no') {
+                            return (
+                              <TableCell
+                                key={column.id}
+                                align={column.align}
+                                sx={{ '.MuiButton-root': { color: 'white' } }}
+                              >
+                                <Box>{row['mobile1']}</Box>
+                              </TableCell>
+                            )
+                          }
 
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number' ? column.format(value) : capFirst(value)}
-                        </TableCell>
-                      )
-                    })}
-                  </TableRow>
-                )
-              })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: 71 * emptyRows
-                  }}
-                >
-                  <TableCell colSpan={columns.length} />
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {column.format && typeof value === 'number' ? column.format(value) : capFirst(value)}
+                            </TableCell>
+                          )
+                        })}
+                      </TableRow>
+                    )
+                  })}
+                  {emptyRows > 0 && (
+                    <TableRow
+                      style={{
+                        height: 71 * emptyRows
+                      }}
+                    >
+                      <TableCell colSpan={columns.length} />
+                    </TableRow>
+                  )}
+                  <DefaultLoader />
+                </>
+              ) : (
+                <TableRow>
+                  <TableCell align='center' colSpan={columns.length}>
+                    No Data
+                  </TableCell>
                 </TableRow>
               )}
             </TableBody>

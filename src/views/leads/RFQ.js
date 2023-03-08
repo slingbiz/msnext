@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useTheme } from '@mui/system'
 import { useDispatch, useSelector } from 'react-redux'
-import { getModelsAction, getMyRFQListingsAction } from 'src/redux/actions/myAccount'
+import { getCitiesAction, getModelsAction, getMyRFQListingsAction } from 'src/redux/actions/myAccount'
 import SelectButton from 'src/@core/layouts/components/SelectButton.js'
 import InputDate from 'src/@core/layouts/components/InputDate'
 import { useFormik } from 'formik'
@@ -26,9 +26,12 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  Autocomplete,
+  TextField
 } from '@mui/material'
 import { capFirst } from 'src/helpers/common.js'
+import DefaultLoader from 'src/@core/components/loader/default'
 
 const columns = [
   {
@@ -61,15 +64,6 @@ const columns = [
   }
 ]
 
-const cities = [
-  { value: 'mumbai', title: 'Mumbai' },
-  { value: 'delhi', title: 'Delhi' },
-  { value: 'bangalore', title: 'Bangalore' },
-  { value: 'hyderabad', title: 'Hyderabad' },
-  { value: 'chennai', title: 'Chennai' },
-  { value: 'kolkata', title: 'Kolkata' }
-]
-
 const validationSchema = yup.object({
   city: yup.string('Select a city'),
   make: yup.string('Select a make'),
@@ -88,6 +82,8 @@ const RFQ = ({ brands }) => {
   const [selectedMaker, setSelectedMaker] = useState('')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
+
+  const citySuggestions = useSelector(({ myAccount }) => myAccount.cities)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -144,25 +140,30 @@ const RFQ = ({ brands }) => {
             <form onSubmit={formik.handleSubmit}>
               <Grid container mt={1} mb={5} spacing={5}>
                 <Grid item lg={2} md={4} xs={12}>
-                  <FormControl fullWidth size='small'>
-                    <InputLabel id='city-select-label'>City</InputLabel>
-                    <Select
-                      label='City'
-                      name='city'
-                      value={formik.values.city}
-                      id='city-select'
-                      labelId='city-select-label'
-                      onChange={formik.handleChange}
-                    >
-                      {cities.map(city => {
-                        return (
-                          <MenuItem key={city.value} value={city.value}>
-                            {city.title}
-                          </MenuItem>
-                        )
-                      })}
-                    </Select>
-                  </FormControl>
+                  <Autocomplete
+                    size='small'
+                    id='city'
+                    noOptionsText='No city found'
+                    options={citySuggestions}
+                    getOptionLabel={option => option.name}
+                    onChange={(e, value) => {
+                      formik.setFieldValue('city', value ? value.name : '')
+                    }}
+                    renderInput={params => (
+                      <TextField
+                        fullWidth
+                        {...params}
+                        label='City'
+                        variant='outlined'
+                        value={formik.values.city}
+                        onChange={e => {
+                          formik.handleChange(e)
+                          dispatch(getCitiesAction(e.target.value))
+                        }}
+                      />
+                    )}
+                    limitTags={7}
+                  />
                 </Grid>
                 <Grid item lg={2} md={4} xs={12}>
                   <FormControl fullWidth size='small'>
@@ -397,6 +398,7 @@ const RFQ = ({ brands }) => {
                       <TableCell colSpan={6} />
                     </TableRow>
                   )}
+                  <DefaultLoader />
                 </>
               ) : (
                 <TableCell align='center' colSpan={columns.length}>

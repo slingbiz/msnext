@@ -30,3 +30,5 @@ export const GET_CHAT_OF_USER = 'get_chat_of_user'
 export const GET_BRANDS = 'get_brands'
 
 export const GET_MODELS = 'get_models'
+
+export const GET_CITIES = 'get_cities'

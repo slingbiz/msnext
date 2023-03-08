@@ -1,5 +1,6 @@
 import apiAuth from './apiAuth'
 import { SERVICE_URL } from '../constants/common'
+import axios from 'axios'
 
 const getMyCarListings = async params => {
   const Api = await apiAuth()
@@ -65,7 +66,7 @@ const getBrands = async params => {
     return
   }
 
-  return Api.post(`${SERVICE_URL}/h/getBrands`, params)
+  return Api.post(`${SERVICE_URL}/home/getBrands`, params)
 }
 
 const getModels = async params => {
@@ -74,7 +75,26 @@ const getModels = async params => {
     return
   }
 
-  return Api.post(`${SERVICE_URL}/h/getModels`, params)
+  return Api.post(`${SERVICE_URL}/home/getModels`, params)
+}
+
+const getCities = async searchText => {
+  const Api = await apiAuth()
+  if (!Api) {
+    return
+  }
+
+  return Api.get(`${SERVICE_URL}/home/getCities?q=${searchText}`)
+}
+
+const addLeads = async formData => {
+  const response = await axios.post(`${SERVICE_URL}/myAccount/addLeads/`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+
+  return response
 }
 
 export {
@@ -85,5 +105,7 @@ export {
   updateUser,
   getSingleUser,
   getBrands,
-  getModels
+  getModels,
+  getCities,
+  addLeads
 }

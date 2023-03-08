@@ -6,7 +6,8 @@ import {
   updateStatus,
   getMyRFQListings,
   getBrands,
-  getModels
+  getModels,
+  getCities
 } from '../../services/myAccount'
 import {
   FETCH_START,
@@ -18,7 +19,8 @@ import {
   GET_SINGLE_USER,
   UPDATE_STATUS,
   GET_BRANDS,
-  GET_MODELS
+  GET_MODELS,
+  GET_CITIES
 } from '../../constants/actionTypes'
 
 import { SOMETHING_WENT_WRONG } from '../../constants/common'
@@ -248,6 +250,35 @@ export const getModelsAction = params => {
       }
     } catch (e) {
       console.log(e.message, ' --- models error')
+      dispatch({
+        type: FETCH_ERROR,
+        payload: []
+      })
+    }
+  }
+}
+
+export const getCitiesAction = params => {
+  return async dispatch => {
+    dispatch({ type: FETCH_START })
+
+    try {
+      const cities = await getCities(params)
+      console.log(cities, ' --- cities response')
+      if (cities.status === 200) {
+        dispatch({ type: FETCH_SUCCESS })
+        dispatch({
+          type: GET_CITIES,
+          payload: cities.data
+        })
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: data?.message || SOMETHING_WENT_WRONG
+        })
+      }
+    } catch (e) {
+      console.log(e.message, ' --- cities error')
       dispatch({
         type: FETCH_ERROR,
         payload: []
