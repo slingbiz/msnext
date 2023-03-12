@@ -25,7 +25,7 @@ const Chat = props => {
   const { socket, messages, conUsers, setMessages } = useSockets()
   const [opened, setOpened] = useState(false)
 
-  const { id: recepientID, name: recepientName, carID, carTitle, kms_run, price } = recepient
+  const { id: recepientID, name: recepientName, carID, carTitle, kms_run, price, image } = recepient
   const loggedUser = Number(userId)
   const dbMessages = useSelector(({ chat }) => chat.allChatOfUser)
   const messagesEndRef = useRef(null)
@@ -114,7 +114,7 @@ const Chat = props => {
           borderBottom='1px solid rgba(58, 53, 65, 0.12)'
         >
           <Box component='div' display='flex' alignItems='center'>
-            <Avatar alt='image' src='https://mui.com/static/images/avatar/1.jpg' />
+            <Avatar alt='image' src={image} />
             <Typography variant='h6' textTransform='uppercase' paddingLeft={3}>
               {recepientName}
             </Typography>

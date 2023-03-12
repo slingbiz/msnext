@@ -1,242 +1,100 @@
-import { useTheme } from '@mui/system'
+// ** React Imports
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { getSingleUserAction, getBrandsAction } from 'src/redux/actions/myAccount'
 import axios from 'axios'
-import { useEffect, useState } from 'react'
-import { getMyLeadListingsAction } from '../../redux/actions/myAccount.js'
-import {
-  Card,
-  CardHeader,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  Avatar,
-  Button,
-  Box,
-  Typography
-} from '@mui/material'
-import { blue, red, yellow } from '@mui/material/colors'
-import { capFirst } from '../../helpers/common'
 
-const columns = [
-  {
-    id: 'name',
-    label: 'Name'
+// ** MUI Imports
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import TabList from '@mui/lab/TabList'
+import TabPanel from '@mui/lab/TabPanel'
+import TabContext from '@mui/lab/TabContext'
+import { styled } from '@mui/material/styles'
+import MuiTab from '@mui/material/Tab'
+
+// ** Icons Imports
+import { AccountMultipleOutline, NoteEditOutline } from 'mdi-material-ui'
+
+// ** Tabs Imports
+import RFQ from 'src/views/leads/RFQ'
+import Lead from 'src/views/leads/Lead'
+
+// ** Third Party Styles Imports
+import 'react-datepicker/dist/react-datepicker.css'
+
+const Tab = styled(MuiTab)(({ theme }) => ({
+  [theme.breakpoints.down('md')]: {
+    minWidth: 100
   },
-  {
-    id: 'email',
-    label: 'Email'
-  },
-  {
-    id: 'contact_no',
-    label: 'Mobile'
-  },
-  {
-    id: 'query',
-    label: 'Query'
-  },
-  {
-    id: 'make_model',
-    label: 'Make & Model'
-  },
-  {
-    id: 'detail',
-    label: 'Car Detail'
-  },
-  {
-    id: 'status',
-    label: 'Status'
+  [theme.breakpoints.down('sm')]: {
+    minWidth: 67
   }
-]
+}))
 
-export default function LeadsPage(pageComponentProps) {
+const TabName = styled('span')(({ theme }) => ({
+  lineHeight: 1.71,
+  fontSize: '0.875rem',
+  marginLeft: theme.spacing(2.4),
+  [theme.breakpoints.down('md')]: {
+    display: 'none'
+  }
+}))
+
+const LeadsPage = props => {
   const dispatch = useDispatch()
+  const [value, setValue] = useState('rfq')
+  const { user } = props
 
-  const theme = useTheme()
-  const { user } = pageComponentProps
-  const myLeadListings = useSelector(({ myAccount }) => myAccount.myLeadListings)
-  const [filterValue, setFilterValue] = useState('ALL')
-
-  console.log(myLeadListings, 'myLeadsListings [Response]')
+  const userId = user?.user_id
+  const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
+  const brands = useSelector(({ myAccount }) => myAccount.brands)
 
   useEffect(() => {
-    dispatch(getMyLeadListingsAction({ filterValue }))
-  }, [dispatch, filterValue])
+    dispatch(getSingleUserAction({ userId }))
+    dispatch(getBrandsAction())
+  }, [dispatch, userId])
 
-  const handleClickAvatar = url => {
-    window.open(url, '_blank')
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
   }
 
   return (
-    <Grid>
-      <Card>
-        <CardHeader
-          title='My Leads'
-          subheader={
-            <Box sx={{ display: 'flex', alignItems: 'cener', justifyContent: 'space-between' }}>
-              <Typography variant='body2'>
-                <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-                  Found total ({myLeadListings.length}) leads
-                </Box>{' '}
-              </Typography>
-              <Box sx={{ display: 'flex', mt: { xs: 3, lg: 0 }, alignItems: 'center' }}>
-                <Button
-                  variant={filterValue === 'ALL' ? 'contained' : 'outlined'}
-                  sx={{
-                    borderRadius: 10,
-                    fontWeight: 700,
-                    boxShadow: 4,
-                    '&:hover': {
-                      backgroundColor: theme.palette.grey[300],
-                      borderColor: theme.palette.primary.main
-                    }
-                  }}
-                  onClick={() => setFilterValue('ALL')}
-                >
-                  ALL
-                </Button>
-                <Button
-                  variant={filterValue == 'NEW' ? 'contained' : 'outlined'}
-                  sx={{
-                    mx: 2,
-
-                    borderRadius: 10,
-                    fontWeight: 700,
-                    boxShadow: 4,
-                    '&:hover': {
-                      backgroundColor: theme.palette.grey[300],
-                      borderColor: theme.palette.primary.main
-                    }
-                  }}
-                  onClick={() => setFilterValue('NEW')}
-                >
-                  NEW
-                </Button>
-                <Button
-                  variant={filterValue == 'COMPLETED' ? 'contained' : 'outlined'}
-                  sx={{
-                    mx: 2,
-
-                    borderRadius: 10,
-                    fontWeight: 700,
-                    boxShadow: 4,
-                    '&:hover': {
-                      backgroundColor: theme.palette.grey[300],
-                      borderColor: theme.palette.primary.main
-                    }
-                  }}
-                  onClick={() => setFilterValue('COMPLETED')}
-                >
-                  COMPLETED
-                </Button>
-                <Button
-                  variant={filterValue == 'PROCESSING' ? 'contained' : 'outlined'}
-                  sx={{
-                    borderRadius: 10,
-                    fontWeight: 700,
-                    boxShadow: 4,
-                    '&:hover': {
-                      backgroundColor: theme.palette.grey[300],
-                      borderColor: theme.palette.primary.main
-                    }
-                  }}
-                  onClick={() => setFilterValue('PROCESSING')}
-                >
-                  PROCESSING
-                </Button>
+    <Card>
+      <TabContext value={value}>
+        <TabList
+          onChange={handleChange}
+          aria-label='rfq-settings tabs'
+          sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
+        >
+          <Tab
+            value='rfq'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <NoteEditOutline />
+                <TabName>My RFQs</TabName>
               </Box>
-            </Box>
-          }
-          titleTypographyProps={{
-            sx: {
-              mb: 2.5,
-              lineHeight: '2rem !important',
-              letterSpacing: '0.15px !important'
             }
-          }}
-        />
+          />
+          <Tab
+            value='leads'
+            label={
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <AccountMultipleOutline />
+                <TabName>My Leads</TabName>
+              </Box>
+            }
+          />
+        </TabList>
 
-        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-          <TableContainer sx={{ maxHeight: 440 }}>
-            <Table stickyHeader aria-label='sticky table'>
-              <TableHead>
-                <TableRow>
-                  {columns.map(column => (
-                    <TableCell key={column.id} align={column.align} sx={{ minWidth: column.minWidth }}>
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {myLeadListings.map(row => {
-                  return (
-                    <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
-                      {columns.map(column => {
-                        const value = row[column.id]
-                        if (column.id === 'detail') {
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              <Avatar
-                                alt={row['make']}
-                                onClick={() => handleClickAvatar(row.urlSrc)}
-                                sx={{ width: 40, height: 40, cursor: 'pointer' }}
-                                src={row['img_src']}
-                              />
-                            </TableCell>
-                          )
-                        }
-                        if (column.id === 'make_model') {
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              <Box>{capFirst(row['make'])}</Box>
-                              <Box>{capFirst(row['model'])}</Box>
-                            </TableCell>
-                          )
-                        }
-                        if (column.id === 'status') {
-                          return (
-                            <TableCell
-                              key={column.id}
-                              align={column.align}
-                              sx={{ '.MuiButton-root': { color: 'white' } }}
-                            >
-                              <Button variant='contained' size='medium' fullWidth={true}>
-                                {row[column.id].toUpperCase()}
-                              </Button>
-                            </TableCell>
-                          )
-                        }
-
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === 'number' ? column.format(value) : capFirst(value)}
-                          </TableCell>
-                        )
-                      })}
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          {/* <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component='div'
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          /> */}
-        </Paper>
-      </Card>
-    </Grid>
+        <TabPanel sx={{ p: 0 }} value='rfq'>
+          <RFQ brands={brands} />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value='leads'>
+          <Lead brands={brands} loggedUser={loggedUser} />
+        </TabPanel>
+      </TabContext>
+    </Card>
   )
 }
 
@@ -264,3 +122,5 @@ export async function getServerSideProps(ctx) {
     props: { user }
   }
 }
+
+export default LeadsPage

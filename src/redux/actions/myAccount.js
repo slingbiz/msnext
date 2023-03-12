@@ -1,12 +1,26 @@
-import { getMyCarListings, getMyLeadListings, updateUser, getSingleUser } from '../../services/myAccount'
+import {
+  getMyCarListings,
+  getMyLeadListings,
+  updateUser,
+  getSingleUser,
+  updateStatus,
+  getMyRFQListings,
+  getBrands,
+  getModels,
+  getCities
+} from '../../services/myAccount'
 import {
   FETCH_START,
   FETCH_SUCCESS,
   FETCH_ERROR,
   UPDATE_MYCAR_LISTINGS,
-  UPDATE_MYLEAD_LISTINGS,
+  UPDATE_MYRFQ_LISTINGS,
   UPDATE_USER,
-  GET_SINGLE_USER
+  GET_SINGLE_USER,
+  UPDATE_STATUS,
+  GET_BRANDS,
+  GET_MODELS,
+  GET_CITIES
 } from '../../constants/actionTypes'
 
 import { SOMETHING_WENT_WRONG } from '../../constants/common'
@@ -32,6 +46,35 @@ export const getSingleUserAction = params => {
       }
     } catch (e) {
       console.log(e.message, ' --- singleUser error')
+      dispatch({
+        type: FETCH_ERROR,
+        payload: []
+      })
+    }
+  }
+}
+
+export const updateStatusAction = params => {
+  return async dispatch => {
+    dispatch({ type: FETCH_START })
+
+    try {
+      const updatedStatus = await updateStatus(params)
+      console.log(updatedStatus, ' --- updatedStatus response')
+      if (updatedStatus.status === 200) {
+        dispatch({ type: FETCH_SUCCESS })
+        dispatch({
+          type: UPDATE_STATUS,
+          payload: updatedStatus.data
+        })
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: data?.message || SOMETHING_WENT_WRONG
+        })
+      }
+    } catch (e) {
+      console.log(e.message, ' --- updatedStatus error')
       dispatch({
         type: FETCH_ERROR,
         payload: []
@@ -104,12 +147,12 @@ export const getMyLeadListingsAction = params => {
     dispatch({ type: FETCH_START })
 
     try {
-      const myLeadListings = await getMyLeadListings({ filter_type: params.filterValue })
+      const myLeadListings = await getMyLeadListings(params)
       console.log(myLeadListings, ' -- -myLeadListings response')
       if (myLeadListings.status === 200) {
         dispatch({ type: FETCH_SUCCESS })
         dispatch({
-          type: UPDATE_MYLEAD_LISTINGS,
+          type: UPDATE_MYRFQ_LISTINGS,
           payload: myLeadListings.data.data
         })
       } else {
@@ -120,6 +163,122 @@ export const getMyLeadListingsAction = params => {
       }
     } catch (e) {
       console.log(e.message, ' -- -myLeadListings error')
+      dispatch({
+        type: FETCH_ERROR,
+        payload: []
+      })
+    }
+  }
+}
+
+export const getMyRFQListingsAction = params => {
+  return async dispatch => {
+    dispatch({ type: FETCH_START })
+
+    try {
+      const myRFQListings = await getMyRFQListings(params)
+      console.log(myRFQListings, ' -- -myRFQListings response')
+      if (myRFQListings.status === 200) {
+        dispatch({ type: FETCH_SUCCESS })
+        dispatch({
+          type: UPDATE_MYRFQ_LISTINGS,
+          payload: myRFQListings.data.data
+        })
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: data?.message || SOMETHING_WENT_WRONG
+        })
+      }
+    } catch (e) {
+      console.log(e.message, ' -- -myRFQListings error')
+      dispatch({
+        type: FETCH_ERROR,
+        payload: []
+      })
+    }
+  }
+}
+
+export const getBrandsAction = params => {
+  return async dispatch => {
+    dispatch({ type: FETCH_START })
+
+    try {
+      const brands = await getBrands(params)
+      console.log(brands, ' --- brands response')
+      if (brands.status === 200) {
+        dispatch({ type: FETCH_SUCCESS })
+        dispatch({
+          type: GET_BRANDS,
+          payload: brands.data
+        })
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: data?.message || SOMETHING_WENT_WRONG
+        })
+      }
+    } catch (e) {
+      console.log(e.message, ' --- brands error')
+      dispatch({
+        type: FETCH_ERROR,
+        payload: []
+      })
+    }
+  }
+}
+
+export const getModelsAction = params => {
+  return async dispatch => {
+    dispatch({ type: FETCH_START })
+
+    try {
+      const models = await getModels(params)
+      console.log(models, ' --- models response')
+      if (models.status === 200) {
+        dispatch({ type: FETCH_SUCCESS })
+        dispatch({
+          type: GET_MODELS,
+          payload: models.data
+        })
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: data?.message || SOMETHING_WENT_WRONG
+        })
+      }
+    } catch (e) {
+      console.log(e.message, ' --- models error')
+      dispatch({
+        type: FETCH_ERROR,
+        payload: []
+      })
+    }
+  }
+}
+
+export const getCitiesAction = params => {
+  return async dispatch => {
+    dispatch({ type: FETCH_START })
+
+    try {
+      const cities = await getCities(params)
+      console.log(cities, ' --- cities response')
+      if (cities.status === 200) {
+        dispatch({ type: FETCH_SUCCESS })
+        dispatch({
+          type: GET_CITIES,
+          payload: cities.data
+        })
+      } else {
+        dispatch({
+          type: FETCH_ERROR,
+          payload: data?.message || SOMETHING_WENT_WRONG
+        })
+      }
+    } catch (e) {
+      console.log(e.message, ' --- cities error')
       dispatch({
         type: FETCH_ERROR,
         payload: []

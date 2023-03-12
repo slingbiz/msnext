@@ -43,14 +43,15 @@ const ChatList = ({ chats, setChats, userId, setRecepient, setOpenChat, setOpenM
                   carID: chat.id,
                   carTitle: chat.title,
                   kms_run: chat.kms_run,
-                  price: chat.price
+                  price: chat.price,
+                  image: chat.img_src
                 })
                 setOpenChat(true)
                 isMobile ? setOpenMenu(false) : null
               }}
             >
               <ListItemAvatar>
-                <Avatar alt={chat.user_name} src='https://mui.com/static/images/avatar/1.jpg' />
+                <Avatar alt={chat.user_name} src={chat.img_src} />
               </ListItemAvatar>
 
               <ListItemText

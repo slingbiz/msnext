@@ -5,14 +5,22 @@ import {
   UPDATE_MYCAR_LISTINGS,
   UPDATE_MYLEAD_LISTINGS,
   UPDATE_USER,
-  GET_SINGLE_USER
+  GET_SINGLE_USER,
+  UPDATE_STATUS,
+  UPDATE_MYRFQ_LISTINGS,
+  GET_BRANDS,
+  GET_MODELS,
+  GET_CITIES
 } from '../../constants/actionTypes'
 
 const INIT_STATE = {
   myCarListings: [],
   myLeadListings: [],
   loading: undefined,
-  singleUser: []
+  singleUser: [],
+  brands: [],
+  models: [],
+  cities: []
 }
 
 const myAccount = (state = INIT_STATE, action) => {
@@ -44,11 +52,27 @@ const myAccount = (state = INIT_STATE, action) => {
         myCarListings: action.payload
       }
     }
+
     case UPDATE_MYLEAD_LISTINGS: {
       return {
         ...state,
         loading: false,
         myLeadListings: action.payload
+      }
+    }
+
+    case UPDATE_MYRFQ_LISTINGS: {
+      return {
+        ...state,
+        loading: false,
+        myLeadListings: action.payload
+      }
+    }
+
+    case UPDATE_STATUS: {
+      return {
+        ...state,
+        loading: false
       }
     }
 
@@ -64,6 +88,30 @@ const myAccount = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         singleUser: action.payload
+      }
+    }
+
+    case GET_BRANDS: {
+      return {
+        ...state,
+        loading: false,
+        brands: action.payload
+      }
+    }
+
+    case GET_MODELS: {
+      return {
+        ...state,
+        loading: false,
+        models: action.payload
+      }
+    }
+
+    case GET_CITIES: {
+      return {
+        ...state,
+        loading: false,
+        cities: action.payload
       }
     }
 
