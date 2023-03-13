@@ -4,7 +4,7 @@ import io from 'socket.io-client'
 import EVENTS from 'src/constants/events'
 import { SOCKET_URL, SOCKET_URL_SUB_PATH } from '../../constants/common'
 
-const socket = io(SOCKET_URL, { path: SOCKET_URL_SUB_PATH })
+const socket = io(SOCKET_URL)
 
 const SocketContext = createContext({ socket, conUsers: [], messages: [], notif: [] })
 
