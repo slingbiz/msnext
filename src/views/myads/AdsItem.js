@@ -23,12 +23,12 @@ function AdsItem({ listing }) {
         }}
       >
         <img
-          src='https://i.imgur.com/CzXTtJV.jpg'
-          alt='Picture of the author'
+          src={listing.img_src}
+          alt={listing.title}
           style={{ width: '100%', height: 200, borderRadius: 5, flexBasis: 1, maxWidth: 300 }}
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, ml: [null, null, 3] }}>
-          <Typography component='h3' sx={{ fontSize: 25, fontWeight: 500 }}>
+          <Typography component='h3' sx={{ fontSize: 22, fontWeight: 500 }}>
             {listing?.title}
           </Typography>
           <Typography component='h3' sx={{ fontSize: 20, fontWeight: 500, mt: 2 }}>
@@ -81,11 +81,11 @@ function AdsItem({ listing }) {
       <Divider sx={{ my: 5 }} />
       <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: { xs: 'column', lg: 'row' } }}>
         <Box sx={{ display: 'flex' }}>
-          <Typography variant='subtitle2' sx={{ fontSize: 15 }}>
-            Posted on <span style={{ fontWeight: 600 }}>{moment(listing?.added_on).toString()}</span>
+          <Typography variant='subtitle2' sx={{ fontSize: 14 }}>
+            <span>Posted</span> on <span style={{ fontWeight: 600 }}>{moment(listing?.added_on).toString()}</span>
           </Typography>
           <Divider orientation='vertical' sx={{ mx: 2 }} flexItem />
-          <Typography variant='subtitle2' sx={{ fontSize: 15 }}>
+          <Typography variant='subtitle2' sx={{ fontSize: 14 }}>
             Updated on <span style={{ fontWeight: 600 }}>{moment(listing?.updated_on).toString()}</span>
           </Typography>
         </Box>
