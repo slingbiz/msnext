@@ -29,7 +29,6 @@ import { getMyCarListingsAction } from '../../redux/actions/myAccount'
 
 import DefaultLoader from '../../@core/components/loader/default'
 import Head from 'next/head'
-import Head from 'next/head'
 
 const MyAdsPage = props => {
   const dispatch = useDispatch()
