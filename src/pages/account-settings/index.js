@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -9,6 +9,7 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabContext from '@mui/lab/TabContext'
 import { styled } from '@mui/material/styles'
 import MuiTab from '@mui/material/Tab'
+import Head from 'next/head'
 
 // ** Icons Imports
 import AccountOutline from 'mdi-material-ui/AccountOutline'
@@ -62,41 +63,47 @@ const AccountSettings = props => {
   }
 
   return (
-    <Card>
-      <TabContext value={value}>
-        <TabList
-          onChange={handleChange}
-          aria-label='account-settings tabs'
-          sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
-        >
-          <Tab
-            value='account'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccountOutline />
-                <TabName>Account</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value='security'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <LockOpenOutline />
-                <TabName>Security</TabName>
-              </Box>
-            }
-          />
-        </TabList>
+    <>
+      <Head>
+        <title>Edit my information - My Account </title>
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+      </Head>
+      <Card>
+        <TabContext value={value}>
+          <TabList
+            onChange={handleChange}
+            aria-label='account-settings tabs'
+            sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
+          >
+            <Tab
+              value='account'
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <AccountOutline />
+                  <TabName>Account</TabName>
+                </Box>
+              }
+            />
+            <Tab
+              value='security'
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <LockOpenOutline />
+                  <TabName>Security</TabName>
+                </Box>
+              }
+            />
+          </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='account'>
-          <TabAccount loggedUser={loggedUser ? loggedUser[0] : {}} />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='security'>
-          <TabSecurity loggedUser={loggedUser ? loggedUser[0] : {}} />
-        </TabPanel>
-      </TabContext>
-    </Card>
+          <TabPanel sx={{ p: 0 }} value='account'>
+            <TabAccount loggedUser={loggedUser ? loggedUser[0] : {}} />
+          </TabPanel>
+          <TabPanel sx={{ p: 0 }} value='security'>
+            <TabSecurity loggedUser={loggedUser ? loggedUser[0] : {}} />
+          </TabPanel>
+        </TabContext>
+      </Card>
+    </>
   )
 }
 
@@ -106,7 +113,7 @@ export async function getServerSideProps(ctx) {
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
     headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
 
-   // headers: { cookie: `PHPSESSID=12m1u7eng2inkrrk90or5bds46` }
+    // headers: { cookie: `PHPSESSID=12m1u7eng2inkrrk90or5bds46` }
   })
 
   if (!response?.data?.user_id) {

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSingleUserAction, getBrandsAction } from 'src/redux/actions/myAccount'
 import axios from 'axios'
+import Head from 'next/head'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -60,41 +61,47 @@ const LeadsPage = props => {
   }
 
   return (
-    <Card>
-      <TabContext value={value}>
-        <TabList
-          onChange={handleChange}
-          aria-label='rfq-settings tabs'
-          sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
-        >
-          <Tab
-            value='rfq'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <NoteEditOutline />
-                <TabName>My RFQs</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value='leads'
-            label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AccountMultipleOutline />
-                <TabName>My Leads</TabName>
-              </Box>
-            }
-          />
-        </TabList>
+    <>
+      <Head>
+        <title>View Leads & RFQ - My Account </title>
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+      </Head>
+      <Card>
+        <TabContext value={value}>
+          <TabList
+            onChange={handleChange}
+            aria-label='rfq-settings tabs'
+            sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
+          >
+            <Tab
+              value='rfq'
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <NoteEditOutline />
+                  <TabName>My RFQs</TabName>
+                </Box>
+              }
+            />
+            <Tab
+              value='leads'
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <AccountMultipleOutline />
+                  <TabName>My Leads</TabName>
+                </Box>
+              }
+            />
+          </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='rfq'>
-          <RFQ brands={brands} />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='leads'>
-          <Lead brands={brands} loggedUser={loggedUser} />
-        </TabPanel>
-      </TabContext>
-    </Card>
+          <TabPanel sx={{ p: 0 }} value='rfq'>
+            <RFQ brands={brands} />
+          </TabPanel>
+          <TabPanel sx={{ p: 0 }} value='leads'>
+            <Lead brands={brands} loggedUser={loggedUser} />
+          </TabPanel>
+        </TabContext>
+      </Card>
+    </>
   )
 }
 
