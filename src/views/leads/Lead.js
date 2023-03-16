@@ -208,7 +208,7 @@ const Lead = ({ brands, loggedUser }) => {
                       setSelectedMaker(event.target.value)
                     }}
                   >
-                    {brands.map(data => (
+                    {brands?.map(data => (
                       <MenuItem key={data.name} value={data.name}>
                         {data.name}
                       </MenuItem>
@@ -226,9 +226,9 @@ const Lead = ({ brands, loggedUser }) => {
                     id='model-select'
                     labelId='model-select-label'
                     onChange={formik.handleChange}
-                    disabled={bModels.length === 0}
+                    disabled={bModels?.length === 0}
                   >
-                    {bModels.map(model => (
+                    {bModels?.map(model => (
                       <MenuItem key={model.name} value={model.name}>
                         {model.name}
                       </MenuItem>

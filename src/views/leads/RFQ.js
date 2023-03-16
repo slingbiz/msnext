@@ -179,7 +179,7 @@ const RFQ = ({ brands }) => {
                         setSelectedMaker(event.target.value)
                       }}
                     >
-                      {brands.map(data => (
+                      {brands?.map(data => (
                         <MenuItem key={data.name} value={data.name}>
                           {data.name}
                         </MenuItem>
@@ -197,9 +197,9 @@ const RFQ = ({ brands }) => {
                       id='model-select'
                       labelId='model-select-label'
                       onChange={formik.handleChange}
-                      disabled={bModels.length === 0}
+                      disabled={bModels?.length === 0}
                     >
-                      {bModels.map(model => (
+                      {bModels?.map(model => (
                         <MenuItem key={model.name} value={model.name}>
                           {model.name}
                         </MenuItem>

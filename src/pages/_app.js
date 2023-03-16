@@ -32,6 +32,8 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 // ** Global css styles
 import '../../styles/globals.css'
 
+import { GoogleAnalytics } from 'nextjs-google-analytics'
+
 const clientSideEmotionCache = createEmotionCache()
 
 // ** Pace Loader
@@ -66,6 +68,8 @@ const App = props => {
           </Head>
 
           <SettingsProvider>
+            <GoogleAnalytics strategy='lazyOnload' trackPageViews />
+
             <SettingsConsumer>
               {({ settings }) => {
                 return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
