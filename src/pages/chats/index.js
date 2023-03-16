@@ -30,6 +30,8 @@ import { useSockets } from 'src/@core/context/socket.context'
 import { SERVICE_URL } from 'src/constants/common'
 import EVENTS from 'src/constants/events'
 import ChatList from 'src/@core/components/chat/ChatList'
+import Head from 'next/head'
+import DefaultLoader from '../../@core/components/loader/default'
 
 const Chats = props => {
   const { socket, conUsers, messages, notif, setNotif } = useSockets()
@@ -85,6 +87,10 @@ const Chats = props => {
 
   return (
     <>
+      <Head>
+        <title>Chat with Buyers - My Account </title>
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+      </Head>
       <Card sx={{ height: '80vh', display: 'flex' }}>
         {isMobile && !openMenu ? (
           <Box component='div' p={1} borderRight='1px solid #e0e0e0'>
@@ -170,6 +176,7 @@ const Chats = props => {
             </Card>
           )}
         </Box>
+        <DefaultLoader />
       </Card>
     </>
   )
@@ -180,6 +187,7 @@ export async function getServerSideProps(ctx) {
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
     headers: { cookie: `PHPSESSID=${req.headers.cookies.PHPSESSID}` }
+    
   })
 
   if (!response?.data?.user_id) {
