@@ -1,8 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import { useSockets } from 'src/@core/context/socket.context'
-import { Avatar, Box, Divider, List, ListItemAvatar, ListItemButton, ListItemText, Typography } from '@mui/material'
+import {
+  Avatar,
+  Badge,
+  Box,
+  Divider,
+  List,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemText,
+  Typography
+} from '@mui/material'
 
-const ChatList = ({ chats, setChats, userId, setRecepient, setOpenChat, setOpenMenu, isMobile }) => {
+const ChatList = ({
+  chats,
+  setChats,
+  userId,
+  setRecepient,
+  setOpenChat,
+  selectedChat,
+  setSelectedChat,
+  setOpenMenu,
+  isMobile
+}) => {
   const { socket, messages, conUsers, setMessages } = useSockets()
 
   return (
@@ -37,6 +57,7 @@ const ChatList = ({ chats, setChats, userId, setRecepient, setOpenChat, setOpenM
               key={index}
               alignItems='flex-start'
               onClick={() => {
+                setSelectedChat({ id: chat.user_id })
                 setRecepient({
                   id: chat.user_id,
                   name: chat.user_name,
@@ -48,6 +69,12 @@ const ChatList = ({ chats, setChats, userId, setRecepient, setOpenChat, setOpenM
                 })
                 setOpenChat(true)
                 isMobile ? setOpenMenu(false) : null
+              }}
+              sx={{
+                backgroundColor: selectedChat.id === chat.user_id ? 'rgba(0, 0, 0, 0.06)' : 'transparent',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                }
               }}
             >
               <ListItemAvatar>
@@ -80,7 +107,7 @@ const ChatList = ({ chats, setChats, userId, setRecepient, setOpenChat, setOpenM
                       <Typography whiteSpace='nowrap' width='100%' overflow='hidden' textOverflow='ellipsis'>
                         {uChat?.length > 0 ? `- ${uChat[uChat.length - 1]?.message}` : ''}
                       </Typography>
-                      {/* <Badge badgeContent='' color='primary'></Badge> */}
+                      {uChat?.length > 0 ? <Badge badgeContent={uChat.length} color='primary'></Badge> : ''}
                     </Box>
                   </React.Fragment>
                 }

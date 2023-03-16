@@ -43,6 +43,7 @@ const Chats = props => {
   const [openMenu, setOpenMenu] = useState(false)
   const [recepient, setRecepient] = useState({})
   const [chats, setChats] = useState([])
+  const [selectedChat, setSelectedChat] = useState({ id: null })
 
   const userId = user?.user_id
   const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
@@ -146,13 +147,15 @@ const Chats = props => {
               setOpenChat={setOpenChat}
               isMobile={isMobile}
               setOpenMenu={setOpenMenu}
+              selectedChat={selectedChat}
+              setSelectedChat={setSelectedChat}
             />
           </Box>
         )}
 
         <Box component='div' flexGrow={1} borderRight='1px solid #e0e0e0'>
           {openChat ? (
-            <Chat recepient={recepient} userId={userId} setOpenChat={setOpenChat} />
+            <Chat recepient={recepient} userId={userId} setOpenChat={setOpenChat} setSelectedChat={setSelectedChat} />
           ) : (
             <Card
               sx={{
@@ -176,9 +179,7 @@ export async function getServerSideProps(ctx) {
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
-    // headers: { cookie: `PHPSESSID=${req.headers.cookies.PHPSESSID}` }
-
-    headers: { cookie: `PHPSESSID=jjqjufa90fdmmjiai99c9qa9u1` }
+    headers: { cookie: `PHPSESSID=${req.headers.cookies.PHPSESSID}` }
   })
 
   if (!response?.data?.user_id) {

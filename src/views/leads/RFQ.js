@@ -179,11 +179,15 @@ const RFQ = ({ brands }) => {
                         setSelectedMaker(event.target.value)
                       }}
                     >
-                      {brands.map(data => (
-                        <MenuItem key={data.name} value={data.name}>
-                          {data.name}
-                        </MenuItem>
-                      ))}
+                      {brands.length > 0 ? (
+                        <>
+                          {brands?.map(data => (
+                            <MenuItem key={data.name} value={data.name}>
+                              {data.name}
+                            </MenuItem>
+                          ))}
+                        </>
+                      ) : null}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -197,13 +201,17 @@ const RFQ = ({ brands }) => {
                       id='model-select'
                       labelId='model-select-label'
                       onChange={formik.handleChange}
-                      disabled={bModels.length === 0}
+                      disabled={bModels?.length === 0}
                     >
-                      {bModels.map(model => (
-                        <MenuItem key={model.name} value={model.name}>
-                          {model.name}
-                        </MenuItem>
-                      ))}
+                      {bModels.length > 0 ? (
+                        <>
+                          {bModels?.map(model => (
+                            <MenuItem key={model.name} value={model.name}>
+                              {model.name}
+                            </MenuItem>
+                          ))}
+                        </>
+                      ) : null}
                     </Select>
                   </FormControl>
                 </Grid>

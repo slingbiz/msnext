@@ -50,6 +50,8 @@
     "@mui/material": "^5.4.3",
     "@next/font": "^13.1.6",
     "@popperjs/core": "^2.11.2",
+    "@stripe/react-stripe-js": "^2.0.0",
+    "@stripe/stripe-js": "^1.49.0",
     "apexcharts-clevision": "3.28.5",
     "axios": "^1.2.5",
     "babel-eslint": "^10.1.0",
