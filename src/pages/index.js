@@ -15,7 +15,7 @@ const Dashboard = () => {
 export async function getServerSideProps(context) {
   return {
     redirect: {
-      destination: '/myads',
+      destination: '/mycars',
       permanent: false
     }
   }

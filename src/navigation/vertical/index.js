@@ -16,14 +16,15 @@ const navigation = () => {
       sectionTitle: 'Profile'
     },
     {
-      title: 'My Cars',
-      icon: FormatLetterCase,
-      path: '/myads'
-    },
-    {
       title: 'Edit Profile',
       icon: AccountCogOutline,
       path: '/account-settings'
+    },
+
+    {
+      title: 'My Cars',
+      icon: FormatLetterCase,
+      path: '/mycars'
     },
     {
       title: 'Manage Leads',
@@ -34,13 +35,14 @@ const navigation = () => {
       title: 'Messages',
       icon: AccountPlusOutline,
       path: '/chats'
-    },
-    {
-      title: 'Sell Car',
-      icon: AlertCircleOutline,
-      path: '/pages/error',
-      openInNewTab: true
     }
+
+    // {
+    //   title: 'Sell Car',
+    //   icon: AlertCircleOutline,
+    //   path: '/pages/error',
+    //   openInNewTab: true
+    // }
   ]
 }
 
