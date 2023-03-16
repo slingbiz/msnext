@@ -133,7 +133,7 @@ const Lead = ({ brands, loggedUser }) => {
       <CardHeader
         title='My Leads'
         action={
-          loggedUser[0]?.is_admin && (
+          loggedUser[0]?.is_admin ? (
             <>
               <Button
                 variant='contained'
@@ -154,6 +154,8 @@ const Lead = ({ brands, loggedUser }) => {
               </Button>
               <ImportLeadModal open={openModel} setOpen={setOpenModel} handleClose={handleCloseModel} />
             </>
+          ) : (
+            <></>
           )
         }
         titleTypographyProps={{

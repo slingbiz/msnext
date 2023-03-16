@@ -46,9 +46,7 @@ const SelectButton = ({ defaultValue, id = null, table = 'rfq' }) => {
           displayEmpty
         >
           {options.map(option => (
-            <MenuItem key={option.value} value={option.value}>
-              {option.label}
-            </MenuItem>
+            <MenuItem key={option.value} value={option.value}></MenuItem>
           ))}
         </Select>
         {selectedOption || 'Update status'}

@@ -23,6 +23,7 @@ import Lead from 'src/views/leads/Lead'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
+import DefaultLoader from '../../@core/components/loader/default'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -100,6 +101,7 @@ const LeadsPage = props => {
             <Lead brands={brands} loggedUser={loggedUser} />
           </TabPanel>
         </TabContext>
+        <DefaultLoader />
       </Card>
     </>
   )

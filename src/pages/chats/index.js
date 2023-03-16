@@ -32,6 +32,7 @@ import EVENTS from 'src/constants/events'
 import ChatList from 'src/@core/components/chat/ChatList'
 import Head from 'next/head'
 import Head from 'next/head'
+import DefaultLoader from '../../@core/components/loader/default'
 
 const Chats = props => {
   const { socket, conUsers, messages, notif, setNotif } = useSockets()
@@ -173,6 +174,7 @@ const Chats = props => {
             </Card>
           )}
         </Box>
+        <DefaultLoader />
       </Card>
     </>
   )

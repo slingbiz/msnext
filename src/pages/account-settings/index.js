@@ -26,6 +26,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSingleUserAction } from 'src/redux/actions/myAccount'
+import DefaultLoader from '../../@core/components/loader/default'
 
 const Tab = styled(MuiTab)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
@@ -102,6 +103,7 @@ const AccountSettings = props => {
             <TabSecurity loggedUser={loggedUser ? loggedUser[0] : {}} />
           </TabPanel>
         </TabContext>
+        <DefaultLoader />
       </Card>
     </>
   )
