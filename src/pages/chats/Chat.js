@@ -60,7 +60,7 @@ const Chat = props => {
       const values = { sender: userId, receiver: recepientID, car: carID }
       dispatch(getAllChatOfUserAction(values))
     }
-  }, [recepientID])
+  }, [recepientID, userId, carID])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
