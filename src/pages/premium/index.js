@@ -1,10 +1,11 @@
 // ** React Imports
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import useLocation from 'src/@core/hooks/useLocation'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCountryAction } from 'src/redux/actions/myAccount'
 
 // ** Next Imports
 import Link from 'next/link'
-import Image from 'next/image'
-import { useRouter } from 'next/router'
 
 // ** MUI Components
 import { styled, useTheme } from '@mui/material/styles'
@@ -17,11 +18,11 @@ import themeConfig from 'src/configs/themeConfig'
 import BlankLayoutWHeader from 'src/@core/layouts/BlankLayoutWHeader'
 
 // ** Demo Imports
-import Cards from './Cards'
-import Lists from './Lists'
-import FAQ from './FAQ'
-import Testimonials from './Testimonials'
-import Partners from './Partners'
+import Cards from '../../@core/components/premium/Cards'
+import Lists from 'src/@core/components/premium/Lists'
+import Partners from 'src/@core/components/premium/Partners'
+import FAQ from 'src/@core/components/premium/FAQ'
+import Testimonials from 'src/@core/components/premium/Testimonials'
 
 const HeroContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -31,14 +32,19 @@ const HeroContainer = styled(Box)(({ theme }) => ({
 }))
 
 const PremiumPage = () => {
-  // ** State
-
   // ** Hook
   const theme = useTheme()
-  const router = useRouter()
+  const dispatch = useDispatch()
+  const location = useLocation()
 
-  // ** Default Country
-  const country = 'in'
+  // ** State
+  const userCountry = useSelector(({ myAccount }) => myAccount.location)
+
+  useEffect(() => {
+    if (location.country) {
+      dispatch(getCountryAction({ country: location.country }))
+    }
+  }, [dispatch, location])
 
   return (
     <Box display='flex' flexDirection='column'>
@@ -55,7 +61,7 @@ const PremiumPage = () => {
         <Lists />
       </HeroContainer>
 
-      <Cards country={country} />
+      <Cards country={userCountry} />
 
       <Partners />
 

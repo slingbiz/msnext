@@ -97,8 +97,8 @@ const Lead = ({ brands, loggedUser }) => {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - myLeadListings?.leads?.length) : 0
 
   useEffect(() => {
-    dispatch(getMyLeadListingsAction({ filterValue }))
-  }, [dispatch, filterValue, openModel])
+    dispatch(getMyLeadListingsAction({ filterValue, page: page + 1, rowsPerPage }))
+  }, [dispatch, filterValue, openModel, page, rowsPerPage])
 
   useEffect(() => {
     if (selectedMaker) {
@@ -213,15 +213,11 @@ const Lead = ({ brands, loggedUser }) => {
                         setSelectedMaker(event.target.value)
                       }}
                     >
-                      {brands.length > 0 ? (
-                        <>
-                          {brands?.map(data => (
-                            <MenuItem key={data.name} value={data.name}>
-                              {data.name}
-                            </MenuItem>
-                          ))}
-                        </>
-                      ) : null}
+                      {brands?.map(data => (
+                        <MenuItem key={data.name} value={data.name}>
+                          {data.name}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -237,15 +233,11 @@ const Lead = ({ brands, loggedUser }) => {
                       onChange={formik.handleChange}
                       disabled={bModels.length === 0}
                     >
-                      {bModels.length > 0 ? (
-                        <>
-                          {bModels?.map(model => (
-                            <MenuItem key={model.name} value={model.name}>
-                              {model.name}
-                            </MenuItem>
-                          ))}
-                        </>
-                      ) : null}
+                      {bModels?.map(model => (
+                        <MenuItem key={model.name} value={model.name}>
+                          {model.name}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -284,7 +276,6 @@ const Lead = ({ brands, loggedUser }) => {
                     Search
                   </Button>
                 </Grid>
-
               </Grid>
             </form>
           )}
@@ -311,7 +302,7 @@ const Lead = ({ brands, loggedUser }) => {
             <TableBody>
               {myLeadListings?.leads?.length > 0 ? (
                 <>
-                  {myLeadListings?.leads?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+                  {myLeadListings?.leads?.map(row => {
                     return (
                       <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
                         {columns.map(column => {
@@ -414,7 +405,7 @@ const Lead = ({ brands, loggedUser }) => {
           <TablePagination
             rowsPerPageOptions={[25, 50, 100]}
             component='div'
-            count={myLeadListings?.leads?.length}
+            count={myLeadListings?.totalCount}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

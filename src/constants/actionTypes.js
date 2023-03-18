@@ -32,3 +32,5 @@ export const GET_BRANDS = 'get_brands'
 export const GET_MODELS = 'get_models'
 
 export const GET_CITIES = 'get_cities'
+
+export const GET_COUNTRY = 'get_country'
