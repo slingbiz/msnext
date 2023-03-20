@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   Avatar,
@@ -15,92 +15,54 @@ import {
   Typography
 } from '@mui/material'
 import { Check } from '@mui/icons-material'
+import { getProducts } from 'src/services/checkout'
 
 const tiers = [
   {
-    buttonText: 'Buy Now',
-    country: 'IN',
-    currency: 'INR',
     description: ['Have a custom microsite', 'Promote your products', 'Email support'],
-    duration: 'month',
-    title: 'Monthly',
-    price: '499'
+    duration: 'month'
   },
   {
-    buttonText: 'Buy Now',
-    country: 'IN',
-    currency: 'INR',
     description: [
       'Have a custom microsite',
       'Promote your products',
       'Priority email support',
       'All the car listings you add on Motorsingh will be promoted by default at the top of relevant search results'
     ],
-    duration: 'year',
-    price: '4999',
-    save: '1000',
-    title: 'Yearly'
-  },
-  {
-    buttonText: 'Buy Now',
-    country: 'PK',
-    currency: 'INR',
-    description: ['Have a custom microsite', 'Promote your products', 'Email support'],
-    duration: 'month',
-    title: 'Monthly',
-    price: '499'
-  },
-  {
-    buttonText: 'Buy Now',
-    country: 'PK',
-    currency: 'INR',
-    description: [
-      'Have a custom microsite',
-      'Promote your products',
-      'Priority email support',
-      'All the car listings you add on Motorsingh will be promoted by default at the top of relevant search results'
-    ],
-    duration: 'year',
-    price: '4999',
-    save: '1000',
-    title: 'Yearly'
-  },
-  {
-    buttonText: 'Buy Now',
-    country: 'AE',
-    currency: 'AED',
-    description: ['Have a custom microsite', 'Promote your products', 'Email support'],
-    duration: 'month',
-    price: '50',
-    title: 'Monthly'
-  },
-  {
-    buttonText: 'Buy Now',
-    country: 'AE',
-    currency: 'AED',
-    description: [
-      'Have a custom microsite',
-      'Promote your products',
-      'Priority email support',
-      'All the car listings you add on Motorsingh will be promoted by default at the top of relevant search results'
-    ],
-    duration: 'year',
-    price: '500',
-    save: '100',
-    title: 'Yearly'
+    duration: 'year'
   }
 ]
 
 const Cards = props => {
   const { country } = props
+  const [products, setProducts] = useState([])
+  const [currency, setCurrency] = useState('inr')
+
+  console.log('Products => ', products)
+
+  useEffect(() => {
+    if (country === 'IN') {
+      setCurrency('inr')
+    } else {
+      setCurrency('aed')
+    }
+  }, [country])
+
+  useEffect(() => {
+    getProducts()
+      .then(res => {
+        setProducts(res.data)
+      })
+      .catch(err => console.error('Error => ', err))
+  }, [])
 
   return (
     <Container maxWidth='md' component='main' sx={{ mt: 5, py: 20 }}>
       <Grid container spacing={5} justifyContent='space-evenly' alignItems='stretch'>
-        {tiers
-          .filter(item => item.country === country)
-          .map(tier => (
-            <Grid item key={tier.title} xs={10} sm={6} md={5}>
+        {products
+          .filter(item => item.currency === currency)
+          .map(product => (
+            <Grid item key={product.id} xs={10} sm={6} md={5}>
               <Card
                 sx={{
                   height: '100%',
@@ -114,12 +76,12 @@ const Cards = props => {
                   component='p'
                   variant='p'
                   align='center'
-                  color={tier.title === 'Monthly' ? '#804BDF' : '#e15540'}
+                  color={product.title === 'Monthly' ? '#804BDF' : '#e15540'}
                   gutterBottom
                   fontWeight={600}
                   sx={{ letterSpacing: '.5px' }}
                 >
-                  {tier.title === 'Monthly' ? 'Pro' : 'Pro Plus'}
+                  {product.name}
                 </Typography>
 
                 <Paper
@@ -132,55 +94,59 @@ const Cards = props => {
                   }}
                 >
                   <Typography component='h2' variant='h3' align='center' color='#1d1b84' gutterBottom>
-                    {`${tier.currency} ${tier.price}`}
+                    {`${product.currency} ${product.price / 100}`.toUpperCase()}
                   </Typography>
                   <Typography variant='body1' align='center' color='text.secondary' component='p' gutterBottom>
-                    {`${tier.currency} ${tier.price}`}/{tier.duration}
+                    {`${product.currency} ${product.price / 100}`}/{product.interval}
                   </Typography>
                   <Typography variant='button' align='center' color='text.primary' component='p' gutterBottom>
-                    {tier.title === 'Monthly' ? 'Pay full' : `Save ${tier.currency} ${tier.save}`}
+                    {product.interval === 'month' ? 'Pay full' : `Save 2 months`}
                   </Typography>
                   <Link
-                    href={{ pathname: '/checkout', query: { currency: tier.currency, amount: tier.price } }}
+                    href={{ pathname: '/checkout', query: { priceId: product.priceId, interval: product.interval } }}
                     passHref
                   >
                     <Button
                       size='medium'
                       variant='contained'
                       sx={{
-                        backgroundColor: tier.title === 'Monthly' ? '#804BDF' : '#e15540',
+                        backgroundColor: product.title === 'Monthly' ? '#804BDF' : '#e15540',
                         '&:hover': {
-                          backgroundColor: tier.title === 'Monthly' ? '#e15540' : '#804BDF'
+                          backgroundColor: product.title === 'Monthly' ? '#e15540' : '#804BDF'
                         }
                       }}
                     >
-                      {tier.buttonText}
+                      Buy Now
                     </Button>
                   </Link>
                 </Paper>
 
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <List>
-                    {tier.description.map((line, index) => (
-                      <ListItem key={index}>
-                        <ListItemAvatar>
-                          <Avatar
-                            sx={{
-                              fontSize: 'small',
-                              backgroundColor: '#fefefe',
-                              color: tier.title === 'Monthly' ? '#804BDF' : '#e15540'
-                            }}
-                          >
-                            <Check />
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={line}
-                          primaryTypographyProps={{ fontSize: { xs: '1.125rem', sm: '1.3rem' } }}
-                        />
-                      </ListItem>
+                  {tiers
+                    .filter(item => item.duration === product.interval)
+                    .map(tier => (
+                      <List key={tier.duration}>
+                        {tier.description.map((line, index) => (
+                          <ListItem key={index}>
+                            <ListItemAvatar>
+                              <Avatar
+                                sx={{
+                                  fontSize: 'small',
+                                  backgroundColor: '#fefefe',
+                                  color: product.title === 'Monthly' ? '#804BDF' : '#e15540'
+                                }}
+                              >
+                                <Check />
+                              </Avatar>
+                            </ListItemAvatar>
+                            <ListItemText
+                              primary={line}
+                              primaryTypographyProps={{ fontSize: { xs: '1.125rem', sm: '1.3rem' } }}
+                            />
+                          </ListItem>
+                        ))}
+                      </List>
                     ))}
-                  </List>
                 </CardContent>
               </Card>
             </Grid>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import {
   Avatar,
@@ -13,7 +13,12 @@ import {
   ListItemText,
   Typography
 } from '@mui/material'
-import { Call, Check, DisplaySettings, Dvr, Facebook, Folder, SupportAgent } from '@mui/icons-material'
+import { Check } from '@mui/icons-material'
+import { useRouter } from 'next/router'
+import { createSubscription } from 'src/services/checkout'
+import { useDispatch, useSelector } from 'react-redux'
+import { getSingleUserAction } from 'src/redux/actions/myAccount'
+import axios from 'axios'
 
 const benefits = [
   {
@@ -48,7 +53,43 @@ const benefits = [
   }
 ]
 
-const Completion = () => {
+const Completion = props => {
+  const dispatch = useDispatch()
+  const router = useRouter()
+  const [created, setCreated] = useState(false)
+
+  const { user } = props
+  const userId = user?.user_id
+  const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
+  const { amount, currency, id, interval, status, subscriptionId } = router?.query
+
+  useEffect(() => {
+    dispatch(getSingleUserAction({ userId }))
+  }, [dispatch, userId])
+
+  useEffect(() => {
+    if (created || !loggedUser?.length || !amount || !currency || !id || !interval || !status || !subscriptionId) {
+      return
+    }
+
+    const params = {
+      amount,
+      currency,
+      interval,
+      paymentId: id,
+      subscriptionId
+    }
+
+    createSubscription(loggedUser[0]?.user_id, params)
+      .then(res => {
+        console.log('createSubscription: ', res)
+        setCreated(true)
+      })
+      .catch(err => {
+        console.log('createSubscription Err: ', err)
+      })
+  }, [loggedUser, amount, currency, id, interval, status, subscriptionId])
+
   return (
     <>
       <Card sx={{ width: '100%' }}>
@@ -117,6 +158,31 @@ const Completion = () => {
       </Card>
     </>
   )
+}
+
+export async function getServerSideProps(ctx) {
+  const { req, res } = ctx
+
+  const response = await axios.get('https://www.motorsingh.com/user/validate', {
+    headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
+  })
+
+  if (!response?.data?.user_id) {
+    // return {
+    //   redirect: {
+    //     destination: 'https://www.motorsingh.com', statusCode: 302
+    //   }
+    // };
+    return {
+      props: {}
+    }
+  }
+  const user = response?.data
+  req.user = user
+
+  return {
+    props: { user }
+  }
 }
 
 export default Completion
