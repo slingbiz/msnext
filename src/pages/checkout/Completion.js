@@ -82,7 +82,6 @@ const Completion = props => {
 
     createSubscription(loggedUser[0]?.user_id, params)
       .then(res => {
-        console.log('createSubscription: ', res)
         setCreated(true)
       })
       .catch(err => {

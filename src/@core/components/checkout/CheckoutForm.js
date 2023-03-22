@@ -61,7 +61,6 @@ function CheckoutForm({ priceId, interval }) {
     })
       .then(res => {
         const subscriptionId = res?.data?.subscriptionId
-        console.log('subscriptionId: ', subscriptionId)
         stripe
           .confirmCardPayment(res?.data?.clientSecret)
           .then(result => {

@@ -95,7 +95,7 @@ const RFQ = ({ brands }) => {
   }
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - myRFQListings.totalCount) : 0
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - myRFQListings?.totalCount) : 0
 
   useEffect(() => {
     dispatch(getMyRFQListingsAction({ filterValue, page: page + 1, rowsPerPage }))
@@ -423,7 +423,7 @@ const RFQ = ({ brands }) => {
         <TablePagination
           rowsPerPageOptions={[25, 50, 100]}
           component='div'
-          count={myRFQListings.totalCount}
+          count={myRFQListings?.totalCount}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

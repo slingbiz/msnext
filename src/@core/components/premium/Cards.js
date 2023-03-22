@@ -38,8 +38,6 @@ const Cards = props => {
   const [products, setProducts] = useState([])
   const [currency, setCurrency] = useState('inr')
 
-  console.log('Products => ', products)
-
   useEffect(() => {
     if (country === 'IN') {
       setCurrency('inr')
