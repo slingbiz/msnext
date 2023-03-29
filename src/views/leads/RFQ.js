@@ -247,7 +247,7 @@ const RFQ = ({ brands }) => {
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Typography variant='body2'>
                 <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-                  Found total ({myRFQListings.totalCount}) leads
+                  Found total {myRFQListings.totalCount} leads
                 </Box>{' '}
               </Typography>
               <Box sx={{ display: 'flex', mt: { xs: 3, lg: 0 }, alignItems: 'center' }}>

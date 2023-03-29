@@ -282,7 +282,7 @@ const Lead = ({ brands, loggedUser }) => {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography variant='body2'>
               <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-                Found total ({myLeadListings?.leads?.length}) leads
+                Found total {myLeadListings?.leads?.length} leads
               </Box>{' '}
             </Typography>
           </Box>
