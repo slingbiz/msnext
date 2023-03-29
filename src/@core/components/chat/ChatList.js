@@ -4,6 +4,7 @@ import {
   Avatar,
   Badge,
   Box,
+  capitalize,
   Divider,
   List,
   ListItemAvatar,
@@ -11,6 +12,7 @@ import {
   ListItemText,
   Typography
 } from '@mui/material'
+import { capFirst } from '../../../helpers/common'
 
 const ChatList = ({
   chats,
@@ -50,6 +52,7 @@ const ChatList = ({
             return msg
           }
         })
+        console.log(selectedChat.id, chat.user_id, 'chat.user_idchat.user_id')
 
         return (
           <>
@@ -57,7 +60,7 @@ const ChatList = ({
               key={index}
               alignItems='flex-start'
               onClick={() => {
-                setSelectedChat({ id: chat.user_id })
+                setSelectedChat({ id: chat.user_id, carId: chat.id })
                 setRecepient({
                   id: chat.user_id,
                   name: chat.user_name,
@@ -71,10 +74,15 @@ const ChatList = ({
                 isMobile ? setOpenMenu(false) : null
               }}
               sx={{
-                backgroundColor: selectedChat.id === chat.user_id ? 'rgba(0, 0, 0, 0.06)' : 'transparent',
+                backgroundColor:
+                  selectedChat.id === chat.user_id && selectedChat.carId === chat.id
+                    ? 'rgba(0, 0, 0, 0.06)'
+                    : 'transparent',
                 '&:hover': {
                   backgroundColor: 'rgba(0, 0, 0, 0.04)'
-                }
+                },
+                paddingTop: '15px',
+                paddingBottom: '15px'
               }}
             >
               <ListItemAvatar>
@@ -82,19 +90,21 @@ const ChatList = ({
               </ListItemAvatar>
 
               <ListItemText
-                primary={<Typography variant='h6'>{chat.user_name.toUpperCase()}</Typography>}
+                primary={
+                  <Typography sx={{ fontSize: '1rem', fontWeight: '600' }}>{capFirst(chat.user_name)}</Typography>
+                }
                 secondary={
                   <React.Fragment>
                     <Typography
-                      component='p'
-                      variant='body1'
+                      sx={{ fontSize: '1rem' }}
                       color='text.primary'
                       whiteSpace='nowrap'
                       width='100%'
                       overflow='hidden'
                       textOverflow='ellipsis'
                     >
-                      on {chat.title}
+                      <span style={{ fontSize: '0.875rem', fontWeight: '400' }}>on </span>
+                      <span style={{ fontSize: '1rem', fontWeight: '400' }}>{chat.title} </span>
                     </Typography>
 
                     <Box
@@ -113,7 +123,7 @@ const ChatList = ({
                 }
               />
             </ListItemButton>
-            <Divider />
+            <Divider style={{ margin: 0 }} />
           </>
         )
       })}

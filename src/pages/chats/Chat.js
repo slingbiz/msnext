@@ -138,7 +138,9 @@ const Chat = props => {
           <Grid item sm={10}>
             <Grid container spacing={1} alignItems='center'>
               <Grid item sm={6}>
-                <Typography variant='body1'>{carTitle}</Typography>
+                <Typography variant='body1' sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {carTitle}
+                </Typography>
               </Grid>
               <Grid item sm={3}>
                 <Typography variant='body1'>{`₹ ${price}`}</Typography>
