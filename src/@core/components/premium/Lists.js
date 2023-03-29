@@ -1,19 +1,19 @@
 import React from 'react'
 import Image from 'next/image'
-import { Call, Check, DisplaySettings, Dvr, Facebook, Folder, SupportAgent } from '@mui/icons-material'
+import { Call, Check, DisplaySettings, Dvr, Facebook, Instagram, Folder, SupportAgent } from '@mui/icons-material'
 import { Box, Container, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 
 const firstListItems = [
   {
     title: 'Leads',
-    secondary: 'Connect with potential buyers',
+    secondary: 'Connect daily with new potential buyers',
     icon: 'check'
   },
   {
-    title: 'Facebook',
+    title: 'Instagram',
     secondary: 'Leverage the power of social media',
-    icon: 'fb'
+    icon: 'insta'
   },
   {
     title: 'Tracko',
@@ -68,6 +68,7 @@ const Lists = () => {
                 <ListItemAvatar sx={{ margin: { sm: '0 1rem 0 0', md: '0 0 0 1rem' } }}>
                   {item.icon === 'check' && <Check color='primary' fontSize='large' />}
                   {item.icon === 'fb' && <Facebook color='primary' fontSize='large' />}
+                  {item.icon === 'insta' && <Instagram color='primary' fontSize='large' />}
                   {item.icon === 'call' && <Call color='primary' fontSize='large' />}
                 </ListItemAvatar>
                 <ListItemText
@@ -82,7 +83,7 @@ const Lists = () => {
             ))}
           </List>
 
-          <ImageContainer className='image-container'>
+          <ImageContainer className='image-container' style={{ lineHeight: 0.5 }}>
             <Image
               src='/images/xbanner.webp'
               width={600}

@@ -4,6 +4,9 @@ import Box from '@mui/material/Box'
 import VerticalNavHeader from './components/vertical/navigation/VerticalNavHeader'
 import Footer from './components/shared-components/footer'
 import { useSettings } from '../hooks/useSettings'
+import Button from '@mui/material/Button'
+import ModeToggler from './components/shared-components/ModeToggler'
+import UserDropdown from './components/shared-components/UserDropdown'
 
 // Styled component for Blank Layout component
 const BlankLayoutWrapper = styled(Box)(({ theme }) => ({
@@ -31,7 +34,20 @@ const BlankLayoutWHeader = ({ children }) => {
   return (
     <>
       <BlankLayoutWrapper className='layout-wrapper'>
-        <VerticalNavHeader />
+        <Box style={{ display: 'flex', justifyContent: 'space-between', boxShadow: '1px 1px 12px rgba(0,0,0,.15)' }}>
+          <VerticalNavHeader />
+          <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center', paddingRight: 5 }}>
+            <Button target='_blank' href='https://www.motorsingh.com/about/#contact-us/'>
+              Contact Us
+            </Button>
+            <Button target='_blank' href='https://motorsingh.com/'>
+              Browse Cars
+            </Button>
+            <ModeToggler settings={settings} saveSettings={saveSettings} />
+            {/*<NotificationDropdown />*/}
+            <UserDropdown />
+          </Box>
+        </Box>
         <Box className='app-content' sx={{ minHeight: '100vh', overflowX: 'hidden', position: 'relative' }}>
           {children}
         </Box>

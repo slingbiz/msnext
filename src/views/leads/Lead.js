@@ -31,6 +31,7 @@ import { capFirst } from 'src/helpers/common.js'
 import InputDate from 'src/@core/layouts/components/InputDate'
 import ImportLeadModal from 'src/@core/components/lead/ImportLeadModal'
 import DefaultLoader from 'src/@core/components/loader/default'
+import Tooltip from '@mui/material/Tooltip'
 
 const columns = [
   {
@@ -130,6 +131,8 @@ const Lead = ({ brands, loggedUser }) => {
     }
   })
 
+  const showFilters = loggedUser[0]?.subscription_type ? true : false
+
   return (
     <>
       <CardHeader
@@ -170,15 +173,23 @@ const Lead = ({ brands, loggedUser }) => {
 
       <CardContent sx={{ width: '100%', overflow: 'hidden' }}>
         <>
-          {loggedUser[0]?.subscription_type && (
-            <form onSubmit={formik.handleSubmit}>
-              <Grid container mt={1} mb={5} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                <Grid item lg={2} md={4} xs={12}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 5 }}>
+            <Typography variant='body2'>
+              <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
+                Found total {myLeadListings?.leads?.length} leads
+              </Box>{' '}
+            </Typography>
+          </Box>
+          <form onSubmit={formik.handleSubmit}>
+            <Grid container mt={1} mb={5} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+              <Grid item lg={2} md={4} xs={12}>
+                <Tooltip title={showFilters ? 'Filter by City' : 'Available for Premium Users'}>
                   <Autocomplete
                     size='small'
                     id='city'
                     noOptionsText='No city found'
                     options={citySuggestions}
+                    disabled={!showFilters}
                     getOptionLabel={option => option.name}
                     onChange={(e, value) => {
                       formik.setFieldValue('city', value ? value.name : '')
@@ -198,13 +209,16 @@ const Lead = ({ brands, loggedUser }) => {
                     )}
                     limitTags={7}
                   />
-                </Grid>
-                <Grid item lg={2} md={4} xs={12}>
-                  <FormControl fullWidth size='small'>
-                    <InputLabel id='make-select-label'>Make</InputLabel>
+                </Tooltip>
+              </Grid>
+              <Grid item lg={2} md={4} xs={12}>
+                <FormControl fullWidth size='small'>
+                  <InputLabel id='make-select-label'>Make</InputLabel>
+                  <Tooltip title={showFilters ? 'Filter by Make' : 'Available for Premium Users'}>
                     <Select
                       label='Make'
                       name='make'
+                      disabled={!showFilters}
                       value={formik.values.make}
                       id='make-select'
                       labelId='make-select-label'
@@ -219,11 +233,13 @@ const Lead = ({ brands, loggedUser }) => {
                         </MenuItem>
                       ))}
                     </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item lg={2} md={4} xs={12}>
-                  <FormControl fullWidth size='small'>
-                    <InputLabel id='model-select-label'>Model</InputLabel>
+                  </Tooltip>
+                </FormControl>
+              </Grid>
+              <Grid item lg={2} md={4} xs={12}>
+                <FormControl fullWidth size='small'>
+                  <InputLabel id='model-select-label'>Model</InputLabel>
+                  <Tooltip title={showFilters ? 'Filter by Model' : 'Available for Premium Users'}>
                     <Select
                       label='Model'
                       name='model'
@@ -239,29 +255,34 @@ const Lead = ({ brands, loggedUser }) => {
                         </MenuItem>
                       ))}
                     </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item lg={2} md={4} xs={12}>
-                  <InputDate
-                    name='startRange'
-                    title='From'
-                    value={formik.values.startRange}
-                    setFieldValue={formik.setFieldValue}
-                  />
-                </Grid>
-                <Grid item lg={2} md={4} xs={12}>
-                  <InputDate
-                    name='endRange'
-                    title='To'
-                    value={formik.values.endRange}
-                    setFieldValue={formik.setFieldValue}
-                  />
-                </Grid>
+                  </Tooltip>
+                </FormControl>
+              </Grid>
+              <Grid item lg={2} md={4} xs={12}>
+                <InputDate
+                  name='startRange'
+                  disabled={!showFilters}
+                  title='From'
+                  value={formik.values.startRange}
+                  setFieldValue={formik.setFieldValue}
+                />
+              </Grid>
+              <Grid item lg={2} md={4} xs={12}>
+                <InputDate
+                  name='endRange'
+                  disabled={!showFilters}
+                  title='To'
+                  value={formik.values.endRange}
+                  setFieldValue={formik.setFieldValue}
+                />
+              </Grid>
 
-                <Grid item lg={2} md={4} xs={12}>
+              <Grid item lg={2} md={4} xs={12}>
+                <Tooltip title={showFilters ? 'Filter leads' : 'Available for Premium Users'}>
                   <Button
                     type='submit'
                     size='small'
+                    disabled={!showFilters}
                     sx={{
                       width: '100%',
                       height: '100%',
@@ -275,17 +296,10 @@ const Lead = ({ brands, loggedUser }) => {
                   >
                     Search
                   </Button>
-                </Grid>
+                </Tooltip>
               </Grid>
-            </form>
-          )}
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant='body2'>
-              <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-                Found total {myLeadListings?.leads?.length} leads
-              </Box>{' '}
-            </Typography>
-          </Box>
+            </Grid>
+          </form>
         </>
 
         <TableContainer sx={{ maxHeight: 440 }}>

@@ -16,10 +16,12 @@ import {
 } from '@mui/material'
 import { Check } from '@mui/icons-material'
 import { getProducts } from 'src/services/checkout'
+import Box from '@mui/material/Box'
+import { grey } from '@mui/material/colors'
 
 const tiers = [
   {
-    description: ['Have a custom microsite', 'Promote your products', 'Email support'],
+    description: ['Have a custom microsite', 'Promote your products', 'Email support', 'Push your cars to 1000s of buyers'],
     duration: 'month'
   },
   {
@@ -27,7 +29,8 @@ const tiers = [
       'Have a custom microsite',
       'Promote your products',
       'Priority email support',
-      'All the car listings you add on Motorsingh will be promoted by default at the top of relevant search results'
+      'All the car listings you add on Motorsingh will be promoted by default at the top of relevant search results',
+      'Save 2 months cost'
     ],
     duration: 'year'
   }
@@ -56,7 +59,7 @@ const Cards = props => {
 
   return (
     <Container maxWidth='md' component='main' sx={{ mt: 5, py: 20 }}>
-      <Grid container spacing={5} justifyContent='space-evenly' alignItems='stretch'>
+      <Grid container justifyContent='space-evenly' alignItems='stretch'>
         {products
           .filter(item => item.currency === currency)
           .map(product => (
@@ -64,7 +67,7 @@ const Cards = props => {
               <Card
                 sx={{
                   height: '100%',
-                  padding: '24px 10px 40px',
+                  padding: '20px 10px 40px',
                   display: 'flex',
                   flexDirection: 'column',
                   backgroundColor: '#f6f6fe'
@@ -74,10 +77,10 @@ const Cards = props => {
                   component='p'
                   variant='p'
                   align='center'
-                  color={product.title === 'Monthly' ? '#804BDF' : '#e15540'}
+                  color={product.interval != 'month' ? '#804BDF' : '#e15540'}
                   gutterBottom
                   fontWeight={600}
-                  sx={{ letterSpacing: '.5px' }}
+                  sx={{ letterSpacing: '.5px', paddingBottom: '15px', textTransform: 'uppercase' }}
                 >
                   {product.name}
                 </Typography>
@@ -86,31 +89,42 @@ const Cards = props => {
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'center',
+                    justifyContent: 'space-evenly',
                     alignItems: 'center',
-                    height: 250
+                    height: 250,
+                    padding: '0 30px'
                   }}
                 >
-                  <Typography component='h2' variant='h3' align='center' color='#1d1b84' gutterBottom>
-                    {`${product.currency} ${product.price / 100}`.toUpperCase()}
-                  </Typography>
-                  <Typography variant='body1' align='center' color='text.secondary' component='p' gutterBottom>
-                    {`${product.currency} ${product.price / 100}`}/{product.interval}
-                  </Typography>
-                  <Typography variant='button' align='center' color='text.primary' component='p' gutterBottom>
-                    {product.interval === 'month' ? 'Pay full' : `Save 2 months`}
-                  </Typography>
+                  <Box>
+                    <Typography
+                      component='h2'
+                      variant='h4'
+                      align='center'
+                      sx={{ color: '#60606f', fontWeight: 'bold' }}
+                      gutterBottom
+                    >
+                      {`${product.currency} ${product.price / 100}`.toUpperCase()}
+                    </Typography>
+                    <Typography variant='body1' align='center' color='text.secondary' component='p' gutterBottom>
+                      <span style={{ textTransform: 'uppercase' }}>{`${product.currency}`}</span>
+                      {` ${product.price / 100}`}/{product.interval}
+                    </Typography>
+                    <Typography variant='button' align='center' color='text.primary' component='p' gutterBottom>
+                      {product.interval === 'month' ? 'Pay full' : `Save 2 months`}
+                    </Typography>
+                  </Box>
                   <Link
                     href={{ pathname: '/checkout', query: { priceId: product.priceId, interval: product.interval } }}
                     passHref
                   >
                     <Button
+                      fullWidth={true}
                       size='medium'
                       variant='contained'
                       sx={{
-                        backgroundColor: product.title === 'Monthly' ? '#804BDF' : '#e15540',
+                        backgroundColor: product.interval === 'month' ? '#e15540' : '#804BDF',
                         '&:hover': {
-                          backgroundColor: product.title === 'Monthly' ? '#e15540' : '#804BDF'
+                          backgroundColor: product.interval === 'month' ? '#de3c23' : '#540cd6'
                         }
                       }}
                     >
@@ -120,26 +134,45 @@ const Cards = props => {
                 </Paper>
 
                 <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography
+                    component='p'
+                    variant='p'
+                    align='center'
+                    color={product.interval != 'month' ? '#804BDF' : '#e15540'}
+                    gutterBottom
+                    fontWeight={600}
+                    sx={{
+                      letterSpacing: '.5px',
+                      paddingBottom: '15px',
+                      textTransform: 'uppercase',
+                      textAlign: 'left',
+                      marginTop: 2
+                    }}
+                  >
+                    {product.name}
+                  </Typography>
                   {tiers
                     .filter(item => item.duration === product.interval)
                     .map(tier => (
                       <List key={tier.duration}>
                         {tier.description.map((line, index) => (
-                          <ListItem key={index}>
+                          <ListItem key={index} style={{ padding: '0 10px 0 10px', marginBottom: 5 }}>
                             <ListItemAvatar>
                               <Avatar
                                 sx={{
                                   fontSize: 'small',
+                                  height: '25px',
+                                  width: '25px',
                                   backgroundColor: '#fefefe',
-                                  color: product.title === 'Monthly' ? '#804BDF' : '#e15540'
+                                  color: product.interval != 'Monthly' ? '#804BDF' : '#e15540'
                                 }}
                               >
-                                <Check />
+                                <Check sx={{ width: '15px' }} />
                               </Avatar>
                             </ListItemAvatar>
                             <ListItemText
                               primary={line}
-                              primaryTypographyProps={{ fontSize: { xs: '1.125rem', sm: '1.3rem' } }}
+                              primaryTypographyProps={{ fontSize: { xs: '16px', sm: '16px', fontWeight:500, color: grey[600] } }}
                             />
                           </ListItem>
                         ))}

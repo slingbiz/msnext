@@ -27,9 +27,9 @@ const benefits = [
     icon: 'check'
   },
   {
-    title: 'Facebook',
+    title: 'Instagram',
     secondary: 'Leverage the power of social media',
-    icon: 'fb'
+    icon: 'insta'
   },
   {
     title: 'Tracko',

@@ -16,24 +16,24 @@ import { Box, Container, Grid } from '@mui/material'
 const testimonials = [
   {
     id: 1,
-    name: 'John Doe',
-    company: 'ABC Inc.',
+    name: 'Lakshmi Pathy',
+    company: 'Individual',
     feedback:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus efficitur faucibus tellus sit amet rutrum.'
+      'I recently purchased a used car from this website and I have to say I was thoroughly impressed with the whole experience. The website was easy to navigate, the selection was great, and the prices were competitive. I found the car of my dreams and the whole process was smooth and stress-free. I would definitely recommend this website to anyone in the market for a used car'
   },
   {
     id: 2,
-    name: 'Jane Smith',
-    company: 'XYZ Corp.',
+    name: 'Aswani',
+    company: 'Dealer, Bangalore',
     feedback:
-      'Integer quis leo euismod, elementum ante eu, imperdiet ex. Aenean rhoncus nisl in sapien egestas, non sollicitudin turpis accumsan.'
+      'Working as a used car seller, I have had the opportunity to interact with many customers over the years. I pride myself on providing exceptional service, and I am committed to making sure that my customers are satisfied with their purchase. I always take the time to listen to my customers\' needs and preferences, and I work hard to help them find a car that meets all of their requirements'
   },
   {
     id: 3,
-    name: 'Bob Johnson',
-    company: '123 Industries',
+    name: 'Maulik Vaishnav',
+    company: 'Used Car Dealer, Gugaon',
     feedback:
-      'Sed laoreet nibh eget tellus ullamcorper iaculis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce sagittis tristique diam, in ultrices mi imperdiet at.'
+      'I recently sold a used car through my dealership, and I have to say that I was thoroughly impressed with the level of service provided to my customers. The team was professional, courteous, and always went above and beyond to ensure that the car-buying experience was enjoyable for everyone involved.'
   }
 ]
 
@@ -48,15 +48,15 @@ const Testimonials = () => {
         justifyContent: 'center'
       }}
     >
-      <Typography variant='h3' fontWeight={700} align='center' color='text.primary' component='p' my={10}>
-        Here’s what dealers have to say about us
+      <Typography variant='h4' fontWeight={700} align='center' color='text.primary' component='p' my={10} color={'#e15540'}>
+        Here’s what our customers have to say about us
       </Typography>
 
       <Grid container spacing={4} justifyContent='center'>
         {testimonials.map(({ id, name, company, feedback }) => (
           <Grid item xs={12} sm={6} md={4} key={id}>
             <Card
-              sx={{ minWidth: 345, height: 300, '&.MuiCard-root': { display: 'flex', flexDirection: 'column' } }}
+              sx={{ minWidth: 345, height: 400, '&.MuiCard-root': { display: 'flex', flexDirection: 'column' } }}
               key={id}
             >
               <CardContent
@@ -66,10 +66,10 @@ const Testimonials = () => {
                   }
                 }}
               >
-                <Typography variant='body2' color='text.secondary' mb={2}>
+                <Typography variant='body2' color='text.secondary' mb={2} sx={{fontSize: "18px", fontWeight: "bold", margin: "1em 0"}}>
                   {company}
                 </Typography>
-                <Typography variant='button'>{feedback}</Typography>
+                <Typography variant='button' sx={{textTransform: 'none'}}>{feedback}</Typography>
               </CardContent>
               <CardHeader
                 avatar={

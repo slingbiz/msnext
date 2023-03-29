@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import useLocation from 'src/@core/hooks/useLocation'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCountryAction } from 'src/redux/actions/myAccount'
+import Head from 'next/head'
 
 // ** Next Imports
 import Link from 'next/link'
@@ -47,28 +48,40 @@ const PremiumPage = () => {
   }, [dispatch, location])
 
   return (
-    <Box display='flex' flexDirection='column'>
-      <HeroContainer className='hero-container' sx={{ paddingBottom: { xs: '10px', lg: 0 } }}>
-        <Box mt={20} mb={10} px={5}>
-          <Typography component='h1' variant='h3' align='center' fontWeight={600} color='text.primary' gutterBottom>
-            Grow Your Business with Simplified Digital Solutions
-          </Typography>
-          <Typography variant='h5' align='center' color='text.secondary' component='p'>
-            Going digital is now easy
-          </Typography>
-        </Box>
+    <>
+      <Head>
+        <title>Motorsingh - Become a Premium Member </title>
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+      </Head>
+      <Box display='flex' flexDirection='column'>
+        <HeroContainer
+          className='hero-container'
+          sx={{ paddingBottom: { xs: '10px', lg: 0, boxShadow: '1px 1px 12px rgba(0,0,0,.15)' } }}
+        >
+          <Box mt={20} mb={10} px={5}>
+            <Typography component='h1' variant='h3' align='center' fontWeight={600} color='text.primary' gutterBottom>
+              Grow Your Business
+            </Typography>
+            <Typography component='h4' variant='h3' align='center' fontWeight={600} color='text.primary' gutterBottom>
+              with Simplified Digital Solutions
+            </Typography>
+            <Typography variant='h5' align='center' color='text.secondary' component='p'>
+              {/*Going digital is now easy*/}
+            </Typography>
+          </Box>
 
-        <Lists />
-      </HeroContainer>
+          <Lists />
+        </HeroContainer>
 
-      <Cards country={userCountry} />
+        <Cards country={userCountry} />
 
-      <Partners />
+        <Partners />
 
-      <FAQ />
+        <FAQ />
 
-      <Testimonials />
-    </Box>
+        <Testimonials />
+      </Box>
+    </>
   )
 }
 PremiumPage.getLayout = page => <BlankLayoutWHeader>{page}</BlankLayoutWHeader>

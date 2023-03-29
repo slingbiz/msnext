@@ -137,6 +137,11 @@ const RFQ = ({ brands }) => {
         title='My RFQs'
         subheader={
           <>
+            <Typography variant='body2'>
+              <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
+                Found total {myRFQListings.totalCount} leads
+              </Box>{' '}
+            </Typography>
             <form onSubmit={formik.handleSubmit}>
               <Grid container mt={1} mb={5} spacing={5}>
                 <Grid item lg={2} md={4} xs={12}>
@@ -244,12 +249,15 @@ const RFQ = ({ brands }) => {
                 </Grid>
               </Grid>
             </form>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography variant='body2'>
-                <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-                  Found total {myRFQListings.totalCount} leads
-                </Box>{' '}
-              </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                marginBottom: 5,
+                alignItems: 'center',
+                justifyContent: 'left',
+                marginTop: '3em'
+              }}
+            >
               <Box sx={{ display: 'flex', mt: { xs: 3, lg: 0 }, alignItems: 'center' }}>
                 <Button
                   variant={filterValue === 'ALL' ? 'contained' : 'outlined'}
@@ -410,7 +418,6 @@ const RFQ = ({ brands }) => {
                       <TableCell colSpan={6} />
                     </TableRow>
                   )}
-                  <DefaultLoader />
                 </>
               ) : (
                 <TableCell align='center' colSpan={columns.length}>
@@ -430,6 +437,7 @@ const RFQ = ({ brands }) => {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </CardContent>
+      <DefaultLoader />
     </>
   )
 }
