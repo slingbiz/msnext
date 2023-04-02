@@ -349,7 +349,7 @@ const RFQ = ({ brands }) => {
       />
 
       <CardContent sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer>
           <Table>
             <TableHead sx={{ backgroundColor: '#F4F5FA' }}>
               <TableRow>
@@ -365,7 +365,7 @@ const RFQ = ({ brands }) => {
                 <>
                   {myRFQListings.RFQListings.map(row => {
                     return (
-                      <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
+                      <TableRow hover role='checkbox' tabIndex={-1} key={row.id + row.added_on}>
                         {columns.map(column => {
                           const value = row[column.id]
                           if (column.id === 'detail') {

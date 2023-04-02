@@ -21,7 +21,12 @@ import { grey } from '@mui/material/colors'
 
 const tiers = [
   {
-    description: ['Have a custom microsite', 'Promote your products', 'Email support', 'Push your cars to 1000s of buyers'],
+    description: [
+      'Have a custom microsite',
+      'Promote your products',
+      'Email support',
+      'Push your cars to 1000s of buyers'
+    ],
     duration: 'month'
   },
   {
@@ -38,7 +43,7 @@ const tiers = [
 
 const Cards = props => {
   const { country } = props
-  const [products, setProducts] = useState([])
+  const [data, setData] = useState([])
   const [currency, setCurrency] = useState('inr')
 
   useEffect(() => {
@@ -52,16 +57,16 @@ const Cards = props => {
   useEffect(() => {
     getProducts()
       .then(res => {
-        setProducts(res.data)
+        setData(res.data)
       })
       .catch(err => console.error('Error => ', err))
   }, [])
 
   return (
     <Container maxWidth='md' component='main' sx={{ mt: 5, py: 20 }}>
-      <Grid container justifyContent='space-evenly' alignItems='stretch'>
-        {products
-          .filter(item => item.currency === currency)
+      <Grid container spacing={5} justifyContent='space-evenly' alignItems='stretch'>
+        {data?.products
+          ?.filter(item => item.currency === currency)
           .map(product => (
             <Grid item key={product.id} xs={10} sm={6} md={5}>
               <Card
@@ -114,7 +119,15 @@ const Cards = props => {
                     </Typography>
                   </Box>
                   <Link
-                    href={{ pathname: '/checkout', query: { priceId: product.priceId, interval: product.interval } }}
+                    href={
+                      product.currency === 'inr' && product.interval === 'month'
+                        ? data.links.inr_monthly_link
+                        : product.currency === 'inr' && product.interval === 'year'
+                        ? data.links.inr_yearly_link
+                        : product.currency === 'aed' && product.interval === 'month'
+                        ? data.links.aed_monthly_link
+                        : data.links.aed_yearly_link
+                    }
                     passHref
                   >
                     <Button
@@ -172,7 +185,9 @@ const Cards = props => {
                             </ListItemAvatar>
                             <ListItemText
                               primary={line}
-                              primaryTypographyProps={{ fontSize: { xs: '16px', sm: '16px', fontWeight:500, color: grey[600] } }}
+                              primaryTypographyProps={{
+                                fontSize: { xs: '16px', sm: '16px', fontWeight: 500, color: grey[600] }
+                              }}
                             />
                           </ListItem>
                         ))}

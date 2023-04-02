@@ -302,7 +302,7 @@ const Lead = ({ brands, loggedUser }) => {
           </form>
         </>
 
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer>
           <Table>
             <TableHead sx={{ backgroundColor: '#F4F5FA' }}>
               <TableRow>
@@ -318,7 +318,7 @@ const Lead = ({ brands, loggedUser }) => {
                 <>
                   {myLeadListings?.leads?.map(row => {
                     return (
-                      <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
+                      <TableRow hover role='checkbox' tabIndex={-1} key={row.id + row.added_on}>
                         {columns.map(column => {
                           const value = row[column.id]
                           if (column.id === 'buy') {
@@ -415,17 +415,21 @@ const Lead = ({ brands, loggedUser }) => {
             </TableBody>
           </Table>
         </TableContainer>
-        {myLeadListings.subscribed ? (
-          <TablePagination
-            rowsPerPageOptions={[25, 50, 100]}
-            component='div'
-            count={myLeadListings?.totalCount}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        ) : null}
+
+        <TablePagination
+          rowsPerPageOptions={[25, 50, 100]}
+          component='div'
+          count={myLeadListings?.totalCount}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          SelectProps={{
+            disabled: myLeadListings?.subscribed === false
+          }}
+          backIconButtonProps={myLeadListings?.subscribed === false ? { disabled: true } : undefined}
+          nextIconButtonProps={myLeadListings?.subscribed === false ? { disabled: true } : undefined}
+        />
       </CardContent>
     </>
   )

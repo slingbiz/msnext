@@ -52,7 +52,6 @@ const ChatList = ({
             return msg
           }
         })
-        console.log(selectedChat.id, chat.user_id, 'chat.user_idchat.user_id')
 
         return (
           <>
@@ -117,7 +116,10 @@ const ChatList = ({
                       <Typography whiteSpace='nowrap' width='100%' overflow='hidden' textOverflow='ellipsis'>
                         {uChat?.length > 0 ? `- ${uChat[uChat.length - 1]?.message}` : ''}
                       </Typography>
-                      {uChat?.length > 0 ? <Badge badgeContent={uChat.length} color='primary'></Badge> : ''}
+                      <Badge
+                        badgeContent={uChat.filter(chat => chat.receiver === loggedUser).length}
+                        color='primary'
+                      ></Badge>
                     </Box>
                   </React.Fragment>
                 }
