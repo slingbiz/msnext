@@ -9,6 +9,12 @@ const options = [
   { value: 'PROCESSING', label: 'PROCESSING' }
 ]
 
+const colorMapper = {
+  NEW: '#e15540',
+  COMPLETED: '#616060',
+  PROCESSING: '#eb887a'
+}
+
 const SelectButton = ({ defaultValue, id = null, table = 'rfq' }) => {
   const dispatch = useDispatch()
   const [selectedOption, setSelectedOption] = useState('')
@@ -27,7 +33,12 @@ const SelectButton = ({ defaultValue, id = null, table = 'rfq' }) => {
 
   return (
     <>
-      <Button variant='contained' size='medium' fullWidth={true} sx={{ textTransform: 'none' }}>
+      <Button
+        variant='contained'
+        size='medium'
+        fullWidth={true}
+        sx={{ textTransform: 'none', backgroundColor: colorMapper[selectedOption] }}
+      >
         <Select
           value={selectedOption}
           onChange={handleChange}
@@ -46,7 +57,9 @@ const SelectButton = ({ defaultValue, id = null, table = 'rfq' }) => {
           displayEmpty
         >
           {options.map(option => (
-            <MenuItem key={option.value} value={option.value}></MenuItem>
+            <MenuItem key={option.value} value={option.value}>
+              {option.value}
+            </MenuItem>
           ))}
         </Select>
         {selectedOption || 'Update status'}

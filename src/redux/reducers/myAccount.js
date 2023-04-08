@@ -10,7 +10,8 @@ import {
   UPDATE_MYRFQ_LISTINGS,
   GET_BRANDS,
   GET_MODELS,
-  GET_CITIES
+  GET_CITIES,
+  GET_COUNTRY
 } from '../../constants/actionTypes'
 
 const INIT_STATE = {
@@ -20,7 +21,8 @@ const INIT_STATE = {
   singleUser: [],
   brands: [],
   models: [],
-  cities: []
+  cities: [],
+  location: 'IN'
 }
 
 const myAccount = (state = INIT_STATE, action) => {
@@ -112,6 +114,14 @@ const myAccount = (state = INIT_STATE, action) => {
         ...state,
         loading: false,
         cities: action.payload
+      }
+    }
+
+    case GET_COUNTRY: {
+      return {
+        ...state,
+        loading: false,
+        location: action.payload
       }
     }
 

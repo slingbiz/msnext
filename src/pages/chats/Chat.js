@@ -20,7 +20,7 @@ const validationSchema = yup.object({
 })
 
 const Chat = props => {
-  const { recepient = {}, setOpenChat, userId } = props
+  const { recepient = {}, setOpenChat, userId, setSelectedChat } = props
   const dispatch = useDispatch()
   const { socket, messages, conUsers, setMessages } = useSockets()
   const [opened, setOpened] = useState(false)
@@ -123,7 +123,13 @@ const Chat = props => {
             <IconButton aria-label='more options'>
               <MoreVert />
             </IconButton>
-            <IconButton aria-label='more options' onClick={() => setOpenChat(false)}>
+            <IconButton
+              aria-label='more options'
+              onClick={() => {
+                setOpenChat(false)
+                setSelectedChat({ id: null })
+              }}
+            >
               <Close />
             </IconButton>
           </Box>
@@ -132,7 +138,9 @@ const Chat = props => {
           <Grid item sm={10}>
             <Grid container spacing={1} alignItems='center'>
               <Grid item sm={6}>
-                <Typography variant='body1'>{carTitle}</Typography>
+                <Typography variant='body1' sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {carTitle}
+                </Typography>
               </Grid>
               <Grid item sm={3}>
                 <Typography variant='body1'>{`₹ ${price}`}</Typography>
@@ -143,7 +151,7 @@ const Chat = props => {
             </Grid>
           </Grid>
           <Grid item sm={2} align='right'>
-            <Button href='#' variant='contained'>
+            <Button href={`https://www.motorsingh.com/home/detail/${carID}`} target='_blank' variant='contained'>
               View
             </Button>
           </Grid>

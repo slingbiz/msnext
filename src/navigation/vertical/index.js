@@ -6,7 +6,9 @@ import HomeOutline from 'mdi-material-ui/HomeOutline'
 import FormatLetterCase from 'mdi-material-ui/FormatLetterCase'
 import AccountCogOutline from 'mdi-material-ui/AccountCogOutline'
 import CreditCardOutline from 'mdi-material-ui/CreditCardOutline'
-import AccountPlusOutline from 'mdi-material-ui/AccountPlusOutline'
+import CarMultiple from 'mdi-material-ui/CarMultiple'
+import Message from 'mdi-material-ui/Message'
+import GoogleMyBusiness from 'mdi-material-ui/GoogleMyBusiness'
 import AlertCircleOutline from 'mdi-material-ui/AlertCircleOutline'
 import GoogleCirclesExtended from 'mdi-material-ui/GoogleCirclesExtended'
 
@@ -23,17 +25,17 @@ const navigation = () => {
 
     {
       title: 'My Cars',
-      icon: FormatLetterCase,
+      icon: CarMultiple,
       path: '/mycars'
     },
     {
       title: 'Manage Leads',
-      icon: Login,
+      icon: GoogleMyBusiness,
       path: '/leads'
     },
     {
       title: 'Messages',
-      icon: AccountPlusOutline,
+      icon: Message,
       path: '/chats'
     }
 

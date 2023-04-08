@@ -20,10 +20,20 @@ import {
   UPDATE_STATUS,
   GET_BRANDS,
   GET_MODELS,
-  GET_CITIES
+  GET_CITIES,
+  GET_COUNTRY
 } from '../../constants/actionTypes'
 
 import { SOMETHING_WENT_WRONG } from '../../constants/common'
+
+export const getCountryAction = params => {
+  return async dispatch => {
+    dispatch({
+      type: GET_COUNTRY,
+      payload: params.country
+    })
+  }
+}
 
 export const getSingleUserAction = params => {
   return async dispatch => {

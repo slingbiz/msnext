@@ -10,16 +10,15 @@ const FooterContent = () => {
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
-      <Typography style={{display: 'flex'}}>
-        <Box>
-        {`© ${new Date().getFullYear()}, Made with `}
-        <Box component='span' sx={{ color: 'error.main' }}>
-          ❤️{` by Motorsingh `}
+      <Typography style={{ display: 'flex' }}>
+        <Box style={{ display: 'flex', alignItems: 'center', color: 'grey' }}>
+          <span> {`© ${new Date().getFullYear()}, Made with `} </span>
+          <Box component='span' sx={{ color: 'error.main' }}>
+            <img width={32} height={32} alt='chart' src='/images/misc/made-with-love.png' />️
+          </Box>
+          <Box> {` by Motorsingh `}</Box>
         </Box>
-        </Box>
-
       </Typography>
-
     </Box>
   )
 }

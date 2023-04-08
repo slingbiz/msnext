@@ -45,6 +45,7 @@ const Chats = props => {
   const [openMenu, setOpenMenu] = useState(false)
   const [recepient, setRecepient] = useState({})
   const [chats, setChats] = useState([])
+  const [selectedChat, setSelectedChat] = useState({ id: null })
 
   const userId = user?.user_id
   const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
@@ -136,10 +137,10 @@ const Chats = props => {
                   <TextField id='outlined-basic-email' label='Search' color='secondary' variant='outlined' fullWidth />
                 </Grid>
               ) : null}
-              <Grid item xs={12} p={2}>
+              <Grid item xs={12} p={3}>
                 <Stack direction='row' spacing={1}>
-                  <Chip label='All' onClick={() => {}} />
-                  <Chip label='Unread' variant='outlined' onClick={() => {}} />
+                  <Chip label='All' onClick={() => { }} />
+                  <Chip label='Unread' variant='outlined' onClick={() => { }} />
                 </Stack>
               </Grid>
             </React.Fragment>
@@ -152,13 +153,15 @@ const Chats = props => {
               setOpenChat={setOpenChat}
               isMobile={isMobile}
               setOpenMenu={setOpenMenu}
+              selectedChat={selectedChat}
+              setSelectedChat={setSelectedChat}
             />
           </Box>
         )}
 
         <Box component='div' flexGrow={1} borderRight='1px solid #e0e0e0'>
           {openChat ? (
-            <Chat recepient={recepient} userId={userId} setOpenChat={setOpenChat} />
+            <Chat recepient={recepient} userId={userId} setOpenChat={setOpenChat} setSelectedChat={setSelectedChat} />
           ) : (
             <Card
               sx={{
@@ -185,7 +188,7 @@ export async function getServerSideProps(ctx) {
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
     headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID}` }
 
-    // headers: { cookie: `PHPSESSID=ik3fnpjjkah5veqm4dib3gs756` }
+    // headers: { cookie: `PHPSESSID=${'7e952iigfbbkvle1v0j61tn8c3'}` }
   })
 
   if (!response?.data?.user_id) {

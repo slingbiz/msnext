@@ -81,7 +81,7 @@ const RFQ = ({ brands }) => {
   const [filterValue, setFilterValue] = useState('ALL')
   const [selectedMaker, setSelectedMaker] = useState('')
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [rowsPerPage, setRowsPerPage] = useState(25)
 
   const citySuggestions = useSelector(({ myAccount }) => myAccount.cities)
 
@@ -95,11 +95,11 @@ const RFQ = ({ brands }) => {
   }
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - myRFQListings.length) : 0
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - myRFQListings?.totalCount) : 0
 
   useEffect(() => {
-    dispatch(getMyRFQListingsAction({ filterValue }))
-  }, [dispatch, filterValue])
+    dispatch(getMyRFQListingsAction({ filterValue, page: page + 1, rowsPerPage }))
+  }, [dispatch, filterValue, page, rowsPerPage])
 
   useEffect(() => {
     if (selectedMaker) {
@@ -137,6 +137,11 @@ const RFQ = ({ brands }) => {
         title='My RFQs'
         subheader={
           <>
+            <Typography variant='body2'>
+              <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
+                Found total {myRFQListings.totalCount} leads
+              </Box>{' '}
+            </Typography>
             <form onSubmit={formik.handleSubmit}>
               <Grid container mt={1} mb={5} spacing={5}>
                 <Grid item lg={2} md={4} xs={12}>
@@ -244,12 +249,15 @@ const RFQ = ({ brands }) => {
                 </Grid>
               </Grid>
             </form>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <Typography variant='body2'>
-                <Box component='span' sx={{ fontWeight: 600, color: 'text.primary' }}>
-                  Found total ({myRFQListings.length}) leads
-                </Box>{' '}
-              </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                marginBottom: 5,
+                alignItems: 'center',
+                justifyContent: 'left',
+                marginTop: '3em'
+              }}
+            >
               <Box sx={{ display: 'flex', mt: { xs: 3, lg: 0 }, alignItems: 'center' }}>
                 <Button
                   variant={filterValue === 'ALL' ? 'contained' : 'outlined'}
@@ -262,7 +270,10 @@ const RFQ = ({ brands }) => {
                       borderColor: theme.palette.primary.main
                     }
                   }}
-                  onClick={() => setFilterValue('ALL')}
+                  onClick={() => {
+                    setFilterValue('ALL')
+                    setPage(0)
+                  }}
                 >
                   ALL
                 </Button>
@@ -279,7 +290,10 @@ const RFQ = ({ brands }) => {
                       borderColor: theme.palette.primary.main
                     }
                   }}
-                  onClick={() => setFilterValue('NEW')}
+                  onClick={() => {
+                    setFilterValue('NEW')
+                    setPage(0)
+                  }}
                 >
                   NEW
                 </Button>
@@ -296,7 +310,10 @@ const RFQ = ({ brands }) => {
                       borderColor: theme.palette.primary.main
                     }
                   }}
-                  onClick={() => setFilterValue('COMPLETED')}
+                  onClick={() => {
+                    setFilterValue('COMPLETED')
+                    setPage(0)
+                  }}
                 >
                   COMPLETED
                 </Button>
@@ -311,7 +328,10 @@ const RFQ = ({ brands }) => {
                       borderColor: theme.palette.primary.main
                     }
                   }}
-                  onClick={() => setFilterValue('PROCESSING')}
+                  onClick={() => {
+                    setFilterValue('PROCESSING')
+                    setPage(0)
+                  }}
                 >
                   PROCESSING
                 </Button>
@@ -329,7 +349,7 @@ const RFQ = ({ brands }) => {
       />
 
       <CardContent sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
+        <TableContainer>
           <Table>
             <TableHead sx={{ backgroundColor: '#F4F5FA' }}>
               <TableRow>
@@ -341,11 +361,11 @@ const RFQ = ({ brands }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {myRFQListings.length > 0 ? (
+              {myRFQListings?.RFQListings?.length > 0 ? (
                 <>
-                  {myRFQListings.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+                  {myRFQListings.RFQListings.map(row => {
                     return (
-                      <TableRow hover role='checkbox' tabIndex={-1} key={row.code}>
+                      <TableRow hover role='checkbox' tabIndex={-1} key={row.id + row.added_on}>
                         {columns.map(column => {
                           const value = row[column.id]
                           if (column.id === 'detail') {
@@ -398,7 +418,6 @@ const RFQ = ({ brands }) => {
                       <TableCell colSpan={6} />
                     </TableRow>
                   )}
-                  <DefaultLoader />
                 </>
               ) : (
                 <TableCell align='center' colSpan={columns.length}>
@@ -409,15 +428,16 @@ const RFQ = ({ brands }) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25, 50]}
+          rowsPerPageOptions={[25, 50, 100]}
           component='div'
-          count={myRFQListings.length}
+          count={myRFQListings?.totalCount}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </CardContent>
+      <DefaultLoader />
     </>
   )
 }
