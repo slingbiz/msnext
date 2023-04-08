@@ -192,7 +192,7 @@ const MyAdsPage = props => {
   )
 }
 
-export async function getServerSideProps(ctx) {
+export async function getinitialprops(ctx) {
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {

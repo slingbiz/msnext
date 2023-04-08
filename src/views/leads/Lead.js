@@ -394,7 +394,7 @@ const Lead = ({ brands, loggedUser }) => {
                       </TableRow>
                     )
                   })}
-                  {emptyRows > 0 && (
+                  {/* {emptyRows > 0 && (
                     <TableRow
                       style={{
                         height: 71 * emptyRows
@@ -402,7 +402,7 @@ const Lead = ({ brands, loggedUser }) => {
                     >
                       <TableCell colSpan={columns.length} />
                     </TableRow>
-                  )}
+                  )} */}
                   <DefaultLoader />
                 </>
               ) : (
