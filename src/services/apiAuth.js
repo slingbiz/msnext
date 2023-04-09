@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const axiosAuth = async () => {
+const axiosAuth = () => {
 
   return axios.create({
     withCredentials: true, // To pass cookie information
