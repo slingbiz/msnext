@@ -1,6 +1,6 @@
 // ** React Imports
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import axios from 'src/services/apiAuth'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSingleUserAction } from 'src/redux/actions/myAccount'
 
@@ -188,9 +188,9 @@ Chats.getinitialprops = async (ctx) => {
   const cookies = parseCookies(req);
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
-    // headers: { cookie: `PHPSESSID=${cookies.PHPSESSID};` }
+    headers: { cookie: `PHPSESSID=${cookies.PHPSESSID};` }
 
-    headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
+    // headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
   })
 
   if (!response?.data?.user_id) {

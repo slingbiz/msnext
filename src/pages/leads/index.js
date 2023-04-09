@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSingleUserAction, getBrandsAction } from 'src/redux/actions/myAccount'
-import axios from 'axios'
+import axios from 'src/services/apiAuth'
+
 import Head from 'next/head'
 
 // ** MUI Imports

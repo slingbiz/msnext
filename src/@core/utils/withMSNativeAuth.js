@@ -1,4 +1,5 @@
-import axios from 'axios'
+import axios from 'src/services/apiAuth'
+
 import parseCookies from '../../utils/parseCookies'
 
 export const withMSNativeAuth = async (gssp) => {

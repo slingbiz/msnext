@@ -17,13 +17,12 @@ import {
   useTheme
 } from '@mui/material'
 
-import { Oval } from 'react-loader-spinner'
-import { blue, red, yellow } from '@mui/material/colors'
 import Account from 'mdi-material-ui/Account'
 import { useDispatch, useSelector } from 'react-redux'
 
 import AdsItem from '../../views/myads/AdsItem.js'
-import axios from 'axios'
+import axios from 'src/services/apiAuth'
+
 import React, { useEffect } from 'react'
 import { getMyCarListingsAction } from '../../redux/actions/myAccount'
 
