@@ -8,6 +8,9 @@ import NProgress from 'nprogress'
 // ** Emotion Imports
 import { CacheProvider } from '@emotion/react'
 
+// Cookie Provider
+import { CookiesProvider } from "react-cookie"
+
 // ** Config Imports
 import themeConfig from 'src/configs/themeConfig'
 
@@ -58,26 +61,28 @@ const App = props => {
 
   return (
     <Provider store={store}>
-      <CacheProvider value={emotionCache}>
-        <SocketsProvider>
-          <Head>
-            <title>{`${themeConfig.templateName} - ${themeConfig.templateTitle}`}</title>
-            <meta name='description' content={`${themeConfig.templateName} – ${themeConfig.templateDescription}`} />
-            <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
-            <meta name='viewport' content='initial-scale=1, width=device-width' />
-          </Head>
+      <CookiesProvider>
+        <CacheProvider value={emotionCache}>
+          <SocketsProvider>
+            <Head>
+              <title>{`${themeConfig.templateName} - ${themeConfig.templateTitle}`}</title>
+              <meta name='description' content={`${themeConfig.templateName} – ${themeConfig.templateDescription}`} />
+              <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
+              <meta name='viewport' content='initial-scale=1, width=device-width' />
+            </Head>
 
-          <SettingsProvider>
-            <GoogleAnalytics strategy='lazyOnload' trackPageViews />
+            <SettingsProvider>
+              <GoogleAnalytics strategy='lazyOnload' trackPageViews />
 
-            <SettingsConsumer>
-              {({ settings }) => {
-                return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-              }}
-            </SettingsConsumer>
-          </SettingsProvider>
-        </SocketsProvider>
-      </CacheProvider>
+              <SettingsConsumer>
+                {({ settings }) => {
+                  return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+                }}
+              </SettingsConsumer>
+            </SettingsProvider>
+          </SocketsProvider>
+        </CacheProvider>
+      </CookiesProvider>
     </Provider>
   )
 }
