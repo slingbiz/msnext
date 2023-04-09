@@ -53,7 +53,9 @@ const AccountSettings = props => {
   const dispatch = useDispatch()
   const { user } = props
   const userId = user?.user_id
+  console.log(props, 'props')
   const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
+  console.log(loggedUser, 'loggedUser')
 
   useEffect(() => {
     dispatch(getSingleUserAction({ userId }))
@@ -109,14 +111,15 @@ const AccountSettings = props => {
   )
 }
 
-export async function getinitialprops(ctx) {
+AccountSettings.getInitialProps = async (ctx) => {
+
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
     headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID};` }
-
-    // headers: { cookie: `PHPSESSID=12m1u7eng2inkrrk90or5bds46` }
   })
+
+  console.log(response, 'responseresponseresponse')
 
   if (!response?.data?.user_id) {
     return {

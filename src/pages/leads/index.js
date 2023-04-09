@@ -107,7 +107,7 @@ const LeadsPage = props => {
   )
 }
 
-export async function getinitialprops(ctx) {
+LeadsPage.getInitialProps = async (ctx) => {
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {

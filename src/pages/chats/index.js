@@ -182,7 +182,7 @@ const Chats = props => {
   )
 }
 
-export async function getinitialprops(ctx) {
+Chats.getinitialprops = async (ctx) => {
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
