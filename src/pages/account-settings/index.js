@@ -24,7 +24,9 @@ import TabSecurity from 'src/views/account-settings/TabSecurity'
 
 // ** Third Party Styles Imports
 import 'react-datepicker/dist/react-datepicker.css'
-import axios from 'src/services/apiAuth'
+import axiosAuth from 'src/services/apiAuth';
+
+const axios = axiosAuth();
 
 import { useDispatch, useSelector } from 'react-redux'
 import { getSingleUserAction } from 'src/redux/actions/myAccount'

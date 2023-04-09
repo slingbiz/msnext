@@ -21,8 +21,9 @@ import Account from 'mdi-material-ui/Account'
 import { useDispatch, useSelector } from 'react-redux'
 
 import AdsItem from '../../views/myads/AdsItem.js'
-import axios from 'src/services/apiAuth'
+import axiosAuth from 'src/services/apiAuth';
 
+const axios = axiosAuth();
 import React, { useEffect } from 'react'
 import { getMyCarListingsAction } from '../../redux/actions/myAccount'
 

@@ -1,6 +1,8 @@
 // ** React Imports
 import React, { useEffect, useState } from 'react'
-import axios from 'src/services/apiAuth'
+import axiosAuth from 'src/services/apiAuth';
+
+const axios = axiosAuth();
 import { useDispatch, useSelector } from 'react-redux'
 import { getSingleUserAction } from 'src/redux/actions/myAccount'
 
