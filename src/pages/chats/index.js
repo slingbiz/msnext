@@ -186,7 +186,7 @@ Chats.getinitialprops = async (ctx) => {
   const { req, res } = ctx
 
   const response = await axios.get('https://www.motorsingh.com/user/validate', {
-    headers: { cookie: `PHPSESSID=${req.cookies.PHPSESSID}` }
+    headers: { cookie: `PHPSESSID=${req.headers.cookies.PHPSESSID}` }
 
     // headers: { cookie: `PHPSESSID=${'7e952iigfbbkvle1v0j61tn8c3'}` }
   })

@@ -5,7 +5,7 @@ export const withMSNativeAuth = async (gssp) => {
     const {req, res} = context;
 
     const response = await axios.get('https://www.motorsingh.com/user/validate', {
-      headers: {cookie: `PHPSESSID=${req.cookies.PHPSESSID};`}
+      headers: {cookie: `PHPSESSID=${req.headers.cookies.PHPSESSID};`}
     });
 
     if (!response?.data?.user_id) {
