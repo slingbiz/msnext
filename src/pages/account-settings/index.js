@@ -121,11 +121,8 @@ AccountSettings.getInitialProps = async (ctx) => {
 
   console.log(cookies, 'cookiessssss');
 
-  const response = await axios.get('https://www.motorsingh.com/user/validate', {
-    headers: { cookie: `PHPSESSID=${cookies.PHPSESSID};` }
+  const response = await axios.get('https://www.motorsingh.com/user/validate')
 
-    // headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
-  })
 
   // console.log(response, 'responseresponseresponse')
 
