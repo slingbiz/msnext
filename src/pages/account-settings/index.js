@@ -132,7 +132,9 @@ AccountSettings.getInitialProps = async (ctx) => {
     }
   }
   const user = response?.data
-  req.user = user
+  if (req) {
+    req.user = user
+  }
 
   return {
     user
