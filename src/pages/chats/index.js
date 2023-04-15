@@ -185,7 +185,7 @@ const Chats = props => {
   )
 }
 
-Chats.getinitialprops = async (ctx) => {
+Chats.getInitialProps = async (ctx) => {
   const { req, res } = ctx;
   const cookies = parseCookies(req);
 
