@@ -194,29 +194,29 @@ const MyAdsPage = props => {
 }
 
 MyAdsPage.getInitialProps = async (ctx) => {
-  const { req, res } = ctx;
-  const cookies = parseCookies(req);
+  const { req } = ctx;
 
-  const response = await axios.get('https://www.motorsingh.com/user/validate')
+  // Run only on client side
+  if (!req) {
+    const response = await axios.get('https://www.motorsingh.com/user/validate')
+    if (!response?.data?.user_id) {
+      return {
+        props: {}
+      }
+    }
 
-  if (!response?.data?.user_id) {
-    // return {
-    //   redirect: {
-    //     destination: 'https://www.motorsingh.com', statusCode: 302
-    //   }
-    // };
+    const user = response?.data;
+
     return {
-      props: {}
+      user
     }
   }
-  const user = response?.data
+
   if (req) {
-    req.user = user
+    console.log('@server  - AccountSettings')
   }
 
-  return {
-    user
-  }
+  return {}
 }
 
 export default MyAdsPage

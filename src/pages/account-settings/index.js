@@ -10,15 +10,13 @@ import TabContext from '@mui/lab/TabContext'
 import { styled } from '@mui/material/styles'
 import MuiTab from '@mui/material/Tab'
 import Head from 'next/head'
-import parseCookies from '../../utils/parseCookies'
 
 // ** Icons Imports
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import LockOpenOutline from 'mdi-material-ui/LockOpenOutline'
-import InformationOutline from 'mdi-material-ui/InformationOutline'
+
 
 // ** Demo Tabs Imports
-import TabInfo from 'src/views/account-settings/TabInfo'
 import TabAccount from 'src/views/account-settings/TabAccount'
 import TabSecurity from 'src/views/account-settings/TabSecurity'
 
@@ -116,29 +114,29 @@ const AccountSettings = props => {
 }
 
 AccountSettings.getInitialProps = async (ctx) => {
-  const { req, res } = ctx;
-  const cookies = parseCookies(req);
+  const { req } = ctx;
 
-  console.log(cookies, 'cookiessssss');
+  // Run only on client side
+  if (!req) {
+    const response = await axios.get('https://www.motorsingh.com/user/validate')
+    if (!response?.data?.user_id) {
+      return {
+        props: {}
+      }
+    }
+    const user = response?.data;
 
-  const response = await axios.get('https://www.motorsingh.com/user/validate')
-
-
-  // console.log(response, 'responseresponseresponse')
-
-  if (!response?.data?.user_id) {
     return {
-      props: {}
+      user
     }
   }
-  const user = response?.data
+
   if (req) {
-    req.user = user
+    console.log('@server  - AccountSettings')
   }
 
-  return {
-    user
-  }
+  return {}
+
 }
 
 export default AccountSettings

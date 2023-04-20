@@ -186,24 +186,28 @@ const Chats = props => {
 }
 
 Chats.getInitialProps = async (ctx) => {
-  const { req, res } = ctx;
-  const cookies = parseCookies(req);
+  const { req } = ctx;
 
-  const response = await axios.get('https://www.motorsingh.com/user/validate')
+  // Run only on client side
+  if (!req) {
+    const response = await axios.get('https://www.motorsingh.com/user/validate')
+    if (!response?.data?.user_id) {
+      return {
+        props: {}
+      }
+    }
+    const user = response?.data;
 
-  if (!response?.data?.user_id) {
     return {
-      props: {}
+      user
     }
   }
-  const user = response?.data
+
   if (req) {
-    req.user = user
+    console.log('@server  - AccountSettings')
   }
 
-  return {
-    user
-  }
+  return {}
 }
 
 export default Chats
