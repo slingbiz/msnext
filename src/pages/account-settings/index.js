@@ -53,17 +53,33 @@ const AccountSettings = props => {
   const [value, setValue] = useState('account')
 
   const dispatch = useDispatch()
-  const { user } = props
-  const userId = user?.user_id
+
   console.log(props, 'props@AccountSettings')
   const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
-  console.log(loggedUser, 'loggedUser')
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      dispatch(getSingleUserAction({ userId }))
+
+    // declare the data fetching function
+    const fetchData = async () => {
+      // const response = await axios.get('https://www.motorsingh.com/user/validate')
+      const response = await axios.get('https://www.motorsingh.com/user/validate', {
+        headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
+      });
+
+      const { user_id: userIdLocal } = response?.data;
+      if (userIdLocal) {
+        dispatch(getSingleUserAction({ userId: userIdLocal }))
+      }else{
+        //Redirect to login page
+      }
     }
-  }, [dispatch, userId])
+
+    // call the function
+    fetchData()
+      .catch(console.error);
+  }, [])
+
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -120,7 +136,12 @@ AccountSettings.getInitialProps = async (ctx) => {
 
   // Run only on client side
   if (!req) {
-    const response = await axios.get('https://www.motorsingh.com/user/validate')
+    console.log('@client  - AccountSettings');
+
+    // const response = await axios.get('https://www.motorsingh.com/user/validate')
+    const response = await axios.get('https://www.motorsingh.com/user/validate', {
+      headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
+    })
     if (!response?.data?.user_id) {
       return {
         props: {}
