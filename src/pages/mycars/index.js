@@ -39,7 +39,9 @@ const MyAdsPage = props => {
   const myCarListings = useSelector(({ myAccount }) => myAccount.myCarListings)
 
   useEffect(() => {
-    dispatch(getMyCarListingsAction({}))
+    if (typeof window !== 'undefined') {
+      dispatch(getMyCarListingsAction({}))
+    }
   }, [dispatch])
 
   console.log(user, 'user')

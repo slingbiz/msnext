@@ -60,7 +60,7 @@ const Chats = props => {
   }
 
   useEffect(() => {
-    if (userId) {
+    if (userId && typeof window !== 'undefined') {
       dispatch(getSingleUserAction({ userId }))
 
       getChatForCars(userId).then(res => {

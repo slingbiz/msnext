@@ -56,8 +56,10 @@ const LeadsPage = props => {
   const brands = useSelector(({ myAccount }) => myAccount.brands)
 
   useEffect(() => {
-    dispatch(getSingleUserAction({ userId }))
-    dispatch(getBrandsAction())
+    if (typeof window !== 'undefined') {
+      dispatch(getSingleUserAction({ userId }))
+      dispatch(getBrandsAction())
+    }
   }, [dispatch, userId])
 
   const handleChange = (event, newValue) => {

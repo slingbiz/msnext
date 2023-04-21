@@ -60,7 +60,9 @@ const AccountSettings = props => {
   console.log(loggedUser, 'loggedUser')
 
   useEffect(() => {
-    dispatch(getSingleUserAction({ userId }))
+    if (typeof window !== 'undefined') {
+      dispatch(getSingleUserAction({ userId }))
+    }
   }, [dispatch, userId])
 
   const handleChange = (event, newValue) => {
@@ -136,7 +138,6 @@ AccountSettings.getInitialProps = async (ctx) => {
   }
 
   return {}
-
 }
 
 export default AccountSettings
