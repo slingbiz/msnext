@@ -190,16 +190,23 @@ Chats.getInitialProps = async (ctx) => {
 
   // Run only on client side
   if (!req) {
-    const response = await axios.get('https://www.motorsingh.com/user/validate')
-    if (!response?.data?.user_id) {
-      return {
-        props: {}
-      }
-    }
-    const user = response?.data;
+    try {
+      const response = await axios.get('https://www.motorsingh.com/user/validate')
+      if (!response?.data?.user_id) {
+        window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
 
-    return {
-      user
+        return {
+          props: {}
+        }
+      }
+      const user = response?.data;
+
+      return {
+        user
+      }
+    } catch (e) {
+      console.log(e, 'error@Chats@getInitialProps')
+      window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
     }
   }
 

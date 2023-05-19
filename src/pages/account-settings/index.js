@@ -61,16 +61,24 @@ const AccountSettings = props => {
 
     // declare the data fetching function
     const fetchData = async () => {
-      // const response = await axios.get('https://www.motorsingh.com/user/validate')
-      const response = await axios.get('https://www.motorsingh.com/user/validate', {
-        headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
-      });
+      try {
+        const response = await axios.get('https://www.motorsingh.com/user/validate')
 
-      const { user_id: userIdLocal } = response?.data;
-      if (userIdLocal) {
-        dispatch(getSingleUserAction({ userId: userIdLocal }))
-      }else{
-        //Redirect to login page
+        // const response = await axios.get('https://www.motorsingh.com/user/validate', {
+        //   headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
+        // });
+
+        const { user_id: userIdLocal } = response?.data;
+        if (userIdLocal) {
+          dispatch(getSingleUserAction({ userId: userIdLocal }))
+        } else {
+          //Redirect to login page
+          window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
+        }
+
+      } catch (e) {
+        console.log(e, 'error@AccountSettings@getInitialProps')
+        window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
       }
     }
 
@@ -138,19 +146,29 @@ AccountSettings.getInitialProps = async (ctx) => {
   if (!req) {
     console.log('@client  - AccountSettings');
 
-    // const response = await axios.get('https://www.motorsingh.com/user/validate')
-    const response = await axios.get('https://www.motorsingh.com/user/validate', {
-      headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
-    })
-    if (!response?.data?.user_id) {
-      return {
-        props: {}
-      }
-    }
-    const user = response?.data;
+    try {
 
-    return {
-      user
+      const response = await axios.get('https://www.motorsingh.com/user/validate')
+
+      // const response = await axios.get('https://www.motorsingh.com/user/validate', {
+      //   headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
+      // });
+
+      if (!response?.data?.user_id) {
+        window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
+
+        return {
+          props: {}
+        }
+      }
+      const user = response?.data || {};
+
+      return {
+        user
+      }
+    } catch (e) {
+      console.log(e, 'error@AccountSettings@getInitialProps')
+      window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
     }
   }
 
