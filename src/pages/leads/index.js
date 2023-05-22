@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSingleUserAction, getBrandsAction } from 'src/redux/actions/myAccount'
+import {fetchStart, fetchSuccess, fetchError} from 'src/redux/actions/common';
 import axiosAuth from 'src/services/apiAuth';
 
 const axios = axiosAuth();
@@ -15,7 +16,6 @@ import TabPanel from '@mui/lab/TabPanel'
 import TabContext from '@mui/lab/TabContext'
 import { styled } from '@mui/material/styles'
 import MuiTab from '@mui/material/Tab'
-import parseCookies from '../../utils/parseCookies'
 
 // ** Icons Imports
 import { AccountMultipleOutline, NoteEditOutline } from 'mdi-material-ui'
@@ -54,6 +54,42 @@ const LeadsPage = props => {
   const userId = user?.user_id
   const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
   const brands = useSelector(({ myAccount }) => myAccount.brands)
+
+  useEffect(() => {
+
+    // declare the data fetching function
+    const fetchData = async () => {
+      try {
+        dispatch(fetchStart())
+
+        const response = await axios.get('https://www.motorsingh.com/user/validate')
+
+        // const response = await axios.get('https://www.motorsingh.com/user/validate', {
+        //   headers: { cookie: `PHPSESSID=7e952iigfbbkvle1v0j61tn8c3` }
+        // });
+        dispatch(fetchSuccess());
+
+        const { user_id: userIdLocal } = response?.data;
+        if (userIdLocal) {
+          dispatch(getSingleUserAction({ userId: userIdLocal }))
+        } else {
+          //Redirect to login page
+          window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
+        }
+
+      } catch (e) {
+        dispatch(fetchError());
+
+        console.log(e, 'error@AccountSettings@getInitialProps')
+        window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
+      }
+    }
+
+    // call the function
+    fetchData()
+      .catch(console.error);
+  }, [])
+
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
