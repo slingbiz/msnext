@@ -58,7 +58,7 @@ const MyAdsPage = props => {
           dispatch(getSingleUserAction({ userId: userIdLocal }))
         } else {
           //Redirect to login page
-          window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
+          // window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
         }
 
       } catch (e) {
@@ -238,7 +238,7 @@ MyAdsPage.getInitialProps = async (ctx) => {
     try {
       const response = await axios.get('https://www.motorsingh.com/user/validate')
       if (!response?.data?.user_id) {
-        window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
+        // window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
 
         return {
           props: {}
