@@ -36,6 +36,10 @@ const MyAdsPage = props => {
 
   const theme = useTheme()
   const { user } = props
+
+  const userId = user?.user_id
+  const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
+  
   const myCarListings = useSelector(({ myAccount }) => myAccount.myCarListings)
 
   useEffect(() => {
