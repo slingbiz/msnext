@@ -39,7 +39,7 @@ const MyAdsPage = props => {
 
   const userId = user?.user_id
   const loggedUser = useSelector(({ myAccount }) => myAccount.singleUser)
-  
+
   const myCarListings = useSelector(({ myAccount }) => myAccount.myCarListings)
 
   useEffect(() => {
@@ -63,7 +63,8 @@ const MyAdsPage = props => {
 
       } catch (e) {
         console.log(e, 'error @MyCars @getInitialProps')
-        window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
+
+        // window.location.href = "https://www.motorsingh.com/sell-my-car/start#login";
       }
     }
 
